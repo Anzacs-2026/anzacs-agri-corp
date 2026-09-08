@@ -55,3 +55,29 @@ ones below.
 **Coverage:** not yet measured
 
 **Date:** 2026-09-09
+
+---
+
+## 2026-09-09 — Phase 2: Public layout & shared components
+
+**Feature:** Header/Footer/Section, shared `components/ui` primitives (Button, Input, Label, Textarea, Card), `site_settings` read hook
+
+**Test files:**
+- `apps/web/tests/unit/components/ui/Button.test.tsx`
+- `apps/web/tests/unit/components/Header.test.tsx`
+- `apps/web/tests/unit/components/Footer.test.tsx`
+
+**Results:**
+- Jest unit (`apps/web`): 16 passed, 16 total (9 new, 7 carried over from Phase 1, all still passing after the LoginForm/AdminDashboard refactor to shared components)
+  - Button renders children, variant classes (primary/secondary/outline), disabled state — all PASS
+  - Header renders wordmark and all 4 nav links with correct hrefs — PASS
+  - Footer renders tagline while loading, renders contact fields once `site_settings` resolves, renders gracefully (no "null" text) when fields are unset — all PASS
+- Playwright E2E: 2 passed, 2 total (unchanged specs, confirms the Layout refactor didn't break routing)
+- `tsc -b`: clean, no errors
+- `npm run build`: 6 pages prerendered; nav links and tagline confirmed present in static HTML; contact fields correctly absent from the SSG-time snapshot (query resolves client-side post-hydration, by design) with no error thrown during the build's server render
+
+**Note:** Second `import.meta.env`-via-mocked-module gotcha found and fixed — `Footer.test.tsx`'s `jest.mock('@/hooks/useSiteSettings')` needed an explicit factory (bare automock still transitively loads `@/lib/supabase.ts` to learn the real module's shape). Same rule as Phase 1: always use an explicit factory when mocking anything upstream of the Supabase client.
+
+**Coverage:** not yet measured
+
+**Date:** 2026-09-09

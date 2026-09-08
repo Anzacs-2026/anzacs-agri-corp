@@ -33,8 +33,11 @@ done, in progress, or deferred.
 
 ## Phase 2 — Public layout & shared components (Medium effort)
 
-- [ ] Header with nav + logo, footer with tagline + contact
-- [ ] Shared brand components: buttons, cards, section wrappers, form controls
+- [x] Header with nav (text wordmark, no logo image yet — pending client asset) + footer with tagline + contact (`whatsapp_number`/`contact_phone`/`contact_address` read live from `site_settings`, plain text — click-to-call/WhatsApp links are Phase 5)
+- [x] Shared brand components: `components/ui/{button,input,label,textarea,card}.tsx` (hand-rolled, shadcn-shaped per your call — swappable for real shadcn/Radix later without touching feature code), `components/Section.tsx`
+- [x] DRY refactor: `LoginForm`/`AdminDashboard` now use the shared `Button`/`Input`/`Label` instead of ad-hoc styling
+
+**Phase 2 complete: 2026-09-09.**
 
 ## Phase 3 — Products (Medium-High effort)
 
