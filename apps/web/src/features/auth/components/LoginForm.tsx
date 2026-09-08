@@ -1,5 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { authService } from '../services/authService'
 
 const LoginForm = () => {
@@ -30,27 +33,15 @@ const LoginForm = () => {
     <form onSubmit={handleSubmit} className="mx-auto flex max-w-sm flex-col gap-4 py-16">
       <h1 className="text-2xl font-bold">Admin Login</h1>
 
-      <label className="flex flex-col gap-1">
+      <Label>
         Email
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="rounded border border-forest/20 px-3 py-2"
-        />
-      </label>
+        <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      </Label>
 
-      <label className="flex flex-col gap-1">
+      <Label>
         Password
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="rounded border border-forest/20 px-3 py-2"
-        />
-      </label>
+        <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      </Label>
 
       {error && (
         <p role="alert" className="text-sm text-red-700">
@@ -58,13 +49,9 @@ const LoginForm = () => {
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="rounded bg-forest px-4 py-2 text-cream disabled:opacity-50"
-      >
+      <Button type="submit" disabled={submitting}>
         {submitting ? 'Signing in…' : 'Sign in'}
-      </button>
+      </Button>
     </form>
   )
 }

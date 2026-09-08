@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
 import { authService, useAuth } from '@/features/auth'
 
 const AdminDashboard = () => {
@@ -14,9 +15,9 @@ const AdminDashboard = () => {
     <section className="py-16 text-center">
       <h1 className="text-4xl font-bold">Admin Dashboard</h1>
       <p className="mt-4 text-forest/80">Signed in as {user?.email}</p>
-      <button onClick={handleSignOut} className="mt-6 rounded bg-forest px-4 py-2 text-cream">
+      <Button onClick={handleSignOut} className="mt-6">
         Sign out
-      </button>
+      </Button>
     </section>
   )
 }
