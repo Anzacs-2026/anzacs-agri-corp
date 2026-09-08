@@ -1,0 +1,21 @@
+{
+  "name": "anzacs-web-monorepo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "workspaces": ["apps/web"],
+  "scripts": {
+    "test:functions": "jest --config jest.config.ts"
+  },
+  "dependencies": {
+    "@netlify/functions": "^3.0.0",
+    "@supabase/supabase-js": "^2.116.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.0.0",
+    "jest": "^30.5.1",
+    "ts-jest": "^29.4.12",
+    "typescript": "~5.7.0"
+  }
+}

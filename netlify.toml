@@ -1,0 +1,14 @@
+[build]
+  command = "npm ci --prefix apps/web && npm run build --prefix apps/web"
+  publish = "apps/web/dist"
+  functions = "netlify/functions"
+
+# Product detail routes are database-driven, not statically prerendered.
+# Fall back to the client bundle so React Router + Supabase render them.
+[[redirects]]
+  from = "/products/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  node_bundler = "esbuild"
