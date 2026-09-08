@@ -8,8 +8,21 @@ const Footer = () => {
       <div className="mx-auto flex max-w-5xl flex-col gap-2 text-sm">
         <p>Seeds for life.</p>
 
-        {data?.contact_phone && <p>Phone: {data.contact_phone}</p>}
-        {data?.whatsapp_number && <p>WhatsApp: {data.whatsapp_number}</p>}
+        {data?.contact_phone && (
+          <a href={`tel:${data.contact_phone}`} className="hover:text-cream">
+            Phone: {data.contact_phone}
+          </a>
+        )}
+        {data?.whatsapp_number && (
+          <a
+            href={`https://wa.me/${data.whatsapp_number.replace(/\D/g, '')}`}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-cream"
+          >
+            WhatsApp: {data.whatsapp_number}
+          </a>
+        )}
         {data?.contact_address && <p>{data.contact_address}</p>}
       </div>
     </footer>

@@ -11,6 +11,7 @@ import AdminProducts from './AdminProducts'
 import AdminProductForm from './AdminProductForm'
 import AdminPages from './AdminPages'
 import AdminPhotos from './AdminPhotos'
+import AdminEnquiries from './AdminEnquiries'
 import NotFound from './NotFound'
 import { ProtectedRoute } from '@/features/auth'
 
@@ -35,6 +36,7 @@ export const routes: RouteRecord[] = [
           { path: 'products/:id/edit', Component: AdminProductForm, entry: 'src/routes/AdminProductForm.tsx' },
           { path: 'pages', Component: AdminPages, entry: 'src/routes/AdminPages.tsx' },
           { path: 'photos', Component: AdminPhotos, entry: 'src/routes/AdminPhotos.tsx' },
+          { path: 'enquiries', Component: AdminEnquiries, entry: 'src/routes/AdminEnquiries.tsx' },
         ],
       },
       { path: '*', Component: NotFound, entry: 'src/routes/NotFound.tsx' },

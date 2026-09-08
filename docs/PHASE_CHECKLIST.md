@@ -59,11 +59,13 @@ done, in progress, or deferred.
 
 ## Phase 5 — Enquiry flow (Medium effort, High for failure path)
 
-- [ ] Enquiry form → insert → Netlify Function → Brevo notification (function already built in Phase 0, needs form wiring)
-- [ ] Click-to-call and WhatsApp links
-- [ ] Admin Enquiries list with status workflow + Excel export
-- [ ] Test: enquiry insert succeeds when Brevo call fails (already covered at function level — extend to full form flow)
-- [ ] Resolve Brevo sender domain question before this phase ships (Option A confirmed — see ARCHITECTURE.md)
+- [x] Enquiry form → insert → Netlify Function → Brevo notification (`features/enquiries`, wired into `/contact`; notification call is fire-and-forget, never blocks the visitor's success state)
+- [x] Click-to-call and WhatsApp links (Footer + Contact, `tel:`/`wa.me` links from `site_settings`)
+- [x] Admin Enquiries list with status workflow + CSV export (`/admin/enquiries` — status dropdown per row, confirm-before-delete, client-side CSV download; Excel opens `.csv` natively, no new dependency)
+- [x] Test: enquiry insert succeeds when Brevo/notification call fails, at the full-form-flow level (`EnquiryForm.test.tsx`), extending the existing function-level coverage
+- [x] Resolve Brevo sender domain question before this phase ships (Option A confirmed — see ARCHITECTURE.md) — no change needed, notification function already built to that spec
+
+**Phase 5 complete: 2026-09-09.**
 
 ## Phase 6 — Testimonials & seed (Low-Medium effort)
 

@@ -53,6 +53,7 @@ describe('Header', () => {
 
     expect(screen.getByRole('link', { name: 'Pages' })).toHaveAttribute('href', '/admin/pages')
     expect(screen.getByRole('link', { name: 'Photos' })).toHaveAttribute('href', '/admin/photos')
+    expect(screen.getByRole('link', { name: 'Enquiries' })).toHaveAttribute('href', '/admin/enquiries')
     expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Home' })).not.toBeInTheDocument()
   })

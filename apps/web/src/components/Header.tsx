@@ -13,6 +13,7 @@ const adminNavItems = [
   { to: '/admin/products', label: 'Products' },
   { to: '/admin/pages', label: 'Pages' },
   { to: '/admin/photos', label: 'Photos' },
+  { to: '/admin/enquiries', label: 'Enquiries' },
 ]
 
 const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
