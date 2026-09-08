@@ -17,9 +17,12 @@ done, in progress, or deferred.
 - [x] Root `.env.example` documenting `BREVO_API_KEY` + `SUPABASE_SERVICE_ROLE_KEY`
 - [x] Netlify Function: `send-enquiry-notification` (Brevo call, insert-independent failure handling), unit tested (success + 2 failure paths)
 - [x] Supabase migration: full schema, soft-delete columns, RLS policies
-- [ ] Push to GitHub (pending explicit approval)
-- [ ] Supabase migration run against live project (pending — needs Supabase CLI login or dashboard SQL run)
-- [ ] Netlify site connected + env vars set (pending your dashboard actions)
+- [x] Push to GitHub (`Anzacs-2026/anzacs-agri-corp`, `main`)
+- [x] Supabase migration run against live project (`jqroehofufcetjekojxt`) — schema + RLS confirmed via SQL Editor
+- [x] Netlify site connected + env vars set, live at anzacs.netlify.app — all 5 routes return 200 with prerendered content confirmed in raw HTML
+- [ ] `BREVO_API_KEY` — deferred (Brevo phone verification pending); function fails safe without it (logs to server_logs, never blocks an enquiry)
+
+**Phase 0 complete: 2026-09-08.**
 
 ## Phase 1 — Auth, schema, RLS (Medium/High effort)
 
