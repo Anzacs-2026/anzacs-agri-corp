@@ -109,3 +109,29 @@ ones below.
 **Coverage:** not yet measured
 
 **Date:** 2026-09-09
+
+---
+
+## 2026-09-09 — Phase 4: Page content & media
+
+**Feature:** Home/About/Contact wired to `page_content` (with placeholder fallback), admin Pages text editor, Photos media library
+
+**Test files:**
+- `apps/web/tests/unit/features/pages/pageContentService.test.ts`
+- `apps/web/tests/unit/routes/Home.test.tsx`, `About.test.tsx`, `Contact.test.tsx`
+- `apps/web/tests/unit/routes/AdminPages.test.tsx`
+- `apps/web/tests/unit/features/photos/photoService.test.ts`
+
+**Results:**
+- Jest unit (`apps/web`): 41 passed, 41 total (14 new, 27 carried over)
+  - `getPageContent` filters by page + active rows, `upsertPageContent` upserts on `(page, section_key)` — PASS
+  - Home/About/Contact: render placeholder copy with no `page_content` row, render real content once one exists — all PASS
+  - AdminPages: renders a textarea per section for the selected page, saves a section's edited text, switches sections when the page selector changes — all PASS
+  - `getAllPhotosAdmin` filters to active rows, **`softDeletePhoto` calls `.update`, never `.delete`**, `updatePhotoLabel` updates only the label column — all PASS
+- Playwright E2E: 2 passed, 1 skipped (unchanged from Phase 3)
+- `tsc -b`: clean, no errors
+- `npm run build`: 10 pages prerendered (new: `/admin/pages`, `/admin/photos`); both confirmed empty in the static HTML (no admin content leaked); Home's fallback copy confirmed present in prerendered `index.html` (no `page_content` rows exist yet, as expected)
+
+**Coverage:** not yet measured
+
+**Date:** 2026-09-09

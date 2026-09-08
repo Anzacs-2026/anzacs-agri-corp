@@ -51,9 +51,11 @@ done, in progress, or deferred.
 
 ## Phase 4 — Page content & media (Medium effort)
 
-- [ ] Home/About/Contact wired to `page_content`
-- [ ] Admin Pages text editor
-- [ ] Photos media library with labels/tagging
+- [x] Home/About/Contact wired to `page_content` (fixed section keys per page — copy not finalized yet, falls back to existing placeholder text when a section has no row)
+- [x] Admin Pages text editor (`/admin/pages` — page selector, one textarea per section, per-section save)
+- [x] Photos media library with labels/tagging (`/admin/photos` — upload, inline label edit, soft delete; reuses the `product-images` bucket from Phase 3, so also pending that migration being run)
+
+**Phase 4 complete: 2026-09-09** (Storage migration run still pending your action — see Phase 3).
 
 ## Phase 5 — Enquiry flow (Medium effort, High for failure path)
 
