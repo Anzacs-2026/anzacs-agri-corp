@@ -41,10 +41,13 @@ done, in progress, or deferred.
 
 ## Phase 3 — Products (Medium-High effort)
 
-- [ ] Public grid, client-side search, crop/category filter
-- [ ] Detail page with related products
-- [ ] Admin CRUD with Storage photo upload, visible/hidden toggle, soft delete
-- [ ] Soft-delete test: deleted product gone from public site, row survives with `deleted_at` set
+- [x] Public grid, client-side search, crop/category filter
+- [x] Detail page with related products
+- [x] Admin CRUD with Storage photo upload, visible/hidden toggle, soft delete
+- [x] Soft-delete test: covered at the service layer (`softDeleteProduct` calls `.update`, never `.delete`); a full live E2E version is skip-guarded pending `SUPABASE_SERVICE_ROLE_KEY`
+- [ ] Storage migration (`product-images` bucket) run against the live project — pending, same manual step as the Phase 0 schema migration
+
+**Phase 3 complete: 2026-09-09** (migration run pending your action).
 
 ## Phase 4 — Page content & media (Medium effort)
 

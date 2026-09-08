@@ -81,3 +81,31 @@ ones below.
 **Coverage:** not yet measured
 
 **Date:** 2026-09-09
+
+---
+
+## 2026-09-09 — Phase 3: Products
+
+**Feature:** Public product grid (search + category filter), product detail with related products, admin CRUD with Storage photo upload and soft delete
+
+**Test files:**
+- `apps/web/tests/unit/features/products/productService.test.ts`
+- `apps/web/tests/unit/features/products/ProductGrid.test.tsx`
+- `apps/web/tests/unit/features/products/ProductForm.test.tsx`
+
+**Results:**
+- Jest unit (`apps/web`): 27 passed, 27 total (11 new, 16 carried over from Phases 1–2)
+  - `getVisibleProducts`/`getProductBySlug` apply the correct visible/active filters — PASS
+  - `getAllProductsAdmin` does not filter by visibility (authenticated sees everything) — PASS
+  - **`softDeleteProduct` calls `.update`, never `.delete`** — PASS (the plan's priority soft-delete test, covered at the service layer)
+  - ProductGrid: renders all products, search narrows results, category filter narrows results — all PASS
+  - ProductForm: empty for new, auto-slug from name, submits parsed values (traits split/trimmed), pre-fills when editing — all PASS
+- Playwright E2E: 2 passed, 1 skipped (`admin-product-crud.spec.ts` — needs a disposable Supabase Auth test user provisioned via the service-role key, not available in this session; skip-guarded the same way as the Phase 1 RLS integration test, not silently dropped)
+- `tsc -b`: clean, no errors
+- `npm run build`: 8 pages prerendered (new: `/admin/products`, `/admin/products/new`); confirmed both admin pages render an empty shell in the static HTML (`ProtectedRoute`'s SSG-time loading state), no admin content leaked; `/products` renders the search UI shell correctly
+
+**New migration:** `supabase/migrations/20260909000000_product_images_storage.sql` — `product-images` public Storage bucket, write policies restricted to `authenticated`. Not yet run against the live project (same manual SQL-Editor step as the Phase 0 migration — pending).
+
+**Coverage:** not yet measured
+
+**Date:** 2026-09-09
