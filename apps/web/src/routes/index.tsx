@@ -6,7 +6,9 @@ import Contact from './Contact'
 import Products from './Products'
 import ProductDetail from './ProductDetail'
 import AdminLogin from './AdminLogin'
+import AdminDashboard from './AdminDashboard'
 import NotFound from './NotFound'
+import { ProtectedRoute } from '@/features/auth'
 
 export const routes: RouteRecord[] = [
   {
@@ -19,6 +21,11 @@ export const routes: RouteRecord[] = [
       { path: 'products', Component: Products, entry: 'src/routes/Products.tsx' },
       { path: 'products/:slug', Component: ProductDetail, entry: 'src/routes/ProductDetail.tsx' },
       { path: 'admin/login', Component: AdminLogin, entry: 'src/routes/AdminLogin.tsx' },
+      {
+        path: 'admin',
+        Component: ProtectedRoute,
+        children: [{ index: true, Component: AdminDashboard, entry: 'src/routes/AdminDashboard.tsx' }],
+      },
       { path: '*', Component: NotFound, entry: 'src/routes/NotFound.tsx' },
     ],
   },
