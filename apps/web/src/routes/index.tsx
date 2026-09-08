@@ -7,6 +7,8 @@ import Products from './Products'
 import ProductDetail from './ProductDetail'
 import AdminLogin from './AdminLogin'
 import AdminDashboard from './AdminDashboard'
+import AdminProducts from './AdminProducts'
+import AdminProductForm from './AdminProductForm'
 import NotFound from './NotFound'
 import { ProtectedRoute } from '@/features/auth'
 
@@ -24,7 +26,12 @@ export const routes: RouteRecord[] = [
       {
         path: 'admin',
         Component: ProtectedRoute,
-        children: [{ index: true, Component: AdminDashboard, entry: 'src/routes/AdminDashboard.tsx' }],
+        children: [
+          { index: true, Component: AdminDashboard, entry: 'src/routes/AdminDashboard.tsx' },
+          { path: 'products', Component: AdminProducts, entry: 'src/routes/AdminProducts.tsx' },
+          { path: 'products/new', Component: AdminProductForm, entry: 'src/routes/AdminProductForm.tsx' },
+          { path: 'products/:id/edit', Component: AdminProductForm, entry: 'src/routes/AdminProductForm.tsx' },
+        ],
       },
       { path: '*', Component: NotFound, entry: 'src/routes/NotFound.tsx' },
     ],
