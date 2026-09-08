@@ -26,10 +26,10 @@ done, in progress, or deferred.
 
 ## Phase 1 — Auth, schema, RLS (Medium/High effort)
 
-- [ ] Supabase Auth email/password wired in `features/auth`
-- [ ] Seeded owner account (manual, root-only — no self-service signup)
-- [ ] `/admin/*` protected route guard
-- [ ] Anonymous select on `enquiries` fails (security-boundary test)
+- [x] Supabase Auth email/password wired in `features/auth` (`authService`, `AuthProvider`, `useAuth`, `LoginForm`)
+- [ ] Seeded owner account (manual, root-only — no self-service signup) — pending you creating it in the Supabase dashboard (Authentication → Users → Add user)
+- [x] `/admin/*` protected route guard (`ProtectedRoute`), verified via Playwright (redirects to `/admin/login` when logged out) and confirmed no dashboard content leaks into the prerendered `/admin` static HTML
+- [x] Anonymous select on `enquiries` fails (security-boundary test) — `tests/integration/enquiries-rls.test.ts`, plants + cleans up a canary row via service-role client; skips gracefully without `SUPABASE_SERVICE_ROLE_KEY` locally, run manually to execute against the live project
 
 ## Phase 2 — Public layout & shared components (Medium effort)
 
