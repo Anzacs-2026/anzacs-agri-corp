@@ -66,6 +66,28 @@ becomes a priority.
 | enquiries | insert only — never select | full |
 | server_logs | none | select |
 
+## Vite 8, not Vite 5 — forced by vite-react-ssg's peer requirement
+
+The plan specifies Vite 5. `vite-react-ssg@0.9.2` (required for prerendering,
+decided at Phase 0) declares a peer dependency of `^6.4.0 || ^7.3.0 || ^8.0.0`
+— Vite 5 is incompatible with it. Between a literal version pin and working
+prerendering (a Phase 0 requirement in its own right), prerendering wins.
+Using Vite 8 surfaced a separate npm cross-platform optional-dependency bug
+(rolldown's native binary wasn't recorded for Linux in a lockfile generated
+on Windows — see the `npm install` note below) — resolved, not caused, by
+this version choice.
+
+## Netlify build uses `npm install`, not `npm ci`
+
+`npm ci` failed on Netlify's Linux build with "Cannot find native binding"
+for `rolldown` (a dependency of Vite 8) — a known npm bug
+(npm/cli#4828) where an optional native-binary dependency generated in a
+lockfile on one OS can be missing for another OS. `npm ci` enforces the
+lockfile as-is; `npm install` re-resolves and self-heals it. Since the repo
+is developed on Windows and built on Netlify's Linux runners, `npm install`
+is the reliable choice here, trading a small amount of install
+determinism for cross-platform correctness.
+
 ## Accepted risk: react-router advisory (no fix available)
 
 `npm audit` flags `react-router` 6.0.0–7.17.0 (open redirect via backslash
