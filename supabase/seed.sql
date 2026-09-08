@@ -1,0 +1,2 @@
+-- Placeholder product seed — populated in Phase 6.
+-- Real catalogue, photos and copy are pending from the client (see docs open items).
