@@ -20,6 +20,12 @@ const AdminDashboard = () => {
         <Link to="/admin/products" className="text-forest underline">
           Products
         </Link>
+        <Link to="/admin/pages" className="text-forest underline">
+          Pages
+        </Link>
+        <Link to="/admin/photos" className="text-forest underline">
+          Photos
+        </Link>
       </nav>
 
       <Button onClick={handleSignOut} className="mt-6">
