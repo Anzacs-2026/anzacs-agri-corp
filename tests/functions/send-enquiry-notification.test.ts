@@ -1,4 +1,4 @@
-import { handler } from './send-enquiry-notification'
+import { handler } from '../../netlify/functions/send-enquiry-notification'
 
 const insertMock = jest.fn().mockResolvedValue({ error: null })
 const singleMock = jest.fn().mockResolvedValue({ data: { notify_email: 'nazar@anzacs.in' } })
