@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { authService, useAuth } from '@/features/auth'
 
@@ -21,6 +21,8 @@ const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
 const Header = () => {
   const { session } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  const isAdminRoute = location.pathname.startsWith('/admin')
 
   const handleSignOut = async () => {
     await authService.signOut()
@@ -35,14 +37,8 @@ const Header = () => {
         </NavLink>
 
         <nav className="flex flex-wrap items-center gap-4">
-          {navItems.map(({ to, label, end }) => (
-            <NavLink key={to} to={to} end={end} className={navLinkClassName}>
-              {label}
-            </NavLink>
-          ))}
-
-          {session && (
-            <span className="flex flex-wrap items-center gap-4 border-l border-cream/30 pl-4">
+          {isAdminRoute && session ? (
+            <>
               {adminNavItems.map(({ to, label }) => (
                 <NavLink key={to} to={to} className={navLinkClassName}>
                   {label}
@@ -51,7 +47,13 @@ const Header = () => {
               <button type="button" onClick={handleSignOut} className="text-sm text-cream/80 hover:text-cream">
                 Sign out
               </button>
-            </span>
+            </>
+          ) : (
+            navItems.map(({ to, label, end }) => (
+              <NavLink key={to} to={to} end={end} className={navLinkClassName}>
+                {label}
+              </NavLink>
+            ))
           )}
         </nav>
       </div>

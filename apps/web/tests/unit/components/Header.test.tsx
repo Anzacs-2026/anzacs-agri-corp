@@ -28,24 +28,25 @@ describe('Header', () => {
     expect(screen.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', '/contact')
   })
 
-  it('hides admin links and sign out when logged out', () => {
-    mockUseAuth.mockReturnValue({ session: null, user: null, loading: false })
+  it('hides admin links and sign out on public routes even when logged in', () => {
+    mockUseAuth.mockReturnValue({ session: { user: {} }, user: {}, loading: false })
 
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['/products']}>
         <Header />
       </MemoryRouter>,
     )
 
     expect(screen.queryByRole('link', { name: 'Pages' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /sign out/i })).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument()
   })
 
-  it('shows admin links and sign out when logged in', () => {
+  it('shows admin links and sign out on admin routes when logged in', () => {
     mockUseAuth.mockReturnValue({ session: { user: {} }, user: {}, loading: false })
 
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['/admin']}>
         <Header />
       </MemoryRouter>,
     )
@@ -53,5 +54,19 @@ describe('Header', () => {
     expect(screen.getByRole('link', { name: 'Pages' })).toHaveAttribute('href', '/admin/pages')
     expect(screen.getByRole('link', { name: 'Photos' })).toHaveAttribute('href', '/admin/photos')
     expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Home' })).not.toBeInTheDocument()
+  })
+
+  it('hides admin links on admin routes when logged out', () => {
+    mockUseAuth.mockReturnValue({ session: null, user: null, loading: false })
+
+    render(
+      <MemoryRouter initialEntries={['/admin']}>
+        <Header />
+      </MemoryRouter>,
+    )
+
+    expect(screen.queryByRole('link', { name: 'Pages' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /sign out/i })).not.toBeInTheDocument()
   })
 })
