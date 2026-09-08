@@ -1,5 +1,5 @@
 [build]
-  command = "npm ci --prefix apps/web && npm run build --prefix apps/web"
+  command = "npm ci && npm run build --workspace=apps/web"
   publish = "apps/web/dist"
   functions = "netlify/functions"
 
