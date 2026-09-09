@@ -30,30 +30,30 @@ describe('AdminPages', () => {
     mockUseUpsertPageContent.mockReturnValue({ mutate, isPending: false })
   })
 
-  it('renders a textarea for each section of the selected page', () => {
+  it('renders a humanized textarea label for each section of the selected page', () => {
     render(<AdminPages />)
-    expect(screen.getByLabelText('hero_title')).toBeInTheDocument()
-    expect(screen.getByLabelText('hero_subtitle')).toBeInTheDocument()
-    expect(screen.getByLabelText('intro')).toBeInTheDocument()
+    expect(screen.getByLabelText('Hero Title')).toBeInTheDocument()
+    expect(screen.getByLabelText('Hero Subtitle')).toBeInTheDocument()
+    expect(screen.getByLabelText('Introduction')).toBeInTheDocument()
   })
 
   it('saves a section with its edited text', async () => {
     const user = userEvent.setup()
     render(<AdminPages />)
 
-    await user.type(screen.getByLabelText('hero_title'), 'New headline')
+    await user.type(screen.getByLabelText('Hero Title'), 'New headline')
     await user.click(screen.getAllByRole('button', { name: /save/i })[0])
 
     expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_title', content: { text: 'New headline' } })
   })
 
-  it('switches sections when a different page is selected', async () => {
+  it('switches sections when a different page tab is selected', async () => {
     const user = userEvent.setup()
     render(<AdminPages />)
 
-    await user.selectOptions(screen.getByLabelText(/page/i), 'about')
+    await user.click(screen.getByRole('button', { name: 'About' }))
 
-    expect(screen.getByLabelText('body')).toBeInTheDocument()
-    expect(screen.queryByLabelText('hero_title')).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Page Body')).toBeInTheDocument()
+    expect(screen.queryByLabelText('Hero Title')).not.toBeInTheDocument()
   })
 })

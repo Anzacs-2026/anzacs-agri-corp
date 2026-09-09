@@ -1,3 +1,4 @@
+import AdminPageHeader from '@/components/admin/AdminPageHeader'
 import { useAdminEnquiries, useSoftDeleteEnquiry, useUpdateEnquiryStatus } from '../../hooks/useEnquiries'
 import type { Enquiry, EnquiryStatus } from '../../types'
 
@@ -37,44 +38,48 @@ const EnquiryAdminList = () => {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Enquiries</h1>
-        <button
-          type="button"
-          onClick={() => downloadCsv(enquiries ?? [])}
-          disabled={!enquiries?.length}
-          className="rounded border border-forest/20 px-3 py-1.5 text-sm text-forest hover:opacity-90 disabled:opacity-50"
-        >
-          Export CSV
-        </button>
-      </div>
+    <div className="mx-auto max-w-5xl">
+      <AdminPageHeader
+        title="Enquiries"
+        description="Leads submitted through the contact form."
+        action={
+          <button
+            type="button"
+            onClick={() => downloadCsv(enquiries ?? [])}
+            disabled={!enquiries?.length}
+            className="rounded-md border border-forest/20 px-3 py-1.5 text-sm font-medium text-forest hover:bg-forest/5 disabled:opacity-50"
+          >
+            Export CSV
+          </button>
+        }
+      />
 
-      <table className="w-full text-left text-sm">
+      <div className="overflow-hidden rounded-xl border border-forest/10 bg-white shadow-sm">
+        <table className="w-full text-left text-sm">
         <thead>
-          <tr className="border-b border-forest/20">
-            <th className="py-2">Name</th>
-            <th className="py-2">Contact</th>
-            <th className="py-2">Subject</th>
-            <th className="py-2">Message</th>
-            <th className="py-2">Status</th>
-            <th className="py-2">Received</th>
-            <th className="py-2">Actions</th>
+          <tr className="border-b border-forest/10 bg-forest/5">
+            <th className="px-4 py-3 font-medium text-forest/70">Name</th>
+            <th className="px-4 py-3 font-medium text-forest/70">Contact</th>
+            <th className="px-4 py-3 font-medium text-forest/70">Subject</th>
+            <th className="px-4 py-3 font-medium text-forest/70">Message</th>
+            <th className="px-4 py-3 font-medium text-forest/70">Status</th>
+            <th className="px-4 py-3 font-medium text-forest/70">Received</th>
+            <th className="px-4 py-3 font-medium text-forest/70">Actions</th>
           </tr>
         </thead>
         <tbody>
           {enquiries?.map((enquiry) => (
-            <tr key={enquiry.id} className="border-b border-forest/10 align-top">
-              <td className="py-2">{enquiry.name}</td>
-              <td className="py-2">
+            <tr key={enquiry.id} className="border-b border-forest/5 align-top last:border-0">
+              <td className="px-4 py-3">{enquiry.name}</td>
+              <td className="px-4 py-3">
                 <div>{enquiry.email}</div>
                 <div className="text-forest/60">{enquiry.phone}</div>
               </td>
-              <td className="py-2">{enquiry.subject}</td>
-              <td className="max-w-xs truncate py-2" title={enquiry.message}>
+              <td className="px-4 py-3">{enquiry.subject}</td>
+              <td className="max-w-xs truncate px-4 py-3" title={enquiry.message}>
                 {enquiry.message}
               </td>
-              <td className="py-2">
+              <td className="px-4 py-3">
                 <select
                   value={enquiry.status}
                   onChange={(e) =>
@@ -89,12 +94,12 @@ const EnquiryAdminList = () => {
                   ))}
                 </select>
               </td>
-              <td className="py-2">{new Date(enquiry.created_at).toLocaleDateString()}</td>
-              <td className="py-2">
+              <td className="px-4 py-3">{new Date(enquiry.created_at).toLocaleDateString()}</td>
+              <td className="px-4 py-3">
                 <button
                   type="button"
                   onClick={() => handleDelete(enquiry.id)}
-                  className="text-sm text-red-700 underline"
+                  className="text-sm font-medium text-red-700 hover:underline"
                 >
                   Delete
                 </button>
@@ -102,7 +107,8 @@ const EnquiryAdminList = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   )
 }

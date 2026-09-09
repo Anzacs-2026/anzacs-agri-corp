@@ -30,9 +30,7 @@ const LoginForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto flex max-w-sm flex-col gap-4 py-16">
-      <h1 className="text-2xl font-bold">Admin Login</h1>
-
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <Label>
         Email
         <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />

@@ -2,7 +2,16 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { cn } from '@/lib/utils'
+import { humanizeKey } from '@/lib/humanize'
+import AdminPageHeader from '@/components/admin/AdminPageHeader'
 import { usePageContent, useUpsertPageContent, getSectionText, SECTION_KEYS, type PageName } from '@/features/pages'
+
+const PAGE_TABS: { value: PageName; label: string }[] = [
+  { value: 'home', label: 'Home' },
+  { value: 'about', label: 'About' },
+  { value: 'contact', label: 'Contact' },
+]
 
 const AdminPages = () => {
   const [page, setPage] = useState<PageName>('home')
@@ -19,37 +28,40 @@ const AdminPages = () => {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-bold">Pages</h1>
+    <div className="mx-auto max-w-2xl">
+      <AdminPageHeader title="Pages" description="Edit the copy shown on each public page." />
 
-      <Label className="mb-6">
-        Page
-        <select
-          value={page}
-          onChange={(e) => {
-            setPage(e.target.value as PageName)
-            setDrafts({})
-          }}
-          className="rounded border border-forest/20 bg-cream px-2 py-1"
-        >
-          <option value="home">Home</option>
-          <option value="about">About</option>
-          <option value="contact">Contact</option>
-        </select>
-      </Label>
+      <div role="group" aria-label="Page" className="mb-6 inline-flex gap-1 rounded-lg bg-forest/5 p-1">
+        {PAGE_TABS.map((tab) => (
+          <button
+            key={tab.value}
+            type="button"
+            onClick={() => {
+              setPage(tab.value)
+              setDrafts({})
+            }}
+            className={cn(
+              'rounded-md px-4 py-1.5 text-sm font-medium transition-colors',
+              page === tab.value ? 'bg-forest text-cream' : 'text-forest/70 hover:text-forest',
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
       <div className="flex flex-col gap-6">
         {sectionKeys.map((key) => (
-          <div key={key}>
+          <div key={key} className="rounded-xl border border-forest/10 bg-white p-4 shadow-sm">
             <Label>
-              {key}
+              {humanizeKey(key)}
               <Textarea
                 value={valueFor(key)}
                 onChange={(e) => setDrafts((d) => ({ ...d, [key]: e.target.value }))}
                 rows={3}
               />
             </Label>
-            <Button size="sm" className="mt-2" onClick={() => handleSave(key)} disabled={upsert.isPending}>
+            <Button size="sm" className="mt-3" onClick={() => handleSave(key)} disabled={upsert.isPending}>
               Save
             </Button>
           </div>

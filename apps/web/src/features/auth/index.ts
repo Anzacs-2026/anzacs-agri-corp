@@ -1,6 +1,5 @@
 export { authService } from './services/authService'
 export { useAuth } from './hooks/useAuth'
 export { default as AuthProvider } from './components/AuthProvider'
-export { default as ProtectedRoute } from './components/ProtectedRoute'
 export { default as LoginForm } from './components/LoginForm'
 export type { AuthState } from './types'
