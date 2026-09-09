@@ -1,5 +1,7 @@
-import { usePageContent, getSectionText } from '@/features/pages'
+import { usePageContent, getSectionText, HERO_VARIANTS, type HeroVariantOption } from '@/features/pages'
 import { humanizeKey } from '@/lib/humanize'
+import { photoService } from '@/features/photos/services/photoService'
+import Hero from '@/components/Hero'
 import Section from '@/components/Section'
 
 const DEFAULTS: Record<string, string> = {
@@ -40,17 +42,25 @@ const parseBullets = (text: string) =>
 const About = () => {
   const { data: sections } = usePageContent('about')
   const text = (key: string) => getSectionText(sections, key, DEFAULTS[key] ?? '')
+  const heroVariant = getSectionText(sections, 'hero_variant', HERO_VARIANTS[0]) as HeroVariantOption
+  const heroImagePath = getSectionText(sections, 'hero_image', '')
+  const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : null
 
   return (
     <>
-      <Section background="forest" className="text-center">
-        <span className="text-xs font-medium uppercase tracking-[0.2em] text-lime">Our story</span>
-        <h1 className="mt-3 font-serif text-4xl">About Us</h1>
-        <p className="mx-auto mt-3 max-w-xl text-cream/80">
-          Established 2009 · Headquartered in India · Seeds, Farming &amp; Beekeeping
-        </p>
-        <img src="/anz_logos/badge.webp" alt="" className="mx-auto mt-6 h-32 w-32" />
-      </Section>
+      <Hero
+        variant={HERO_VARIANTS.includes(heroVariant) ? heroVariant : 'split'}
+        eyebrow="Our story"
+        title={getSectionText(sections, 'hero_title', 'About Us')}
+        subtitle={getSectionText(
+          sections,
+          'hero_subtitle',
+          'Established 2009 · Headquartered in India · Seeds, Farming & Beekeeping',
+        )}
+        ctaLabel={getSectionText(sections, 'hero_cta_label', 'Contact us')}
+        ctaTo={getSectionText(sections, 'hero_cta_link', '/contact')}
+        imageUrl={heroImageUrl}
+      />
 
       <Section>
         <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('who_we_are')}</h2>

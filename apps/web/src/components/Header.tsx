@@ -16,10 +16,10 @@ const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
 
 const Header = () => {
   return (
-    <header className="bg-forest px-4 py-4 text-cream shadow-sm">
+    <header className="bg-forest px-4 py-5 text-cream shadow-sm md:py-6">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
         <NavLink to="/" className="flex items-center gap-2 font-serif text-xl tracking-tight" end>
-          <img src="/favicon.png" alt="" className="h-8 w-8" />
+          <img src="/anz_logos/badge.webp" alt="ANZ Agricrop" className="h-14 w-14" />
           ANZ Agricrop
         </NavLink>
 

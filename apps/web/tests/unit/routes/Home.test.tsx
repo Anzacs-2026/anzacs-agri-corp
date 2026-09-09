@@ -3,9 +3,12 @@ import { MemoryRouter } from 'react-router-dom'
 import Home from '@/routes/Home'
 import { usePageContent } from '@/features/pages'
 import { useProducts } from '@/features/products'
+import { useShownTestimonials } from '@/features/testimonials'
+import { useSiteSettings } from '@/hooks/useSiteSettings'
 
 jest.mock('@/features/pages', () => ({
   usePageContent: jest.fn(),
+  HERO_VARIANTS: ['split', 'mockup', 'minimal'],
   getSectionText: (
     sections: { section_key: string; content: { text: string } }[] | undefined,
     key: string,
@@ -18,12 +21,29 @@ jest.mock('@/features/products', () => ({
   ProductCard: () => null,
 }))
 
+jest.mock('@/features/testimonials', () => ({
+  useShownTestimonials: jest.fn(),
+  TestimonialCard: () => null,
+}))
+
+jest.mock('@/hooks/useSiteSettings', () => ({
+  useSiteSettings: jest.fn(),
+}))
+
+jest.mock('@/features/photos/services/photoService', () => ({
+  photoService: { getPublicUrl: jest.fn(() => 'https://example.com/photo.jpg') },
+}))
+
 const mockUsePageContent = usePageContent as jest.Mock
 const mockUseProducts = useProducts as jest.Mock
+const mockUseShownTestimonials = useShownTestimonials as jest.Mock
+const mockUseSiteSettings = useSiteSettings as jest.Mock
 
 describe('Home', () => {
   beforeEach(() => {
     mockUseProducts.mockReturnValue({ data: [] })
+    mockUseShownTestimonials.mockReturnValue({ data: [] })
+    mockUseSiteSettings.mockReturnValue({ data: { testimonials_enabled: false } })
   })
 
   it('renders placeholder copy when no page_content exists yet', () => {
@@ -50,5 +70,33 @@ describe('Home', () => {
     )
 
     expect(screen.getByText('Grow More, Worry Less')).toBeInTheDocument()
+  })
+
+  it('hides testimonials section when the switch is off', () => {
+    mockUsePageContent.mockReturnValue({ data: [] })
+    mockUseSiteSettings.mockReturnValue({ data: { testimonials_enabled: false } })
+    mockUseShownTestimonials.mockReturnValue({ data: [{ id: '1', customer_name: 'Jane', quote: 'Great!' }] })
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>,
+    )
+
+    expect(screen.queryByText('What growers say')).not.toBeInTheDocument()
+  })
+
+  it('shows testimonials section when the switch is on and testimonials exist', () => {
+    mockUsePageContent.mockReturnValue({ data: [] })
+    mockUseSiteSettings.mockReturnValue({ data: { testimonials_enabled: true } })
+    mockUseShownTestimonials.mockReturnValue({ data: [{ id: '1', customer_name: 'Jane', quote: 'Great!' }] })
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('What growers say')).toBeInTheDocument()
   })
 })
