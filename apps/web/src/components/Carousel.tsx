@@ -78,7 +78,7 @@ const Carousel = <T,>({
               aria-current={i === index}
               onClick={() => setIndex(i)}
               className={cn(
-                'h-2 w-2 rounded-full transition-colors',
+                'h-2 w-2 rounded-full transition-all duration-200 hover:scale-125',
                 dotTone === 'light'
                   ? i === index
                     ? 'bg-cream'

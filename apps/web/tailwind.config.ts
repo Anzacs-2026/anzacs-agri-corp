@@ -29,6 +29,27 @@ export default {
         md: '0.5rem',
         sm: '0.375rem',
       },
+      keyframes: {
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '20%': { transform: 'translateX(-2px) rotate(-1deg)' },
+          '40%': { transform: 'translateX(2px) rotate(1deg)' },
+          '60%': { transform: 'translateX(-2px)' },
+          '80%': { transform: 'translateX(2px)' },
+        },
+        wave: {
+          '0%, 100%': { transform: 'rotate(0deg) translateX(0)' },
+          '15%': { transform: 'rotate(-1.5deg) translateX(-4px)' },
+          '30%': { transform: 'rotate(1.5deg) translateX(4px)' },
+          '45%': { transform: 'rotate(-1deg) translateX(-3px)' },
+          '60%': { transform: 'rotate(1deg) translateX(3px)' },
+          '75%': { transform: 'rotate(-0.5deg) translateX(-1px)' },
+        },
+      },
+      animation: {
+        shake: 'shake 0.4s ease-in-out',
+        wave: 'wave 0.9s ease-in-out',
+      },
     },
   },
   plugins: [animate],

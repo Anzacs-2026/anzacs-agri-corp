@@ -16,8 +16,10 @@ interface StatsCounterProps {
 const StatTile = ({ label, value, tone }: { label: string; value: string; tone: 'light' | 'dark' }) => (
   <div
     className={cn(
-      'rounded-xl border p-4 text-center',
-      tone === 'light' ? 'border-forest/10 bg-cream/40' : 'border-cream/20 bg-cream/5',
+      'rounded-xl border p-4 text-center transition-all duration-200 hover:-translate-y-1',
+      tone === 'light'
+        ? 'border-forest/10 bg-cream/40 hover:border-leaf/40 hover:shadow-md'
+        : 'border-cream/20 bg-cream/5 hover:border-lime/40 hover:bg-cream/10',
     )}
   >
     <div className={cn('font-serif text-2xl sm:text-3xl', tone === 'light' ? 'text-leaf' : 'text-lime')}>{label}</div>

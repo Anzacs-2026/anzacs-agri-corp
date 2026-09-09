@@ -11,7 +11,7 @@ const Footer = () => {
           ANZ Agricrop
         </div>
         {data?.contact_phone && (
-          <a href={`tel:${data.contact_phone}`} className="hover:text-cream">
+          <a href={`tel:${data.contact_phone}`} className="w-fit transition-colors hover:text-lime">
             Phone: {data.contact_phone}
           </a>
         )}
@@ -20,7 +20,7 @@ const Footer = () => {
             href={`https://wa.me/${data.whatsapp_number.replace(/\D/g, '')}`}
             target="_blank"
             rel="noreferrer"
-            className="hover:text-cream"
+            className="w-fit transition-colors hover:text-lime"
           >
             WhatsApp: {data.whatsapp_number}
           </a>

@@ -70,7 +70,10 @@ const ProductGrid = () => {
             type="button"
             onClick={() => setView('grid')}
             aria-label="Grid view"
-            className={cn('rounded-md p-1.5', view === 'grid' ? 'bg-forest text-cream' : 'text-forest/60 hover:text-forest')}
+            className={cn(
+              'rounded-md p-1.5 transition-all duration-150',
+              view === 'grid' ? 'bg-forest text-cream' : 'text-forest/60 hover:scale-110 hover:text-forest',
+            )}
           >
             <LayoutGrid size={16} />
           </button>
@@ -78,7 +81,10 @@ const ProductGrid = () => {
             type="button"
             onClick={() => setView('list')}
             aria-label="List view"
-            className={cn('rounded-md p-1.5', view === 'list' ? 'bg-forest text-cream' : 'text-forest/60 hover:text-forest')}
+            className={cn(
+              'rounded-md p-1.5 transition-all duration-150',
+              view === 'list' ? 'bg-forest text-cream' : 'text-forest/60 hover:scale-110 hover:text-forest',
+            )}
           >
             <List size={16} />
           </button>
@@ -103,8 +109,10 @@ const ProductGrid = () => {
               type="button"
               onClick={() => setPage(pageNumber)}
               className={cn(
-                'h-8 w-8 rounded-md text-sm font-medium',
-                pageNumber === currentPage ? 'bg-forest text-cream' : 'text-forest/60 hover:bg-forest/5',
+                'h-8 w-8 rounded-md text-sm font-medium transition-all duration-150',
+                pageNumber === currentPage
+                  ? 'bg-forest text-cream'
+                  : 'text-forest/60 hover:-translate-y-0.5 hover:bg-forest/5 hover:text-forest',
               )}
             >
               {pageNumber}
