@@ -54,7 +54,7 @@ const TestimonialAdminList = () => {
     }
   }
 
-  if (isLoading) return <p className="text-forest/60">Loading…</p>
+  if (isLoading) return <p className="text-forest/70">Loading…</p>
 
   return (
     <div className="mx-auto max-w-3xl">

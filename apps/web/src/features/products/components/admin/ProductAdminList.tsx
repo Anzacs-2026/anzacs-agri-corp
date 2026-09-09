@@ -12,7 +12,7 @@ const ProductAdminList = () => {
     update.mutate({ id, input: { ...rest, visible: !current } })
   }
 
-  if (isLoading) return <p className="text-forest/60">Loading…</p>
+  if (isLoading) return <p className="text-forest/70">Loading…</p>
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -40,12 +40,13 @@ const ProductAdminList = () => {
         <tbody>
           {products?.map((product, index) => (
             <tr key={product.id} className="border-b border-forest/5 last:border-0">
-              <td className="px-4 py-3 text-forest/50">{index + 1}</td>
+              <td className="px-4 py-3 text-forest/70">{index + 1}</td>
               <td className="px-4 py-3">{product.name}</td>
               <td className="px-4 py-3">{product.category}</td>
               <td className="px-4 py-3">
                 <input
                   type="checkbox"
+                  aria-label={`Toggle visibility for ${product.name}`}
                   checked={product.visible}
                   onChange={() =>
                     toggleVisible(product.id, product.visible, {

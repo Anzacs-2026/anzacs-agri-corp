@@ -33,12 +33,18 @@ const LoginForm = () => {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <Label>
         Email
-        <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <Input type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </Label>
 
       <Label>
         Password
-        <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <Input
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
       </Label>
 
       {error && (

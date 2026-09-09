@@ -62,7 +62,7 @@ const AdminPages = () => {
               <div key={key} className="rounded-xl border border-forest/10 bg-white p-4 shadow-sm">
                 <Label>
                   {humanizeKey(key)}
-                  <span className="text-xs font-normal text-forest/50">Shown in this page's hero section.</span>
+                  <span className="text-xs font-normal text-forest/70">Shown in this page's hero section.</span>
                 </Label>
                 {previewUrl && (
                   <img src={previewUrl} alt="" className="mt-2 h-32 w-full rounded-lg object-cover" />
@@ -78,7 +78,7 @@ const AdminPages = () => {
                     handleSave(key, photo.storage_path)
                   }}
                 />
-                {uploadPhoto.isPending && <p className="mt-1 text-xs text-forest/50">Uploading…</p>}
+                {uploadPhoto.isPending && <p className="mt-1 text-xs text-forest/70">Uploading…</p>}
               </div>
             )
           }
@@ -92,7 +92,7 @@ const AdminPages = () => {
                   <select
                     value={value}
                     onChange={(e) => handleSave(key, e.target.value)}
-                    className="rounded border border-forest/20 bg-cream px-3 py-2 text-forest focus:border-forest/50 focus:outline-none"
+                    className="rounded border border-forest/20 bg-cream px-3 py-2 text-forest focus:border-forest/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf focus-visible:ring-offset-1"
                   >
                     {HERO_VARIANTS.map((variant) => (
                       <option key={variant} value={variant}>

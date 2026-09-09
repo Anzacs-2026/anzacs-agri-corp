@@ -29,7 +29,7 @@ const EnquiryAdminList = () => {
   const updateStatus = useUpdateEnquiryStatus()
   const softDelete = useSoftDeleteEnquiry()
 
-  if (isLoading) return <p className="text-forest/60">Loading…</p>
+  if (isLoading) return <p className="text-forest/70">Loading…</p>
 
   const handleDelete = (id: string) => {
     if (window.confirm('Delete this enquiry?')) {
@@ -73,7 +73,7 @@ const EnquiryAdminList = () => {
               <td className="px-4 py-3">{enquiry.name}</td>
               <td className="px-4 py-3">
                 <div>{enquiry.email}</div>
-                <div className="text-forest/60">{enquiry.phone}</div>
+                <div className="text-forest/70">{enquiry.phone}</div>
               </td>
               <td className="px-4 py-3">{enquiry.subject}</td>
               <td className="max-w-xs truncate px-4 py-3" title={enquiry.message}>

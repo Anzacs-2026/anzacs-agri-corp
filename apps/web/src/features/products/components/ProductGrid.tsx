@@ -64,6 +64,7 @@ const ProductGrid = () => {
           </label>
         </div>
 
+        {/* oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- role="group" + aria-label is valid ARIA; a <fieldset> here would need default-style overrides for no real gain */}
         <div role="group" aria-label="View" className="flex gap-1 rounded-lg bg-forest/5 p-1">
           <button
             type="button"
@@ -84,7 +85,7 @@ const ProductGrid = () => {
         </div>
       </div>
 
-      {isLoading && <p className="text-forest/60">Loading products…</p>}
+      {isLoading && <p className="text-forest/70">Loading products…</p>}
 
       <div className={cn('grid grid-cols-1 gap-6', view === 'grid' ? 'sm:grid-cols-2 lg:grid-cols-3' : '')}>
         {paginated.map((product) => (
@@ -92,7 +93,7 @@ const ProductGrid = () => {
         ))}
       </div>
 
-      {!isLoading && filtered.length === 0 && <p className="text-forest/60">No products found.</p>}
+      {!isLoading && filtered.length === 0 && <p className="text-forest/70">No products found.</p>}
 
       {pageCount > 1 && (
         <div className="mt-8 flex items-center justify-center gap-2">

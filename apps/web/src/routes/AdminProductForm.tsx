@@ -26,7 +26,7 @@ const AdminProductForm = () => {
   }
 
   if (isEditing && isLoading) {
-    return <p className="py-16 text-center text-forest/60">Loading…</p>
+    return <p className="py-16 text-center text-forest/70">Loading…</p>
   }
 
   return (

@@ -34,13 +34,13 @@ const AdminDashboard = () => {
             </div>
             <div>
               <div className="text-2xl font-semibold text-forest">{value}</div>
-              <div className="text-sm text-forest/60">{label}</div>
+              <div className="text-sm text-forest/70">{label}</div>
             </div>
           </Link>
         ))}
       </div>
 
-      <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-forest/50">Quick links</h2>
+      <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-forest/70">Quick links</h2>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {quickLinks.map(({ label, to, icon: Icon }) => (
           <Link
@@ -48,7 +48,7 @@ const AdminDashboard = () => {
             to={to}
             className="flex items-center gap-3 rounded-lg border border-forest/10 bg-white px-4 py-3 text-sm font-medium text-forest transition-colors hover:bg-forest/5"
           >
-            <Icon size={18} className="text-forest/60" />
+            <Icon size={18} className="text-forest/70" />
             {label}
           </Link>
         ))}

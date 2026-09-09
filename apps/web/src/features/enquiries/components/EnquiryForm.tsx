@@ -76,7 +76,7 @@ const EnquiryForm = () => {
         <select
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
-          className="rounded border border-forest/20 bg-cream px-3 py-2 text-forest focus:border-forest/50 focus:outline-none"
+          className="rounded border border-forest/20 bg-cream px-3 py-2 text-forest focus:border-forest/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf focus-visible:ring-offset-1"
         >
           {subjects.map((s) => (
             <option key={s} value={s}>
@@ -98,9 +98,9 @@ const EnquiryForm = () => {
       )}
 
       {success && (
-        <p role="status" className="text-sm text-green-700">
+        <output className="text-sm text-green-700">
           Thanks — your enquiry has been sent. We'll get back to you soon.
-        </p>
+        </output>
       )}
 
       <Button type="submit" disabled={submitting}>
