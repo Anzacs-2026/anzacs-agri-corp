@@ -8,6 +8,10 @@ jest.mock('@/features/products/hooks/useProducts', () => ({
   useProducts: jest.fn(),
 }))
 
+jest.mock('@/features/photos/services/photoService', () => ({
+  photoService: { getPublicUrl: jest.fn(() => 'https://example.com/photo.jpg') },
+}))
+
 const mockUseProducts = useProducts as jest.Mock
 
 const products = [

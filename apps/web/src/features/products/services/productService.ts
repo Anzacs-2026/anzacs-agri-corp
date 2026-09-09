@@ -3,18 +3,22 @@ import { withActiveOnly } from '@/lib/withActiveOnly'
 import { resizeImage } from '@/lib/resizeImage'
 import type { Product, ProductInput } from '../types'
 
+const PRODUCT_SELECT = '*, primary_photo:photos!products_primary_photo_fk(storage_path)'
+
 export const productService = {
   getVisibleProducts: async (): Promise<Product[]> => {
-    const { data, error } = await withActiveOnly(supabase.from('products').select('*').eq('visible', true)).order(
-      'sort_order',
-    )
+    const { data, error } = await withActiveOnly(
+      supabase.from('products').select(PRODUCT_SELECT).eq('visible', true),
+    ).order('sort_order')
 
     if (error) throw error
     return data as Product[]
   },
 
   getProductBySlug: async (slug: string): Promise<Product> => {
-    const { data, error } = await withActiveOnly(supabase.from('products').select('*').eq('slug', slug)).single()
+    const { data, error } = await withActiveOnly(
+      supabase.from('products').select(PRODUCT_SELECT).eq('slug', slug),
+    ).single()
 
     if (error) throw error
     return data as Product
@@ -22,7 +26,7 @@ export const productService = {
 
   getRelatedProducts: async (category: string, excludeId: string): Promise<Product[]> => {
     const { data, error } = await withActiveOnly(
-      supabase.from('products').select('*').eq('category', category).eq('visible', true).neq('id', excludeId),
+      supabase.from('products').select(PRODUCT_SELECT).eq('category', category).eq('visible', true).neq('id', excludeId),
     )
       .order('sort_order')
       .limit(4)
@@ -32,14 +36,14 @@ export const productService = {
   },
 
   getProductByIdAdmin: async (id: string): Promise<Product> => {
-    const { data, error } = await supabase.from('products').select('*').eq('id', id).single()
+    const { data, error } = await supabase.from('products').select(PRODUCT_SELECT).eq('id', id).single()
 
     if (error) throw error
     return data as Product
   },
 
   getAllProductsAdmin: async (): Promise<Product[]> => {
-    const { data, error } = await withActiveOnly(supabase.from('products').select('*')).order('sort_order')
+    const { data, error } = await withActiveOnly(supabase.from('products').select(PRODUCT_SELECT)).order('sort_order')
 
     if (error) throw error
     return data as Product[]

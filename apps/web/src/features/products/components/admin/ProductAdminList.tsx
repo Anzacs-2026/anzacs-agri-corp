@@ -30,6 +30,7 @@ const ProductAdminList = () => {
         <table className="w-full text-left text-sm">
         <thead>
           <tr className="border-b border-forest/10 bg-forest/5">
+            <th className="px-4 py-3 font-medium text-forest/70">ID</th>
             <th className="px-4 py-3 font-medium text-forest/70">Name</th>
             <th className="px-4 py-3 font-medium text-forest/70">Category</th>
             <th className="px-4 py-3 font-medium text-forest/70">Visible</th>
@@ -37,8 +38,9 @@ const ProductAdminList = () => {
           </tr>
         </thead>
         <tbody>
-          {products?.map((product) => (
+          {products?.map((product, index) => (
             <tr key={product.id} className="border-b border-forest/5 last:border-0">
+              <td className="px-4 py-3 text-forest/50">{index + 1}</td>
               <td className="px-4 py-3">{product.name}</td>
               <td className="px-4 py-3">{product.category}</td>
               <td className="px-4 py-3">

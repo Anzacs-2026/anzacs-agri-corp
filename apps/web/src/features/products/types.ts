@@ -10,6 +10,7 @@ export interface Product {
   visible: boolean
   sort_order: number
   primary_photo_id: string | null
+  primary_photo?: { storage_path: string } | null
   created_at: string
   deleted_at: string | null
   deleted_by: string | null
