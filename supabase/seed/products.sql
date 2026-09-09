@@ -30,9 +30,9 @@ values
   ('Tomato F1 Dore', 'tomato-f1-dore', 'Solanaceous Vegetables', 'Medium to early hybrid, heat tolerant and good for long-distance transportation.', '', '{"Plant Habit":"Determinate","Maturity":"70 to 75 days","Fruit Shoulder":"Uniform Green","Fruit Weight":"90 to 100 gm","Fruit Shape":"Oval","Fruit Firmness":"Excellent","Disease Tolerance":"TYLCV"}'::jsonb, ARRAY['Hybrid']::text[], true),
   ('Tomato F1 Moriyan', 'tomato-f1-moriyan', 'Solanaceous Vegetables', 'Medium to early hybrid with excellent firmness; suitable for Rainy, Kharif, and Rabi season.', '', '{"Plant Habit":"Determinate","Maturity":"60 to 65 days","Fruit Shoulder":"Uniform Green","Fruit Weight":"80 to 90 gm","Fruit Shape":"Oval","Fruit Firmness":"Excellent"}'::jsonb, ARRAY['Hybrid']::text[], true),
   ('Tomato F1 King', 'tomato-f1-king', 'Solanaceous Vegetables', 'Good fruit quality.', '', '{"Plant Habit":"Indeterminate","Maturity":"65 to 70 days","Fruit Shoulder":"Uniform Green","Fruit Weight":"90 to 100 gm","Fruit Shape":"Round","Fruit Firmness":"Excellent"}'::jsonb, ARRAY['Hybrid']::text[], true),
-  ('Cabbage F1 Dolphin', 'cabbage-f1-dolphin', 'Brassicas', 'Heat tolerant with excellent field-standing ability.', '', '{"Days to Maturity":"80 to 85 days","Head Shape":"Flat round","Head Colour":"Green","Head Weight":"2 to 2.5 kg"}'::jsonb, ARRAY['Hybrid']::text[], true),
+  ('Cabbage F1 Dolphin', 'cabbage-f1-dolphin', 'Cabbage & Cauliflower', 'Heat tolerant with excellent field-standing ability.', '', '{"Days to Maturity":"80 to 85 days","Head Shape":"Flat round","Head Colour":"Green","Head Weight":"2 to 2.5 kg"}'::jsonb, ARRAY['Hybrid']::text[], true),
   ('Carrot Red Core', 'carrot-red-core', 'Other Vegetables & Herbs', '', '', '{}'::jsonb, ARRAY['Open Pollinated']::text[], true),
-  ('Cauliflower', 'cauliflower', 'Brassicas', '', '', '{}'::jsonb, ARRAY['Open Pollinated']::text[], true),
+  ('Cauliflower', 'cauliflower', 'Cabbage & Cauliflower', '', '', '{}'::jsonb, ARRAY['Open Pollinated']::text[], true),
   ('Peas NZ', 'peas-nz', 'Other Vegetables & Herbs', '', '', '{}'::jsonb, ARRAY['Open Pollinated']::text[], true),
   ('Basil Green', 'basil-green', 'Other Vegetables & Herbs', '', '', '{}'::jsonb, ARRAY['Open Pollinated']::text[], true)
 on conflict (slug) do update set

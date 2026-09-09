@@ -40,7 +40,7 @@ const ProductGrid = () => {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
         <span className="text-xs font-medium uppercase tracking-[0.2em] text-leaf">Catalog</span>
-        <h1 className="mt-2 font-serif text-3xl text-forest">Our Products</h1>
+        <h2 className="mt-2 font-serif text-3xl text-forest">Our Products</h2>
       </div>
 
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-forest/10 bg-white p-4 shadow-sm">

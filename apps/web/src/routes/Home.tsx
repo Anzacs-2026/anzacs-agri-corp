@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { usePageContent, getSectionText, HERO_VARIANTS, type HeroVariantOption } from '@/features/pages'
+import { usePageContent, getSectionText } from '@/features/pages'
 import { useProducts, ProductCard } from '@/features/products'
 import { useShownTestimonials, TestimonialCard } from '@/features/testimonials'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
@@ -15,9 +15,17 @@ const Home = () => {
   const { data: testimonials } = useShownTestimonials()
   const featured = products?.slice(0, 3) ?? []
 
-  const heroVariant = getSectionText(sections, 'hero_variant', HERO_VARIANTS[1]) as HeroVariantOption
+  const heroVariant = getSectionText(sections, 'hero_variant', 'minimal:subtle-background')
   const heroImagePath = getSectionText(sections, 'hero_image', '')
-  const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : null
+  const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/minimal-curved-crop-rows.webp'
+  const categoryCount = new Set(products?.map((p) => p.category)).size
+
+  const heroStats = [
+    { label: 'Varieties', value: `${products?.length ?? 24}+` },
+    { label: 'Categories', value: String(categoryCount || 4) },
+    { label: 'Est.', value: '2009' },
+    { label: 'Purity', value: '100%' },
+  ]
 
   return (
     <>
@@ -28,18 +36,21 @@ const Home = () => {
       />
 
       <Hero
-        variant={HERO_VARIANTS.includes(heroVariant) ? heroVariant : 'mockup'}
-        eyebrow="Seeds for life"
-        title={getSectionText(sections, 'hero_title', 'ANZ Agri Crop Sciences')}
+        variant={heroVariant}
+        eyebrow="Growing possibilities"
+        title={getSectionText(sections, 'hero_title', 'Sowing Potential. Harvesting Progress.')}
         subtitle={getSectionText(
           sections,
           'hero_subtitle',
-          'Trusted hybrid seeds, farming, and beekeeping — bringing over a decade of research to every field since 2009.',
+          'Empowering agriculture with quality seeds, dependable performance and solutions created for sustainable growth.',
         )}
-        ctaLabel={getSectionText(sections, 'hero_cta_label', 'Explore products')}
-        ctaTo={getSectionText(sections, 'hero_cta_link', '/products')}
+        ctaLabel={getSectionText(sections, 'hero_cta_label', 'Discover ANZ Agricrop')}
+        ctaTo={getSectionText(sections, 'hero_cta_link', '/about')}
+        ctaLabel2={getSectionText(sections, 'hero_cta_label2', 'Our Products')}
+        ctaTo2={getSectionText(sections, 'hero_cta_link2', '/products')}
         imageUrl={heroImageUrl}
         products={featured}
+        stats={heroStats}
       />
 
       <Section>

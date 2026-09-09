@@ -6,15 +6,18 @@ import { useProducts } from '@/features/products'
 import { useShownTestimonials } from '@/features/testimonials'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 
-jest.mock('@/features/pages', () => ({
-  usePageContent: jest.fn(),
-  HERO_VARIANTS: ['split', 'mockup', 'minimal'],
-  getSectionText: (
-    sections: { section_key: string; content: { text: string } }[] | undefined,
-    key: string,
-    fallback: string,
-  ) => sections?.find((s) => s.section_key === key)?.content.text ?? fallback,
-}))
+jest.mock('@/features/pages', () => {
+  const actual = jest.requireActual('@/features/pages/types')
+  return {
+    parseHeroVariant: actual.parseHeroVariant,
+    usePageContent: jest.fn(),
+    getSectionText: (
+      sections: { section_key: string; content: { text: string } }[] | undefined,
+      key: string,
+      fallback: string,
+    ) => sections?.find((s) => s.section_key === key)?.content.text ?? fallback,
+  }
+})
 
 jest.mock('@/features/products', () => ({
   useProducts: jest.fn(),
@@ -55,7 +58,7 @@ describe('Home', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('ANZ Agri Crop Sciences')).toBeInTheDocument()
+    expect(screen.getByText('Sowing Potential. Harvesting Progress.')).toBeInTheDocument()
   })
 
   it('renders real content once page_content is set', () => {
