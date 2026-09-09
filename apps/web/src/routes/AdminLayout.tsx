@@ -28,6 +28,7 @@ const navItems: (LinkItem | GroupItem)[] = [
       { to: '/admin/pages/home', label: 'Home' },
       { to: '/admin/pages/about', label: 'About' },
       { to: '/admin/pages/contact', label: 'Contact' },
+      { to: '/admin/pages/products', label: 'Products Page' },
     ],
   },
   { to: '/admin/enquiries', label: 'Enquiries', icon: Mail },

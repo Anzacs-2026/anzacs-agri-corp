@@ -1,4 +1,4 @@
-import { usePageContent, getSectionText, HERO_VARIANTS, type HeroVariantOption } from '@/features/pages'
+import { usePageContent, getSectionText } from '@/features/pages'
 import { humanizeKey } from '@/lib/humanize'
 import { photoService } from '@/features/photos/services/photoService'
 import Hero from '@/components/Hero'
@@ -43,9 +43,9 @@ const parseBullets = (text: string) =>
 const About = () => {
   const { data: sections } = usePageContent('about')
   const text = (key: string) => getSectionText(sections, key, DEFAULTS[key] ?? '')
-  const heroVariant = getSectionText(sections, 'hero_variant', HERO_VARIANTS[0]) as HeroVariantOption
+  const heroVariant = getSectionText(sections, 'hero_variant', 'split:50-50')
   const heroImagePath = getSectionText(sections, 'hero_image', '')
-  const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : null
+  const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/split-hero-maize-field.webp'
 
   return (
     <>
@@ -56,16 +56,18 @@ const About = () => {
       />
 
       <Hero
-        variant={HERO_VARIANTS.includes(heroVariant) ? heroVariant : 'split'}
-        eyebrow="Our story"
-        title={getSectionText(sections, 'hero_title', 'About Us')}
+        variant={heroVariant}
+        eyebrow="Premium agricultural seeds"
+        title={getSectionText(sections, 'hero_title', 'Seeds for Stronger Harvests')}
         subtitle={getSectionText(
           sections,
           'hero_subtitle',
-          'Established 2009 · Headquartered in India · Seeds, Farming & Beekeeping',
+          'High-quality seeds developed to support healthy crops, reliable performance and better yields across every growing season.',
         )}
-        ctaLabel={getSectionText(sections, 'hero_cta_label', 'Contact us')}
-        ctaTo={getSectionText(sections, 'hero_cta_link', '/contact')}
+        ctaLabel={getSectionText(sections, 'hero_cta_label', 'Explore Our Seeds')}
+        ctaTo={getSectionText(sections, 'hero_cta_link', '/products')}
+        ctaLabel2={getSectionText(sections, 'hero_cta_label2', 'Contact Us')}
+        ctaTo2={getSectionText(sections, 'hero_cta_link2', '/contact')}
         imageUrl={heroImageUrl}
       />
 
@@ -92,7 +94,7 @@ const About = () => {
       </Section>
 
       <Section background="forest">
-        <h2 className="mb-3 font-serif text-2xl">Philosophy: Seeds as Food</h2>
+        <h2 className="mb-3 font-serif text-2xl text-cream">Philosophy: Seeds as Food</h2>
         <p className="max-w-3xl leading-relaxed text-cream/80">{text('philosophy')}</p>
       </Section>
 

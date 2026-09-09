@@ -5,6 +5,8 @@ const OVERRIDES: Record<string, string> = {
   hero_image: 'Hero Image',
   hero_cta_label: 'Button Text',
   hero_cta_link: 'Button Link',
+  hero_cta_label2: 'Second Button Text',
+  hero_cta_link2: 'Second Button Link',
   intro: 'Introduction',
   body: 'Page Body',
   who_we_are: 'Who We Are',

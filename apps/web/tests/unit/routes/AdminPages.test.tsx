@@ -4,21 +4,28 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import AdminPages from '@/routes/AdminPages'
 import { usePageContent, useUpsertPageContent } from '@/features/pages'
 
-jest.mock('@/features/pages', () => ({
-  usePageContent: jest.fn(),
-  useUpsertPageContent: jest.fn(),
-  HERO_VARIANTS: ['split', 'mockup', 'minimal'],
-  SECTION_KEYS: {
-    home: ['hero_variant', 'hero_title', 'hero_subtitle', 'intro'],
-    about: ['body'],
-    contact: ['intro'],
-  },
-  getSectionText: (
-    sections: { section_key: string; content: { text: string } }[] | undefined,
-    key: string,
-    fallback: string,
-  ) => sections?.find((s) => s.section_key === key)?.content.text ?? fallback,
-}))
+jest.mock('@/features/pages', () => {
+  const actual = jest.requireActual('@/features/pages/types')
+  return {
+    HERO_CATEGORIES: actual.HERO_CATEGORIES,
+    HERO_SUBTYPES: actual.HERO_SUBTYPES,
+    HERO_CATEGORY_LABELS: actual.HERO_CATEGORY_LABELS,
+    HERO_SUBTYPE_LABELS: actual.HERO_SUBTYPE_LABELS,
+    parseHeroVariant: actual.parseHeroVariant,
+    usePageContent: jest.fn(),
+    useUpsertPageContent: jest.fn(),
+    SECTION_KEYS: {
+      home: ['hero_variant', 'hero_title', 'hero_subtitle', 'intro'],
+      about: ['body'],
+      contact: ['intro'],
+    },
+    getSectionText: (
+      sections: { section_key: string; content: { text: string } }[] | undefined,
+      key: string,
+      fallback: string,
+    ) => sections?.find((s) => s.section_key === key)?.content.text ?? fallback,
+  }
+})
 
 jest.mock('@/features/photos/services/photoService', () => ({
   photoService: { getPublicUrl: jest.fn(() => 'https://example.com/photo.jpg') },
@@ -66,13 +73,25 @@ describe('AdminPages', () => {
     expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_title', content: { text: 'New headline' } })
   })
 
-  it('saves the hero style immediately on select, without a Save button', async () => {
+  it('saves the compound category:subtype immediately when a hero category is picked', async () => {
     const user = userEvent.setup()
     renderAt('home')
 
-    await user.selectOptions(screen.getByLabelText('Hero Style'), 'mockup')
+    await user.click(screen.getByRole('radio', { name: 'Product Hero' }))
 
-    expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_variant', content: { text: 'mockup' } })
+    expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_variant', content: { text: 'mockup:floating-ui' } })
+  })
+
+  it('saves the compound category:subtype immediately when a hero sub-type is picked', async () => {
+    mockUsePageContent.mockReturnValue({
+      data: [{ section_key: 'hero_variant', content: { text: 'split:50-50' } }],
+    })
+    const user = userEvent.setup()
+    renderAt('home')
+
+    await user.click(screen.getByRole('radio', { name: '60/40 Split' }))
+
+    expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_variant', content: { text: 'split:60-40' } })
   })
 
   it('renders a different page section set based on the route', () => {

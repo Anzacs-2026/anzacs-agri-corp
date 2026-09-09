@@ -5,8 +5,20 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { humanizeKey } from '@/lib/humanize'
+import { cn } from '@/lib/utils'
 import AdminPageHeader from '@/components/admin/AdminPageHeader'
-import { usePageContent, useUpsertPageContent, getSectionText, SECTION_KEYS, HERO_VARIANTS, type PageName } from '@/features/pages'
+import {
+  usePageContent,
+  useUpsertPageContent,
+  getSectionText,
+  SECTION_KEYS,
+  HERO_CATEGORIES,
+  HERO_SUBTYPES,
+  HERO_CATEGORY_LABELS,
+  HERO_SUBTYPE_LABELS,
+  parseHeroVariant,
+  type PageName,
+} from '@/features/pages'
 import { photoService } from '@/features/photos/services/photoService'
 import { useUploadPhoto } from '@/features/photos/hooks/usePhotos'
 
@@ -14,18 +26,13 @@ const PAGE_TITLES: Record<PageName, string> = {
   home: 'Home Page',
   about: 'About Page',
   contact: 'Contact Page',
+  products: 'Products Page',
 }
 
-const HERO_VARIANT_LABELS: Record<string, string> = {
-  split: 'Split Hero',
-  mockup: 'Hero + Product Mockup',
-  minimal: 'Minimal Hero',
-}
-
-const SHORT_FIELD_KEYS = ['hero_title', 'hero_cta_label', 'hero_cta_link']
+const SHORT_FIELD_KEYS = ['hero_title', 'hero_cta_label', 'hero_cta_link', 'hero_cta_label2', 'hero_cta_link2']
 
 const isPageName = (value: string | undefined): value is PageName =>
-  value === 'home' || value === 'about' || value === 'contact'
+  value === 'home' || value === 'about' || value === 'contact' || value === 'products'
 
 const AdminPages = () => {
   const { page: pageParam } = useParams<{ page: string }>()
@@ -84,23 +91,65 @@ const AdminPages = () => {
           }
 
           if (key === 'hero_variant') {
-            const value = valueFor(key, HERO_VARIANTS[0])
+            const { category, subtype } = parseHeroVariant(valueFor(key, 'minimal:centered'))
+
             return (
               <div key={key} className="rounded-xl border border-forest/10 bg-white p-4 shadow-sm">
-                <Label>
-                  {humanizeKey(key)}
-                  <select
-                    value={value}
-                    onChange={(e) => handleSave(key, e.target.value)}
-                    className="rounded border border-forest/20 bg-cream px-3 py-2 text-forest focus:border-forest/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf focus-visible:ring-offset-1"
-                  >
-                    {HERO_VARIANTS.map((variant) => (
-                      <option key={variant} value={variant}>
-                        {HERO_VARIANT_LABELS[variant]}
-                      </option>
+                <Label>{humanizeKey(key)}</Label>
+
+                <fieldset className="mt-2">
+                  <legend className="mb-1 text-xs font-medium text-forest/70">Layout</legend>
+                  <div className="flex flex-wrap gap-2">
+                    {HERO_CATEGORIES.map((cat) => (
+                      <label
+                        key={cat}
+                        className={cn(
+                          'cursor-pointer rounded-md border px-3 py-1.5 text-sm font-medium transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-leaf has-[:focus-visible]:ring-offset-1',
+                          category === cat
+                            ? 'border-forest bg-forest text-cream'
+                            : 'border-forest/20 text-forest hover:bg-forest/5',
+                        )}
+                      >
+                        <input
+                          type="radio"
+                          name={`${key}-category`}
+                          value={cat}
+                          checked={category === cat}
+                          onChange={() => handleSave(key, `${cat}:${HERO_SUBTYPES[cat][0]}`)}
+                          className="sr-only"
+                        />
+                        {HERO_CATEGORY_LABELS[cat]}
+                      </label>
                     ))}
-                  </select>
-                </Label>
+                  </div>
+                </fieldset>
+
+                <fieldset className="mt-3">
+                  <legend className="mb-1 text-xs font-medium text-forest/70">{HERO_CATEGORY_LABELS[category]} style</legend>
+                  <div className="flex flex-wrap gap-2">
+                    {HERO_SUBTYPES[category].map((sub) => (
+                      <label
+                        key={sub}
+                        className={cn(
+                          'cursor-pointer rounded-md border px-2.5 py-1 text-xs font-medium transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-leaf has-[:focus-visible]:ring-offset-1',
+                          subtype === sub
+                            ? 'border-leaf bg-leaf/20 text-forest'
+                            : 'border-forest/15 text-forest/70 hover:bg-forest/5',
+                        )}
+                      >
+                        <input
+                          type="radio"
+                          name={`${key}-subtype`}
+                          value={sub}
+                          checked={subtype === sub}
+                          onChange={() => handleSave(key, `${category}:${sub}`)}
+                          className="sr-only"
+                        />
+                        {HERO_SUBTYPE_LABELS[sub]}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
               </div>
             )
           }

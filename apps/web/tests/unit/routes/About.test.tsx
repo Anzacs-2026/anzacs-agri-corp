@@ -3,15 +3,18 @@ import { MemoryRouter } from 'react-router-dom'
 import About from '@/routes/About'
 import { usePageContent } from '@/features/pages'
 
-jest.mock('@/features/pages', () => ({
-  usePageContent: jest.fn(),
-  HERO_VARIANTS: ['split', 'mockup', 'minimal'],
-  getSectionText: (
-    sections: { section_key: string; content: { text: string } }[] | undefined,
-    key: string,
-    fallback: string,
-  ) => sections?.find((s) => s.section_key === key)?.content.text ?? fallback,
-}))
+jest.mock('@/features/pages', () => {
+  const actual = jest.requireActual('@/features/pages/types')
+  return {
+    parseHeroVariant: actual.parseHeroVariant,
+    usePageContent: jest.fn(),
+    getSectionText: (
+      sections: { section_key: string; content: { text: string } }[] | undefined,
+      key: string,
+      fallback: string,
+    ) => sections?.find((s) => s.section_key === key)?.content.text ?? fallback,
+  }
+})
 
 jest.mock('@/features/photos/services/photoService', () => ({
   photoService: { getPublicUrl: jest.fn(() => 'https://example.com/photo.jpg') },
