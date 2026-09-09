@@ -1,4 +1,4 @@
-import { usePageContent, getSectionText, parseHeroSlides } from '@/features/pages'
+import { usePageContent, getSectionText, parseHeroSlides, parseHeroTags } from '@/features/pages'
 import { ProductGrid } from '@/features/products'
 import { photoService } from '@/features/photos/services/photoService'
 import Hero, { type HeroSlide } from '@/components/Hero'
@@ -24,6 +24,7 @@ const Products = () => {
           ctaTo: s.ctaTo || undefined,
           ctaLabel2: s.ctaLabel2 || undefined,
           ctaTo2: s.ctaTo2 || undefined,
+          tags: parseHeroTags(s.tags),
         }))
       : [
           {
@@ -36,9 +37,10 @@ const Products = () => {
               'Discover dependable, high-performing seeds created to give every crop a strong beginning and every farmer greater confidence.',
             ),
             ctaLabel: getSectionText(sections, 'hero_cta_label', 'View Our Products'),
-            ctaTo: getSectionText(sections, 'hero_cta_link', '/products'),
+            ctaTo: getSectionText(sections, 'hero_cta_link', '#product-grid'),
             ctaLabel2: getSectionText(sections, 'hero_cta_label2', 'Enquire Now'),
             ctaTo2: getSectionText(sections, 'hero_cta_link2', '/contact'),
+            tags: ['50+ Varieties', 'Lab-Tested Purity', 'Nationwide Supply'],
           },
         ]
 
@@ -52,7 +54,9 @@ const Products = () => {
 
       <Hero variant={heroVariant} slides={slides} parallax={heroParallax} />
 
-      <ProductGrid />
+      <div id="product-grid" className="scroll-mt-24">
+        <ProductGrid />
+      </div>
     </>
   )
 }

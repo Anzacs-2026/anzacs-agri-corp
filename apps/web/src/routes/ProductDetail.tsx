@@ -15,8 +15,10 @@ const ProductDetail = () => {
     ? photoService.getPublicUrl(product.primary_photo.storage_path)
     : null
 
+  const descriptionParagraphs = product.description ? product.description.split(/\n{2,}/).filter(Boolean) : []
+
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16">
+    <div className="mx-auto max-w-5xl px-4 py-16">
       <Seo
         title={product.name}
         description={product.short_description || `${product.name} — ${product.category} from ANZ Agri Crop Sciences.`}
@@ -24,42 +26,54 @@ const ProductDetail = () => {
         image={imageUrl ?? undefined}
       />
 
-      {imageUrl && (
-        <div className="relative mb-6 aspect-[16/8] w-full overflow-hidden rounded-2xl shadow-md md:aspect-[21/9]">
-          <img src={imageUrl} alt={product.name} className="h-full w-full object-cover" />
-          <span className="absolute bottom-4 left-4 rounded-full bg-forest/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-cream">
-            {product.category}
-          </span>
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start">
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt={product.name}
+            className="aspect-square w-full rounded-2xl object-cover shadow-md md:aspect-[4/3]"
+          />
+        )}
+
+        <div>
+          {!imageUrl && (
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-leaf">{product.category}</span>
+          )}
+          <h1 className="font-serif text-4xl text-forest">{product.name}</h1>
+
+          {product.specs && Object.keys(product.specs).length > 0 && (
+            <dl className="mt-4 space-y-1.5 text-sm">
+              {Object.entries(product.specs).map(([key, value]) => (
+                <div key={key}>
+                  <dt className="inline font-semibold text-forest">{key}</dt>
+                  <dd className="inline text-forest/80">: {value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
+          {product.traits && product.traits.length > 0 && (
+            <ul className="mt-4 flex flex-wrap gap-1.5">
+              {product.traits.map((trait) => (
+                <li key={trait} className="rounded-full bg-leaf/15 px-3 py-1 text-xs font-medium text-forest">
+                  {trait}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {product.short_description && <p className="mt-4 leading-relaxed text-forest/80">{product.short_description}</p>}
         </div>
-      )}
-      {!imageUrl && (
-        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-leaf">{product.category}</span>
-      )}
-      <h1 className="mt-2 font-serif text-4xl text-forest">{product.name}</h1>
-      {product.short_description && <p className="mt-3 text-lg text-forest/80">{product.short_description}</p>}
-      {product.description && (
-        <p className="mt-6 whitespace-pre-line leading-relaxed text-forest/80">{product.description}</p>
-      )}
+      </div>
 
-      {product.traits && product.traits.length > 0 && (
-        <ul className="mt-6 flex flex-wrap gap-1.5">
-          {product.traits.map((trait) => (
-            <li key={trait} className="rounded-full bg-leaf/15 px-3 py-1 text-xs font-medium text-forest">
-              {trait}
-            </li>
+      {descriptionParagraphs.length > 0 && (
+        <div className="mt-10 space-y-4">
+          {descriptionParagraphs.map((paragraph, i) => (
+            <p key={i} className="whitespace-pre-line leading-relaxed text-forest/80">
+              {paragraph}
+            </p>
           ))}
-        </ul>
-      )}
-
-      {product.specs && Object.keys(product.specs).length > 0 && (
-        <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 rounded-xl border border-forest/10 bg-white p-6 shadow-sm sm:grid-cols-3">
-          {Object.entries(product.specs).map(([key, value]) => (
-            <div key={key}>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-forest/60">{key}</dt>
-              <dd className="mt-1 text-base text-forest">{value}</dd>
-            </div>
-          ))}
-        </dl>
+        </div>
       )}
 
       {related && related.length > 0 && (
