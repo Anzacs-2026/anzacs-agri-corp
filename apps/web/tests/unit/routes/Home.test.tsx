@@ -7,9 +7,11 @@ import { useShownTestimonials } from '@/features/testimonials'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 
 jest.mock('@/features/pages', () => {
-  const actual = jest.requireActual('@/features/pages/types')
+  const actualTypes = jest.requireActual('@/features/pages/types')
+  const actualHeroSlides = jest.requireActual('@/features/pages/heroSlides')
   return {
-    isHeroStyle: actual.isHeroStyle,
+    isHeroStyle: actualTypes.isHeroStyle,
+    parseHeroSlides: actualHeroSlides.parseHeroSlides,
     usePageContent: jest.fn(),
     getSectionText: (
       sections: { section_key: string; content: { text: string } }[] | undefined,
@@ -101,5 +103,36 @@ describe('Home', () => {
     )
 
     expect(screen.getByText('What growers say')).toBeInTheDocument()
+  })
+
+  it('shows features and stats sections by default', () => {
+    mockUsePageContent.mockReturnValue({ data: [] })
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Why choose ANZ Agri Crop Sciences')).toBeInTheDocument()
+    expect(screen.getByText('ANZ by the numbers')).toBeInTheDocument()
+  })
+
+  it('hides features and stats sections when disabled', () => {
+    mockUsePageContent.mockReturnValue({
+      data: [
+        { section_key: 'features_enabled', content: { text: 'false' } },
+        { section_key: 'stats_enabled', content: { text: 'false' } },
+      ],
+    })
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>,
+    )
+
+    expect(screen.queryByText('Why choose ANZ Agri Crop Sciences')).not.toBeInTheDocument()
+    expect(screen.queryByText('ANZ by the numbers')).not.toBeInTheDocument()
   })
 })

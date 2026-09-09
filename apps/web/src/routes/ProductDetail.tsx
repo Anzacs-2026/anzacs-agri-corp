@@ -16,7 +16,7 @@ const ProductDetail = () => {
     : null
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16">
+    <div className="mx-auto max-w-4xl px-4 py-16">
       <Seo
         title={product.name}
         description={product.short_description || `${product.name} — ${product.category} from ANZ Agri Crop Sciences.`}
@@ -25,9 +25,16 @@ const ProductDetail = () => {
       />
 
       {imageUrl && (
-        <img src={imageUrl} alt={product.name} className="mb-6 aspect-video w-full rounded-xl object-cover" />
+        <div className="relative mb-6 aspect-[16/8] w-full overflow-hidden rounded-2xl shadow-md md:aspect-[21/9]">
+          <img src={imageUrl} alt={product.name} className="h-full w-full object-cover" />
+          <span className="absolute bottom-4 left-4 rounded-full bg-forest/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-cream">
+            {product.category}
+          </span>
+        </div>
       )}
-      <span className="text-xs font-semibold uppercase tracking-[0.2em] text-leaf">{product.category}</span>
+      {!imageUrl && (
+        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-leaf">{product.category}</span>
+      )}
       <h1 className="mt-2 font-serif text-4xl text-forest">{product.name}</h1>
       {product.short_description && <p className="mt-3 text-lg text-forest/80">{product.short_description}</p>}
       {product.description && (
@@ -35,7 +42,7 @@ const ProductDetail = () => {
       )}
 
       {product.traits && product.traits.length > 0 && (
-        <ul className="mt-6 flex flex-wrap gap-2">
+        <ul className="mt-6 flex flex-wrap gap-1.5">
           {product.traits.map((trait) => (
             <li key={trait} className="rounded-full bg-leaf/15 px-3 py-1 text-xs font-medium text-forest">
               {trait}
@@ -45,11 +52,11 @@ const ProductDetail = () => {
       )}
 
       {product.specs && Object.keys(product.specs).length > 0 && (
-        <dl className="mt-8 grid grid-cols-2 gap-4 rounded-xl border border-forest/10 bg-white p-5 text-sm shadow-sm">
+        <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 rounded-xl border border-forest/10 bg-white p-6 shadow-sm sm:grid-cols-3">
           {Object.entries(product.specs).map(([key, value]) => (
             <div key={key}>
-              <dt className="font-medium text-forest">{key}</dt>
-              <dd className="text-forest/70">{value}</dd>
+              <dt className="text-xs font-semibold uppercase tracking-wide text-forest/60">{key}</dt>
+              <dd className="mt-1 text-base text-forest">{value}</dd>
             </div>
           ))}
         </dl>

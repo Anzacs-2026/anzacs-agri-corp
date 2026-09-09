@@ -54,6 +54,17 @@ describe('AdminLayout', () => {
     expect(screen.getByRole('link', { name: /enquiries/i })).toHaveAttribute('href', '/admin/enquiries')
   })
 
+  it('renders a differentiated System group with a Logs link', () => {
+    render(
+      <MemoryRouter initialEntries={['/admin']}>
+        <AdminLayout />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('System')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /logs/i })).toHaveAttribute('href', '/admin/logs')
+  })
+
   it('shows the signed-in user email', () => {
     render(
       <MemoryRouter initialEntries={['/admin']}>

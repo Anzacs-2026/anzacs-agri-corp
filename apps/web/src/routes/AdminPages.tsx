@@ -15,6 +15,7 @@ import {
   HERO_STYLES,
   HERO_STYLE_LABELS,
   isHeroStyle,
+  HeroSlidesEditor,
   type PageName,
 } from '@/features/pages'
 import { photoService } from '@/features/photos/services/photoService'
@@ -27,7 +28,15 @@ const PAGE_TITLES: Record<PageName, string> = {
   products: 'Products Page',
 }
 
-const SHORT_FIELD_KEYS = ['hero_title', 'hero_cta_label', 'hero_cta_link', 'hero_cta_label2', 'hero_cta_link2']
+const SHORT_FIELD_KEYS = [
+  'hero_title',
+  'hero_cta_label',
+  'hero_cta_link',
+  'hero_cta_label2',
+  'hero_cta_link2',
+  'features_title',
+  'stats_title',
+]
 
 const isPageName = (value: string | undefined): value is PageName =>
   value === 'home' || value === 'about' || value === 'contact' || value === 'products'
@@ -122,6 +131,60 @@ const AdminPages = () => {
                     ))}
                   </div>
                 </fieldset>
+              </div>
+            )
+          }
+
+          if (key === 'hero_parallax') {
+            const enabled = valueFor(key, page === 'home' ? 'true' : 'false') === 'true'
+
+            return (
+              <div key={key} className="rounded-xl border border-forest/10 bg-white p-4 shadow-sm">
+                <label className="flex cursor-pointer items-center justify-between">
+                  <span>
+                    <span className="block font-medium text-forest">{humanizeKey(key)}</span>
+                    <span className="text-xs font-normal text-forest/70">
+                      Background photo scrolls slower than the page for a depth effect.
+                    </span>
+                  </span>
+                  <input
+                    type="checkbox"
+                    checked={enabled}
+                    onChange={(e) => handleSave(key, e.target.checked ? 'true' : 'false')}
+                    className="h-5 w-5 accent-forest"
+                  />
+                </label>
+              </div>
+            )
+          }
+
+          if (key === 'hero_slides') {
+            return (
+              <HeroSlidesEditor
+                key={page}
+                page={page}
+                value={valueFor(key)}
+                saving={upsert.isPending}
+                onSave={(text) => handleSave(key, text)}
+              />
+            )
+          }
+
+          if (key === 'stats_enabled' || key === 'features_enabled') {
+            const label = key === 'stats_enabled' ? 'Show stats counter section' : 'Show features section'
+            const enabled = valueFor(key, 'true') === 'true'
+
+            return (
+              <div key={key} className="rounded-xl border border-forest/10 bg-white p-4 shadow-sm">
+                <label className="flex cursor-pointer items-center justify-between">
+                  <span className="block font-medium text-forest">{label}</span>
+                  <input
+                    type="checkbox"
+                    checked={enabled}
+                    onChange={(e) => handleSave(key, e.target.checked ? 'true' : 'false')}
+                    className="h-5 w-5 accent-forest"
+                  />
+                </label>
               </div>
             )
           }

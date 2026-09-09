@@ -4,9 +4,11 @@ import About from '@/routes/About'
 import { usePageContent } from '@/features/pages'
 
 jest.mock('@/features/pages', () => {
-  const actual = jest.requireActual('@/features/pages/types')
+  const actualTypes = jest.requireActual('@/features/pages/types')
+  const actualHeroSlides = jest.requireActual('@/features/pages/heroSlides')
   return {
-    isHeroStyle: actual.isHeroStyle,
+    isHeroStyle: actualTypes.isHeroStyle,
+    parseHeroSlides: actualHeroSlides.parseHeroSlides,
     usePageContent: jest.fn(),
     getSectionText: (
       sections: { section_key: string; content: { text: string } }[] | undefined,

@@ -1,7 +1,7 @@
-import { usePageContent, getSectionText } from '@/features/pages'
+import { usePageContent, getSectionText, parseHeroSlides } from '@/features/pages'
 import { ProductGrid } from '@/features/products'
 import { photoService } from '@/features/photos/services/photoService'
-import Hero from '@/components/Hero'
+import Hero, { type HeroSlide } from '@/components/Hero'
 import Seo from '@/components/Seo'
 
 const Products = () => {
@@ -10,6 +10,37 @@ const Products = () => {
   const heroVariant = getSectionText(sections, 'hero_variant', 'banner-left')
   const heroImagePath = getSectionText(sections, 'hero_image', '')
   const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/minimal-sorghum-field.webp'
+  const heroParallax = getSectionText(sections, 'hero_parallax', 'false') === 'true'
+
+  const heroSlidesRaw = parseHeroSlides(getSectionText(sections, 'hero_slides', ''))
+  const slides: HeroSlide[] =
+    heroSlidesRaw.length > 0
+      ? heroSlidesRaw.map((s) => ({
+          imageUrl: s.imagePath ? photoService.getPublicUrl(s.imagePath) : null,
+          eyebrow: s.eyebrow || undefined,
+          title: s.title,
+          subtitle: s.subtitle,
+          ctaLabel: s.ctaLabel || undefined,
+          ctaTo: s.ctaTo || undefined,
+          ctaLabel2: s.ctaLabel2 || undefined,
+          ctaTo2: s.ctaTo2 || undefined,
+        }))
+      : [
+          {
+            imageUrl: heroImageUrl,
+            eyebrow: 'Quality that begins with the seed',
+            title: getSectionText(sections, 'hero_title', 'Better Seeds. Greater Potential.'),
+            subtitle: getSectionText(
+              sections,
+              'hero_subtitle',
+              'Discover dependable, high-performing seeds created to give every crop a strong beginning and every farmer greater confidence.',
+            ),
+            ctaLabel: getSectionText(sections, 'hero_cta_label', 'View Our Products'),
+            ctaTo: getSectionText(sections, 'hero_cta_link', '/products'),
+            ctaLabel2: getSectionText(sections, 'hero_cta_label2', 'Enquire Now'),
+            ctaTo2: getSectionText(sections, 'hero_cta_link2', '/contact'),
+          },
+        ]
 
   return (
     <>
@@ -19,21 +50,7 @@ const Products = () => {
         path="/products"
       />
 
-      <Hero
-        variant={heroVariant}
-        eyebrow="Quality that begins with the seed"
-        title={getSectionText(sections, 'hero_title', 'Better Seeds. Greater Potential.')}
-        subtitle={getSectionText(
-          sections,
-          'hero_subtitle',
-          'Discover dependable, high-performing seeds created to give every crop a strong beginning and every farmer greater confidence.',
-        )}
-        ctaLabel={getSectionText(sections, 'hero_cta_label', 'View Our Products')}
-        ctaTo={getSectionText(sections, 'hero_cta_link', '/products')}
-        ctaLabel2={getSectionText(sections, 'hero_cta_label2', 'Enquire Now')}
-        ctaTo2={getSectionText(sections, 'hero_cta_link2', '/contact')}
-        imageUrl={heroImageUrl}
-      />
+      <Hero variant={heroVariant} slides={slides} parallax={heroParallax} />
 
       <ProductGrid />
     </>

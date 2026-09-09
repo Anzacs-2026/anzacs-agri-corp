@@ -1,6 +1,6 @@
 import { Suspense, useState } from 'react'
 import { Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Package, FileText, Mail, Quote, LogOut, Menu, X, type LucideIcon } from 'lucide-react'
+import { LayoutDashboard, Package, FileText, Mail, Quote, ScrollText, LogOut, Menu, X, type LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { authService, useAuth } from '@/features/auth'
 import Seo from '@/components/Seo'
@@ -18,7 +18,12 @@ interface GroupItem {
   children: { to: string; label: string }[]
 }
 
-const navItems: (LinkItem | GroupItem)[] = [
+interface DividerItem {
+  divider: true
+  label: string
+}
+
+const navItems: (LinkItem | GroupItem | DividerItem)[] = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/admin/products', label: 'Products', icon: Package },
   {
@@ -33,9 +38,12 @@ const navItems: (LinkItem | GroupItem)[] = [
   },
   { to: '/admin/enquiries', label: 'Enquiries', icon: Mail },
   { to: '/admin/testimonials', label: 'Testimonials', icon: Quote },
+  { divider: true, label: 'System' },
+  { to: '/admin/logs', label: 'Logs', icon: ScrollText },
 ]
 
-const isGroup = (item: LinkItem | GroupItem): item is GroupItem => 'children' in item
+const isGroup = (item: LinkItem | GroupItem | DividerItem): item is GroupItem => 'children' in item
+const isDivider = (item: LinkItem | GroupItem | DividerItem): item is DividerItem => 'divider' in item
 
 const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
   cn(
@@ -49,7 +57,7 @@ const subNavLinkClassName = ({ isActive }: { isActive: boolean }) =>
     isActive ? 'bg-leaf/20 text-forest' : 'text-forest/70 hover:bg-forest/5 hover:text-forest',
   )
 
-const flatItems = navItems.flatMap((item) => (isGroup(item) ? item.children : [item]))
+const flatItems = navItems.filter((item): item is LinkItem | GroupItem => !isDivider(item)).flatMap((item) => (isGroup(item) ? item.children : [item]))
 
 const AdminLayout = () => {
   const { session, user, loading } = useAuth()
@@ -83,7 +91,11 @@ const AdminLayout = () => {
 
       <nav className="flex flex-1 flex-col gap-1 px-3">
         {navItems.map((item) =>
-          isGroup(item) ? (
+          isDivider(item) ? (
+            <div key={`divider-${item.label}`} className="my-3 border-t border-forest/10 pt-3">
+              <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-forest/50">{item.label}</p>
+            </div>
+          ) : isGroup(item) ? (
             <div key={item.label} className="mb-1">
               <div className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-forest/70">
                 <item.icon size={18} />

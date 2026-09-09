@@ -1,19 +1,30 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import AdminPages from '@/routes/AdminPages'
 import { usePageContent, useUpsertPageContent } from '@/features/pages'
 
 jest.mock('@/features/pages', () => {
-  const actual = jest.requireActual('@/features/pages/types')
+  const actualTypes = jest.requireActual('@/features/pages/types')
+  const actualHeroSlidesEditor = jest.requireActual('@/features/pages/components/HeroSlidesEditor').default
   return {
-    HERO_STYLES: actual.HERO_STYLES,
-    HERO_STYLE_LABELS: actual.HERO_STYLE_LABELS,
-    isHeroStyle: actual.isHeroStyle,
+    HERO_STYLES: actualTypes.HERO_STYLES,
+    HERO_STYLE_LABELS: actualTypes.HERO_STYLE_LABELS,
+    isHeroStyle: actualTypes.isHeroStyle,
+    HeroSlidesEditor: actualHeroSlidesEditor,
     usePageContent: jest.fn(),
     useUpsertPageContent: jest.fn(),
     SECTION_KEYS: {
-      home: ['hero_variant', 'hero_title', 'hero_subtitle', 'intro'],
+      home: [
+        'hero_variant',
+        'hero_parallax',
+        'hero_slides',
+        'hero_title',
+        'hero_subtitle',
+        'intro',
+        'features_enabled',
+        'stats_enabled',
+      ],
       about: ['body'],
       contact: ['intro'],
     },
@@ -66,7 +77,8 @@ describe('AdminPages', () => {
     renderAt('home')
 
     await user.type(screen.getByLabelText('Hero Title'), 'New headline')
-    await user.click(screen.getAllByRole('button', { name: /save/i })[0])
+    const heroTitleField = screen.getByLabelText('Hero Title').closest('div.rounded-xl') as HTMLElement
+    await user.click(within(heroTitleField).getByRole('button', { name: /^save$/i }))
 
     expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_title', content: { text: 'New headline' } })
   })
@@ -80,10 +92,52 @@ describe('AdminPages', () => {
     expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_variant', content: { text: 'banner-center' } })
   })
 
+  it('defaults hero parallax on for home and toggles it off', async () => {
+    const user = userEvent.setup()
+    renderAt('home')
+
+    const toggle = screen.getByRole('checkbox', { name: /hero parallax/i })
+    expect(toggle).toBeChecked()
+
+    await user.click(toggle)
+
+    expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_parallax', content: { text: 'false' } })
+  })
+
   it('renders a different page section set based on the route', () => {
     renderAt('about')
 
     expect(screen.getByLabelText('Page Body')).toBeInTheDocument()
     expect(screen.queryByLabelText('Hero Title')).not.toBeInTheDocument()
+  })
+
+  it('defaults features and stats sections on and toggles them off', async () => {
+    const user = userEvent.setup()
+    renderAt('home')
+
+    const featuresToggle = screen.getByRole('checkbox', { name: /show features section/i })
+    const statsToggle = screen.getByRole('checkbox', { name: /show stats counter section/i })
+    expect(featuresToggle).toBeChecked()
+    expect(statsToggle).toBeChecked()
+
+    await user.click(featuresToggle)
+    expect(mutate).toHaveBeenCalledWith({ sectionKey: 'features_enabled', content: { text: 'false' } })
+  })
+
+  it('renders the hero slides editor and adds/saves a slide', async () => {
+    const user = userEvent.setup()
+    renderAt('home')
+
+    expect(screen.getByText('Hero Slides')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Add Slide' }))
+
+    const titleInputs = screen.getAllByLabelText('Title')
+    await user.type(titleInputs[0], 'New Slide')
+    await user.click(screen.getByRole('button', { name: 'Save Slides' }))
+
+    expect(mutate).toHaveBeenCalledWith({
+      sectionKey: 'hero_slides',
+      content: { text: JSON.stringify([{ imagePath: '', eyebrow: '', title: 'New Slide', subtitle: '', ctaLabel: '', ctaTo: '', ctaLabel2: '', ctaTo2: '' }]) },
+    })
   })
 })

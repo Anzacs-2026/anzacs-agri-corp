@@ -1,7 +1,8 @@
-import { usePageContent, getSectionText } from '@/features/pages'
+import { usePageContent, getSectionText, parseHeroSlides } from '@/features/pages'
 import { humanizeKey } from '@/lib/humanize'
+import { parsePairs, parseBullets } from '@/lib/parseSectionText'
 import { photoService } from '@/features/photos/services/photoService'
-import Hero from '@/components/Hero'
+import Hero, { type HeroSlide } from '@/components/Hero'
 import Section from '@/components/Section'
 import Seo from '@/components/Seo'
 
@@ -20,32 +21,43 @@ const DEFAULTS: Record<string, string> = {
     "Building on a decade of operational excellence, the organization is scaling its beekeeping division, expanding export footprints, and investing in climate-resilient seed traits. The goal remains clear: to remain at the forefront of India's agricultural evolution by delivering science-backed, farmer-first solutions.",
 }
 
-const parsePairs = (text: string) =>
-  text
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => {
-      const [label, ...rest] = line.split(':')
-      return { label: label.trim(), value: rest.join(':').trim() }
-    })
-
-const parseBullets = (text: string) =>
-  text
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => {
-      const [label, ...rest] = line.split(' – ')
-      return rest.length ? { label: label.trim(), value: rest.join(' – ').trim() } : { label: '', value: line }
-    })
-
 const About = () => {
   const { data: sections } = usePageContent('about')
   const text = (key: string) => getSectionText(sections, key, DEFAULTS[key] ?? '')
   const heroVariant = getSectionText(sections, 'hero_variant', 'banner-left')
   const heroImagePath = getSectionText(sections, 'hero_image', '')
   const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/split-hero-maize-field.webp'
+  const heroParallax = getSectionText(sections, 'hero_parallax', 'false') === 'true'
+
+  const heroSlidesRaw = parseHeroSlides(getSectionText(sections, 'hero_slides', ''))
+  const slides: HeroSlide[] =
+    heroSlidesRaw.length > 0
+      ? heroSlidesRaw.map((s) => ({
+          imageUrl: s.imagePath ? photoService.getPublicUrl(s.imagePath) : null,
+          eyebrow: s.eyebrow || undefined,
+          title: s.title,
+          subtitle: s.subtitle,
+          ctaLabel: s.ctaLabel || undefined,
+          ctaTo: s.ctaTo || undefined,
+          ctaLabel2: s.ctaLabel2 || undefined,
+          ctaTo2: s.ctaTo2 || undefined,
+        }))
+      : [
+          {
+            imageUrl: heroImageUrl,
+            eyebrow: 'Premium agricultural seeds',
+            title: getSectionText(sections, 'hero_title', 'Seeds for Stronger Harvests'),
+            subtitle: getSectionText(
+              sections,
+              'hero_subtitle',
+              'High-quality seeds developed to support healthy crops, reliable performance and better yields across every growing season.',
+            ),
+            ctaLabel: getSectionText(sections, 'hero_cta_label', 'Explore Our Seeds'),
+            ctaTo: getSectionText(sections, 'hero_cta_link', '/products'),
+            ctaLabel2: getSectionText(sections, 'hero_cta_label2', 'Contact Us'),
+            ctaTo2: getSectionText(sections, 'hero_cta_link2', '/contact'),
+          },
+        ]
 
   return (
     <>
@@ -55,21 +67,7 @@ const About = () => {
         path="/about"
       />
 
-      <Hero
-        variant={heroVariant}
-        eyebrow="Premium agricultural seeds"
-        title={getSectionText(sections, 'hero_title', 'Seeds for Stronger Harvests')}
-        subtitle={getSectionText(
-          sections,
-          'hero_subtitle',
-          'High-quality seeds developed to support healthy crops, reliable performance and better yields across every growing season.',
-        )}
-        ctaLabel={getSectionText(sections, 'hero_cta_label', 'Explore Our Seeds')}
-        ctaTo={getSectionText(sections, 'hero_cta_link', '/products')}
-        ctaLabel2={getSectionText(sections, 'hero_cta_label2', 'Contact Us')}
-        ctaTo2={getSectionText(sections, 'hero_cta_link2', '/contact')}
-        imageUrl={heroImageUrl}
-      />
+      <Hero variant={heroVariant} slides={slides} parallax={heroParallax} />
 
       <Section>
         <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('who_we_are')}</h2>
