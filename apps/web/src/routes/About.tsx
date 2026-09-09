@@ -5,6 +5,7 @@ import { photoService } from '@/features/photos/services/photoService'
 import Hero, { type HeroSlide } from '@/components/Hero'
 import Section from '@/components/Section'
 import StatsCounter from '@/components/StatsCounter'
+import Reveal from '@/components/Reveal'
 import Seo from '@/components/Seo'
 
 const DEFAULT_STATS = '15+ : Years of Research\n12+ : Seed Varieties\n2 : Core Divisions\n100% : Farmer-First'
@@ -80,51 +81,70 @@ const About = () => {
 
       <Hero variant={heroVariant} slides={slides} parallax={heroParallax} />
 
-      {statsEnabled && <StatsCounter style={statsStyle} title={statsTitle} stats={stats} />}
+      {statsEnabled && (
+        <Reveal variant="scale">
+          <StatsCounter style={statsStyle} title={statsTitle} stats={stats} />
+        </Reveal>
+      )}
 
-      <Section>
-        <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('who_we_are')}</h2>
-        <p className="max-w-3xl leading-relaxed text-forest/80">{text('who_we_are')}</p>
-      </Section>
+      <Reveal variant="fade">
+        <Section>
+          <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('who_we_are')}</h2>
+          <p className="max-w-3xl leading-relaxed text-forest/80">{text('who_we_are')}</p>
+        </Section>
+      </Reveal>
 
-      <Section background="cream">
-        <h2 className="mb-4 font-serif text-2xl text-forest">{humanizeKey('core_capabilities')}</h2>
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {parseBullets(text('core_capabilities')).map(({ label, value }) => (
-            <li key={label || value} className="rounded-xl border border-forest/10 bg-white p-4 shadow-sm">
-              {label && <div className="mb-1 font-medium text-forest">{label}</div>}
-              <div className="text-sm text-forest/70">{value}</div>
-            </li>
-          ))}
-        </ul>
-      </Section>
+      <Reveal variant="up">
+        <Section background="cream">
+          <h2 className="mb-4 font-serif text-2xl text-forest">{humanizeKey('core_capabilities')}</h2>
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {parseBullets(text('core_capabilities')).map(({ label, value }) => (
+              <li
+                key={label || value}
+                className="rounded-xl border border-forest/10 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+              >
+                {label && <div className="mb-1 font-medium text-forest">{label}</div>}
+                <div className="text-sm text-forest/70">{value}</div>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      </Reveal>
 
-      <Section>
-        <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('market_position')}</h2>
-        <p className="max-w-3xl leading-relaxed text-forest/80">{text('market_position')}</p>
-      </Section>
+      <Reveal variant="left">
+        <Section>
+          <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('market_position')}</h2>
+          <p className="max-w-3xl leading-relaxed text-forest/80">{text('market_position')}</p>
+        </Section>
+      </Reveal>
 
-      <Section background="forest">
-        <h2 className="mb-3 font-serif text-2xl text-cream">Philosophy: Seeds as Food</h2>
-        <p className="max-w-3xl leading-relaxed text-cream/80">{text('philosophy')}</p>
-      </Section>
+      <Reveal variant="scale">
+        <Section background="forest">
+          <h2 className="mb-3 font-serif text-2xl text-cream">Philosophy: Seeds as Food</h2>
+          <p className="max-w-3xl leading-relaxed text-cream/80">{text('philosophy')}</p>
+        </Section>
+      </Reveal>
 
-      <Section>
-        <h2 className="mb-4 font-serif text-2xl text-forest">{humanizeKey('why_anz')}</h2>
-        <dl className="grid grid-cols-1 gap-4 rounded-xl border border-forest/10 bg-white p-5 shadow-sm sm:grid-cols-2">
-          {parsePairs(text('why_anz')).map(({ label, value }) => (
-            <div key={label}>
-              <dt className="font-medium text-forest">{label}</dt>
-              <dd className="text-sm text-forest/70">{value}</dd>
-            </div>
-          ))}
-        </dl>
-      </Section>
+      <Reveal variant="right">
+        <Section>
+          <h2 className="mb-4 font-serif text-2xl text-forest">{humanizeKey('why_anz')}</h2>
+          <dl className="grid grid-cols-1 gap-4 rounded-xl border border-forest/10 bg-white p-5 shadow-sm sm:grid-cols-2">
+            {parsePairs(text('why_anz')).map(({ label, value }) => (
+              <div key={label}>
+                <dt className="font-medium text-forest">{label}</dt>
+                <dd className="text-sm text-forest/70">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </Section>
+      </Reveal>
 
-      <Section background="cream">
-        <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('future_direction')}</h2>
-        <p className="max-w-3xl leading-relaxed text-forest/80">{text('future_direction')}</p>
-      </Section>
+      <Reveal variant="up">
+        <Section background="cream">
+          <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('future_direction')}</h2>
+          <p className="max-w-3xl leading-relaxed text-forest/80">{text('future_direction')}</p>
+        </Section>
+      </Reveal>
     </>
   )
 }
