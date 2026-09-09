@@ -9,4 +9,5 @@ Thumbs.db
 coverage/
 playwright-report/
 test-results/
+.playwright-mcp/
 .netlify/
