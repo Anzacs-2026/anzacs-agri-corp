@@ -62,4 +62,33 @@ describe('Header', () => {
 
     expect(screen.getByRole('banner')).toHaveClass('bg-forest')
   })
+
+  it('opens the mobile menu and shows nav links, forcing a solid header even on a hero route', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <Header />
+      </MemoryRouter>,
+    )
+
+    expect(screen.queryByRole('button', { name: /open menu/i })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /open menu/i }))
+
+    expect(screen.getByRole('banner')).toHaveClass('bg-forest')
+    expect(screen.getAllByRole('link', { name: 'About' }).length).toBeGreaterThan(0)
+    expect(screen.getByRole('button', { name: /close menu/i })).toBeInTheDocument()
+  })
+
+  it('closes the mobile menu when a link is clicked', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <Header />
+      </MemoryRouter>,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: /open menu/i }))
+    const mobileLinks = screen.getAllByRole('link', { name: 'Contact' })
+    fireEvent.click(mobileLinks[mobileLinks.length - 1])
+
+    expect(screen.queryByRole('button', { name: /close menu/i })).not.toBeInTheDocument()
+  })
 })
