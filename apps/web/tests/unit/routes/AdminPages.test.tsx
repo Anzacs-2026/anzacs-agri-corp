@@ -11,6 +11,9 @@ jest.mock('@/features/pages', () => {
     HERO_STYLES: actualTypes.HERO_STYLES,
     HERO_STYLE_LABELS: actualTypes.HERO_STYLE_LABELS,
     isHeroStyle: actualTypes.isHeroStyle,
+    STATS_STYLES: actualTypes.STATS_STYLES,
+    STATS_STYLE_LABELS: actualTypes.STATS_STYLE_LABELS,
+    isStatsStyle: actualTypes.isStatsStyle,
     HeroSlidesEditor: actualHeroSlidesEditor,
     usePageContent: jest.fn(),
     useUpsertPageContent: jest.fn(),
@@ -24,6 +27,7 @@ jest.mock('@/features/pages', () => {
         'intro',
         'features_enabled',
         'stats_enabled',
+        'stats_style',
       ],
       about: ['body'],
       contact: ['intro'],
@@ -124,6 +128,15 @@ describe('AdminPages', () => {
     expect(mutate).toHaveBeenCalledWith({ sectionKey: 'features_enabled', content: { text: 'false' } })
   })
 
+  it('saves the stats position when a style is picked', async () => {
+    const user = userEvent.setup()
+    renderAt('home')
+
+    await user.click(screen.getByRole('radio', { name: 'Separate Section' }))
+
+    expect(mutate).toHaveBeenCalledWith({ sectionKey: 'stats_style', content: { text: 'section' } })
+  })
+
   it('renders the hero slides editor and adds/saves a slide', async () => {
     const user = userEvent.setup()
     renderAt('home')
@@ -131,13 +144,17 @@ describe('AdminPages', () => {
     expect(screen.getByText('Hero Slides')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Add Slide' }))
 
-    const titleInputs = screen.getAllByLabelText('Title')
+    const titleInputs = screen.getAllByLabelText(/^Title/)
     await user.type(titleInputs[0], 'New Slide')
     await user.click(screen.getByRole('button', { name: 'Save Slides' }))
 
     expect(mutate).toHaveBeenCalledWith({
       sectionKey: 'hero_slides',
-      content: { text: JSON.stringify([{ imagePath: '', eyebrow: '', title: 'New Slide', subtitle: '', ctaLabel: '', ctaTo: '', ctaLabel2: '', ctaTo2: '' }]) },
+      content: {
+        text: JSON.stringify([
+          { imagePath: '', eyebrow: '', title: 'New Slide', subtitle: '', ctaLabel: '', ctaTo: '', ctaLabel2: '', ctaTo2: '', tags: '' },
+        ]),
+      },
     })
   })
 })

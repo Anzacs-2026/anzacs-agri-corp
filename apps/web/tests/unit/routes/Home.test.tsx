@@ -11,6 +11,7 @@ jest.mock('@/features/pages', () => {
   const actualHeroSlides = jest.requireActual('@/features/pages/heroSlides')
   return {
     isHeroStyle: actualTypes.isHeroStyle,
+    isStatsStyle: actualTypes.isStatsStyle,
     parseHeroSlides: actualHeroSlides.parseHeroSlides,
     usePageContent: jest.fn(),
     getSectionText: (
@@ -60,7 +61,7 @@ describe('Home', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('Sowing Potential. Harvesting Progress.')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Sowing Potential. Harvesting Progress.' })).toBeInTheDocument()
   })
 
   it('renders real content once page_content is set', () => {
@@ -74,7 +75,7 @@ describe('Home', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('Grow More, Worry Less')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Grow More, Worry Less' })).toBeInTheDocument()
   })
 
   it('hides testimonials section when the switch is off', () => {
@@ -115,6 +116,51 @@ describe('Home', () => {
     )
 
     expect(screen.getByText('Why choose ANZ Agri Crop Sciences')).toBeInTheDocument()
+    expect(screen.getByText('ANZ by the numbers')).toBeInTheDocument()
+  })
+
+  it('shows a working multi-slide hero carousel by default', () => {
+    mockUsePageContent.mockReturnValue({ data: [] })
+
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByRole('heading', { name: 'Sowing Potential. Harvesting Progress.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Built for Every Growing Season', hidden: true })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'From Our Fields to Yours', hidden: true })).toBeInTheDocument()
+    expect(screen.getByText('1')).toBeInTheDocument()
+    expect(screen.getByText('2')).toBeInTheDocument()
+    expect(screen.getByText('3')).toBeInTheDocument()
+  })
+
+  it('renders stats as a plain section by default', () => {
+    mockUsePageContent.mockReturnValue({ data: [] })
+
+    const { container } = render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>,
+    )
+
+    expect(container.querySelector('.-mt-20')).not.toBeInTheDocument()
+    expect(screen.getByText('ANZ by the numbers')).toBeInTheDocument()
+  })
+
+  it('renders stats as a floating card when stats_style is overlap', () => {
+    mockUsePageContent.mockReturnValue({
+      data: [{ section_key: 'stats_style', content: { text: 'overlap' } }],
+    })
+
+    const { container } = render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>,
+    )
+
+    expect(container.querySelector('.-mt-20')).toBeInTheDocument()
     expect(screen.getByText('ANZ by the numbers')).toBeInTheDocument()
   })
 

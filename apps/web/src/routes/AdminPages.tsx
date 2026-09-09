@@ -15,6 +15,9 @@ import {
   HERO_STYLES,
   HERO_STYLE_LABELS,
   isHeroStyle,
+  STATS_STYLES,
+  STATS_STYLE_LABELS,
+  isStatsStyle,
   HeroSlidesEditor,
   type PageName,
 } from '@/features/pages'
@@ -185,6 +188,44 @@ const AdminPages = () => {
                     className="h-5 w-5 accent-forest"
                   />
                 </label>
+              </div>
+            )
+          }
+
+          if (key === 'stats_style') {
+            const rawValue = valueFor(key, 'overlap')
+            const style = isStatsStyle(rawValue) ? rawValue : 'overlap'
+
+            return (
+              <div key={key} className="rounded-xl border border-forest/10 bg-white p-4 shadow-sm">
+                <Label>{humanizeKey(key)}</Label>
+
+                <fieldset className="mt-2">
+                  <legend className="mb-1 text-xs font-medium text-forest/70">Position</legend>
+                  <div className="flex flex-wrap gap-2">
+                    {STATS_STYLES.map((s) => (
+                      <label
+                        key={s}
+                        className={cn(
+                          'cursor-pointer rounded-md border px-3 py-1.5 text-sm font-medium transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-leaf has-[:focus-visible]:ring-offset-1',
+                          style === s
+                            ? 'border-forest bg-forest text-cream'
+                            : 'border-forest/20 text-forest hover:bg-forest/5',
+                        )}
+                      >
+                        <input
+                          type="radio"
+                          name={`${key}-style`}
+                          value={s}
+                          checked={style === s}
+                          onChange={() => handleSave(key, s)}
+                          className="sr-only"
+                        />
+                        {STATS_STYLE_LABELS[s]}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
               </div>
             )
           }

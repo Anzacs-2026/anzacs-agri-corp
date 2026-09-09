@@ -1,10 +1,13 @@
-import { usePageContent, getSectionText, parseHeroSlides } from '@/features/pages'
+import { usePageContent, getSectionText, parseHeroSlides, parseHeroTags, isStatsStyle } from '@/features/pages'
 import { humanizeKey } from '@/lib/humanize'
 import { parsePairs, parseBullets } from '@/lib/parseSectionText'
 import { photoService } from '@/features/photos/services/photoService'
 import Hero, { type HeroSlide } from '@/components/Hero'
 import Section from '@/components/Section'
+import StatsCounter from '@/components/StatsCounter'
 import Seo from '@/components/Seo'
+
+const DEFAULT_STATS = '15+ : Years of Research\n12+ : Seed Varieties\n2 : Core Divisions\n100% : Farmer-First'
 
 const DEFAULTS: Record<string, string> = {
   who_we_are:
@@ -41,6 +44,7 @@ const About = () => {
           ctaTo: s.ctaTo || undefined,
           ctaLabel2: s.ctaLabel2 || undefined,
           ctaTo2: s.ctaTo2 || undefined,
+          tags: parseHeroTags(s.tags),
         }))
       : [
           {
@@ -56,8 +60,15 @@ const About = () => {
             ctaTo: getSectionText(sections, 'hero_cta_link', '/products'),
             ctaLabel2: getSectionText(sections, 'hero_cta_label2', 'Contact Us'),
             ctaTo2: getSectionText(sections, 'hero_cta_link2', '/contact'),
+            tags: ['12+ Years Research', 'Farming & Apiculture', 'Trusted Since 2009'],
           },
         ]
+
+  const statsEnabled = getSectionText(sections, 'stats_enabled', 'true') === 'true'
+  const rawStatsStyle = getSectionText(sections, 'stats_style', 'overlap')
+  const statsStyle = isStatsStyle(rawStatsStyle) ? rawStatsStyle : 'overlap'
+  const statsTitle = getSectionText(sections, 'stats_title', 'ANZ by the numbers')
+  const stats = parsePairs(getSectionText(sections, 'stats', DEFAULT_STATS))
 
   return (
     <>
@@ -68,6 +79,8 @@ const About = () => {
       />
 
       <Hero variant={heroVariant} slides={slides} parallax={heroParallax} />
+
+      {statsEnabled && <StatsCounter style={statsStyle} title={statsTitle} stats={stats} />}
 
       <Section>
         <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('who_we_are')}</h2>

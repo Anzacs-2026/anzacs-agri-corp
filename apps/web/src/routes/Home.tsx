@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { usePageContent, getSectionText, parseHeroSlides } from '@/features/pages'
+import { usePageContent, getSectionText, parseHeroSlides, parseHeroTags, isStatsStyle } from '@/features/pages'
 import { useProducts, ProductCard } from '@/features/products'
 import { useShownTestimonials, TestimonialCard } from '@/features/testimonials'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
@@ -7,6 +7,7 @@ import { photoService } from '@/features/photos/services/photoService'
 import Hero, { type HeroSlide } from '@/components/Hero'
 import Carousel from '@/components/Carousel'
 import Section from '@/components/Section'
+import StatsCounter from '@/components/StatsCounter'
 import Seo from '@/components/Seo'
 import { parsePairs, parseBullets } from '@/lib/parseSectionText'
 import { Leaf, ShieldCheck, TrendingUp, Users } from 'lucide-react'
@@ -42,12 +43,13 @@ const Home = () => {
           ctaTo: s.ctaTo || undefined,
           ctaLabel2: s.ctaLabel2 || undefined,
           ctaTo2: s.ctaTo2 || undefined,
+          tags: parseHeroTags(s.tags),
         }))
       : [
           {
             imageUrl: heroImageUrl,
             eyebrow: 'Growing possibilities',
-            title: getSectionText(sections, 'hero_title', 'Sowing Potential. Harvesting Progress.'),
+            title: getSectionText(sections, 'hero_title', 'Sowing Potential.\nHarvesting Progress.'),
             subtitle: getSectionText(
               sections,
               'hero_subtitle',
@@ -57,6 +59,25 @@ const Home = () => {
             ctaTo: getSectionText(sections, 'hero_cta_link', '/about'),
             ctaLabel2: getSectionText(sections, 'hero_cta_label2', 'Our Products'),
             ctaTo2: getSectionText(sections, 'hero_cta_link2', '/products'),
+            tags: ['Certified Genetics', 'Nationwide Delivery', 'Farmer-First'],
+          },
+          {
+            imageUrl: '/hero_banner_images/split-hero-maize-field.webp',
+            eyebrow: 'Field-tested performance',
+            title: 'Built for Every\nGrowing Season',
+            subtitle: 'Hybrid and open-pollinated varieties bred for consistent yield across diverse soils and climates.',
+            ctaLabel: 'Explore Products',
+            ctaTo: '/products',
+            tags: ['Consistent Yield', 'Climate-Resilient', 'Multi-Soil'],
+          },
+          {
+            imageUrl: '/hero_banner_images/minimal-sorghum-field.webp',
+            eyebrow: 'Trusted nationwide',
+            title: 'From Our Fields\nto Yours',
+            subtitle: 'Over a decade of research and a growing network of farmer partners across the country.',
+            ctaLabel: 'Get in Touch',
+            ctaTo: '/contact',
+            tags: ['500+ Farmer Partners', 'Since 2009', 'Pan-India'],
           },
         ]
 
@@ -65,6 +86,8 @@ const Home = () => {
   const features = parseBullets(getSectionText(sections, 'features', DEFAULT_FEATURES))
 
   const statsEnabled = getSectionText(sections, 'stats_enabled', 'true') === 'true'
+  const rawStatsStyle = getSectionText(sections, 'stats_style', 'section')
+  const statsStyle = isStatsStyle(rawStatsStyle) ? rawStatsStyle : 'section'
   const statsTitle = getSectionText(sections, 'stats_title', 'ANZ by the numbers')
   const stats = parsePairs(getSectionText(sections, 'stats', DEFAULT_STATS))
 
@@ -77,6 +100,8 @@ const Home = () => {
       />
 
       <Hero variant={heroVariant} slides={slides} parallax={heroParallax} />
+
+      {statsEnabled && <StatsCounter style={statsStyle} title={statsTitle} stats={stats} />}
 
       <Section>
         <p className="mx-auto max-w-2xl text-center text-lg text-forest/80">
@@ -117,20 +142,6 @@ const Home = () => {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {featured.map((product) => (
               <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </Section>
-      )}
-
-      {statsEnabled && stats.length > 0 && (
-        <Section background="forest">
-          <h2 className="mb-6 text-center font-serif text-2xl text-cream">{statsTitle}</h2>
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-            {stats.map(({ label, value }) => (
-              <div key={label} className="text-center">
-                <div className="font-serif text-3xl text-lime sm:text-4xl">{label}</div>
-                <div className="mt-1 text-sm text-cream/70">{value}</div>
-              </div>
             ))}
           </div>
         </Section>

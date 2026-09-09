@@ -8,6 +8,7 @@ jest.mock('@/features/pages', () => {
   const actualHeroSlides = jest.requireActual('@/features/pages/heroSlides')
   return {
     isHeroStyle: actualTypes.isHeroStyle,
+    isStatsStyle: actualTypes.isStatsStyle,
     parseHeroSlides: actualHeroSlides.parseHeroSlides,
     usePageContent: jest.fn(),
     getSectionText: (
@@ -50,5 +51,17 @@ describe('About', () => {
     )
 
     expect(screen.getByText('Our custom story goes here.')).toBeInTheDocument()
+  })
+
+  it('renders stats as a floating card overlapping the hero by default', () => {
+    mockUsePageContent.mockReturnValue({ data: [] })
+    const { container } = render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>,
+    )
+
+    expect(container.querySelector('.-mt-20')).toBeInTheDocument()
+    expect(screen.getByText('ANZ by the numbers')).toBeInTheDocument()
   })
 })
