@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import AdminPageHeader from '@/components/admin/AdminPageHeader'
+import ConfirmDialog from '@/components/ui/confirm-dialog'
 import { useAdminEnquiries, useSoftDeleteEnquiry, useUpdateEnquiryStatus } from '../../hooks/useEnquiries'
 import type { Enquiry, EnquiryStatus } from '../../types'
 
@@ -29,12 +31,13 @@ const EnquiryAdminList = () => {
   const updateStatus = useUpdateEnquiryStatus()
   const softDelete = useSoftDeleteEnquiry()
 
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+
   if (isLoading) return <p className="text-forest/70">Loading…</p>
 
-  const handleDelete = (id: string) => {
-    if (window.confirm('Delete this enquiry?')) {
-      softDelete.mutate(id)
-    }
+  const confirmDelete = () => {
+    if (pendingDeleteId) softDelete.mutate(pendingDeleteId)
+    setPendingDeleteId(null)
   }
 
   return (
@@ -98,7 +101,7 @@ const EnquiryAdminList = () => {
               <td className="px-4 py-3">
                 <button
                   type="button"
-                  onClick={() => handleDelete(enquiry.id)}
+                  onClick={() => setPendingDeleteId(enquiry.id)}
                   className="text-sm font-medium text-red-700 hover:underline"
                 >
                   Delete
@@ -109,6 +112,15 @@ const EnquiryAdminList = () => {
         </tbody>
         </table>
       </div>
+
+      <ConfirmDialog
+        open={pendingDeleteId !== null}
+        title="Delete this enquiry?"
+        description="This removes it from your list. This can't be undone from here."
+        confirmLabel="Delete"
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDeleteId(null)}
+      />
     </div>
   )
 }

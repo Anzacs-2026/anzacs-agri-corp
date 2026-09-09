@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import ConfirmDialog from '@/components/ui/confirm-dialog'
 import AdminPageHeader from '@/components/admin/AdminPageHeader'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 import { updateTestimonialsEnabled } from '@/lib/siteSettingsService'
@@ -28,6 +29,7 @@ const TestimonialAdminList = () => {
   const [quote, setQuote] = useState('')
   const [photoFile, setPhotoFile] = useState<File | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   const toggleEnabled = useMutation({
     mutationFn: (enabled: boolean) => updateTestimonialsEnabled(enabled),
@@ -48,10 +50,9 @@ const TestimonialAdminList = () => {
     }
   }
 
-  const handleDelete = (id: string) => {
-    if (window.confirm('Delete this testimonial?')) {
-      softDelete.mutate(id)
-    }
+  const confirmDelete = () => {
+    if (pendingDeleteId) softDelete.mutate(pendingDeleteId)
+    setPendingDeleteId(null)
   }
 
   if (isLoading) return <p className="text-forest/70">Loading…</p>
@@ -112,7 +113,7 @@ const TestimonialAdminList = () => {
               </label>
               <button
                 type="button"
-                onClick={() => handleDelete(testimonial.id)}
+                onClick={() => setPendingDeleteId(testimonial.id)}
                 className="text-sm font-medium text-red-700 hover:underline"
               >
                 Delete
@@ -121,6 +122,15 @@ const TestimonialAdminList = () => {
           </div>
         ))}
       </div>
+
+      <ConfirmDialog
+        open={pendingDeleteId !== null}
+        title="Delete this testimonial?"
+        description="This removes it from the public site. This can't be undone from here."
+        confirmLabel="Delete"
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDeleteId(null)}
+      />
     </div>
   )
 }

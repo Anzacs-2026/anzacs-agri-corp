@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
+import ConfirmDialog from '@/components/ui/confirm-dialog'
 import AdminPageHeader from '@/components/admin/AdminPageHeader'
 import { useAdminProducts, useSoftDeleteProduct, useUpdateProduct } from '../../hooks/useAdminProducts'
 
@@ -7,9 +9,15 @@ const ProductAdminList = () => {
   const { data: products, isLoading } = useAdminProducts()
   const softDelete = useSoftDeleteProduct()
   const update = useUpdateProduct()
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   const toggleVisible = (id: string, current: boolean, rest: Parameters<typeof update.mutate>[0]['input']) => {
     update.mutate({ id, input: { ...rest, visible: !current } })
+  }
+
+  const confirmDelete = () => {
+    if (pendingDeleteId) softDelete.mutate(pendingDeleteId)
+    setPendingDeleteId(null)
   }
 
   if (isLoading) return <p className="text-forest/70">Loading…</p>
@@ -68,7 +76,7 @@ const ProductAdminList = () => {
                 </Link>
                 <button
                   type="button"
-                  onClick={() => softDelete.mutate(product.id)}
+                  onClick={() => setPendingDeleteId(product.id)}
                   className="text-sm font-medium text-red-700 hover:underline"
                 >
                   Delete
@@ -79,6 +87,15 @@ const ProductAdminList = () => {
         </tbody>
         </table>
       </div>
+
+      <ConfirmDialog
+        open={pendingDeleteId !== null}
+        title="Delete this product?"
+        description="This removes it from the public catalog. This can't be undone from here."
+        confirmLabel="Delete"
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDeleteId(null)}
+      />
     </div>
   )
 }
