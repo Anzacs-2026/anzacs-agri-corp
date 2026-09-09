@@ -69,8 +69,10 @@ done, in progress, or deferred.
 
 ## Phase 6 — Testimonials & seed (Low-Medium effort)
 
-- [ ] Testimonials CRUD behind `site_settings` master switch
-- [ ] Placeholder product seed (hybrid maize, vegetable varieties, NPK fertilizer, bio-stimulant)
+- [x] Testimonials CRUD behind `site_settings` master switch (`/admin/testimonials` — inline add/edit, shown toggle, confirm-before-delete, master switch checkbox on the same page; public "What growers say" section on Home gated on the switch)
+- [x] Placeholder product seed — superseded by the real 24-product catalog (`supabase/seed/products.sql`, grouped into 4 broad categories: Gourds & Melons, Solanaceous Vegetables, Brassicas, Other Vegetables & Herbs) plus real company content on Home/About
+
+**Phase 6 complete: 2026-09-09.** Also shipped ahead of schedule: admin sidebar redesign with nested Pages sub-menu (Home/About/Contact, Photos folded in as inline per-section image uploads — no more standalone media library), a reusable `Hero` component with 3 admin-selectable variants (Split/Mockup/Minimal) and per-page image upload, real ANZ Agricrop branding (logo, favicon), product photo display (grid/list view + pagination on the public catalog), and premium visual polish across the public site.
 
 ## Phase 7 — Polish (Low-Medium effort)
 
