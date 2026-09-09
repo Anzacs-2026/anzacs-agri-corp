@@ -1,6 +1,7 @@
 import { usePageContent, getSectionText } from '@/features/pages'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 import { EnquiryForm } from '@/features/enquiries'
+import Seo from '@/components/Seo'
 
 const Contact = () => {
   const { data: sections } = usePageContent('contact')
@@ -8,6 +9,12 @@ const Contact = () => {
 
   return (
     <section className="mx-auto max-w-2xl px-4 py-16 text-center">
+      <Seo
+        title="Contact"
+        description="Get in touch with ANZ Agri Crop Sciences for enquiries about seeds, farming inputs, and bulk orders."
+        path="/contact"
+      />
+
       <h1 className="text-4xl font-bold">Contact</h1>
       <p className="mt-4 text-forest/80">
         {getSectionText(sections, 'intro', 'Get in touch — we would love to hear from you.')}

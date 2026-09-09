@@ -1,14 +1,15 @@
 import { useParams } from 'react-router-dom'
 import { useProduct, useRelatedProducts, ProductCard } from '@/features/products'
 import { photoService } from '@/features/photos/services/photoService'
+import Seo from '@/components/Seo'
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>()
   const { data: product, isLoading, error } = useProduct(slug ?? '')
   const { data: related } = useRelatedProducts(product?.category, product?.id)
 
-  if (isLoading) return <p className="py-16 text-center text-forest/60">Loading…</p>
-  if (error || !product) return <p className="py-16 text-center text-forest/60">Product not found.</p>
+  if (isLoading) return <p className="py-16 text-center text-forest/70">Loading…</p>
+  if (error || !product) return <p className="py-16 text-center text-forest/70">Product not found.</p>
 
   const imageUrl = product.primary_photo?.storage_path
     ? photoService.getPublicUrl(product.primary_photo.storage_path)
@@ -16,6 +17,13 @@ const ProductDetail = () => {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16">
+      <Seo
+        title={product.name}
+        description={product.short_description || `${product.name} — ${product.category} from ANZ Agri Crop Sciences.`}
+        path={`/products/${product.slug}`}
+        image={imageUrl ?? undefined}
+      />
+
       {imageUrl && (
         <img src={imageUrl} alt={product.name} className="mb-6 aspect-video w-full rounded-xl object-cover" />
       )}

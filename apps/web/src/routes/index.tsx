@@ -1,3 +1,4 @@
+import { lazy } from 'react'
 import type { RouteRecord } from 'vite-react-ssg'
 import Layout from './Layout'
 import PublicLayout from './PublicLayout'
@@ -8,13 +9,17 @@ import Contact from './Contact'
 import Products from './Products'
 import ProductDetail from './ProductDetail'
 import AdminLogin from './AdminLogin'
-import AdminDashboard from './AdminDashboard'
-import AdminProducts from './AdminProducts'
-import AdminProductForm from './AdminProductForm'
-import AdminPages from './AdminPages'
-import AdminEnquiries from './AdminEnquiries'
-import AdminTestimonials from './AdminTestimonials'
 import NotFound from './NotFound'
+
+// Lazy-loaded: never reached during SSG (AdminLayout redirects to /admin/login
+// before rendering its <Outlet/> when there's no session, which is always the
+// case at build time), and never needed by a public visitor at runtime either.
+const AdminDashboard = lazy(() => import('./AdminDashboard'))
+const AdminProducts = lazy(() => import('./AdminProducts'))
+const AdminProductForm = lazy(() => import('./AdminProductForm'))
+const AdminPages = lazy(() => import('./AdminPages'))
+const AdminEnquiries = lazy(() => import('./AdminEnquiries'))
+const AdminTestimonials = lazy(() => import('./AdminTestimonials'))
 
 export const routes: RouteRecord[] = [
   {

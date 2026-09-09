@@ -3,6 +3,7 @@ import { humanizeKey } from '@/lib/humanize'
 import { photoService } from '@/features/photos/services/photoService'
 import Hero from '@/components/Hero'
 import Section from '@/components/Section'
+import Seo from '@/components/Seo'
 
 const DEFAULTS: Record<string, string> = {
   who_we_are:
@@ -48,6 +49,12 @@ const About = () => {
 
   return (
     <>
+      <Seo
+        title="About Us"
+        description="An integrated agricultural enterprise since 2009 — plant genetics, seed production, farming, and beekeeping, built on over a decade of research."
+        path="/about"
+      />
+
       <Hero
         variant={HERO_VARIANTS.includes(heroVariant) ? heroVariant : 'split'}
         eyebrow="Our story"

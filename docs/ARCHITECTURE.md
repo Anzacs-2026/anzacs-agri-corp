@@ -97,10 +97,15 @@ no user-supplied redirect targets — all routes are static or database-slug
 driven, not attacker-controlled URLs — so exposure is low. Tracked here;
 revisit when a fixed version ships.
 
-## Favicon exception — pending client sign-off
+## Favicon — resolved in Phase 7
 
-See open item in project docs / final plan §03. The brand guidelines'
-90px lockup minimum and no-crop rule cannot both be satisfied at
-16–32px tab size. Current placeholder in `apps/web/public/favicon.svg` is
-a temporary green disc, NOT the final emblem-only design — needs the real
-logo master files and ANZ's sign-off before Phase 7.
+The client supplied real logo master files (leaf mark + circular "Seeds
+for life" badge, `apps/web/public/crops/logo.png` and
+`apps/web/public/anz_logos/badge.webp`). Phase 7 generated the full icon
+set from them: `favicon-16x16.png`/`favicon-32x32.png` (cropped leaf mark
+— legible at tab size, where the full badge's text isn't),
+`apple-touch-icon.png` (180×180) and `icon-192.png`/`icon-512.png` (for
+`site.webmanifest`) from the circular badge. No `.ico` file — every
+evergreen browser resolves PNG favicons via `<link rel="icon">`, so the
+legacy multi-res `.ico` format was skipped as unnecessary for this
+project's audience.

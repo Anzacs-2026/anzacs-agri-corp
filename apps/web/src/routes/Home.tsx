@@ -6,6 +6,7 @@ import { useSiteSettings } from '@/hooks/useSiteSettings'
 import { photoService } from '@/features/photos/services/photoService'
 import Hero from '@/components/Hero'
 import Section from '@/components/Section'
+import Seo from '@/components/Seo'
 
 const Home = () => {
   const { data: sections } = usePageContent('home')
@@ -20,6 +21,12 @@ const Home = () => {
 
   return (
     <>
+      <Seo
+        title="ANZ Agri Crop Sciences"
+        description="Trusted hybrid and open-pollinated seeds, farming, and beekeeping from ANZ Agri Crop Sciences — over a decade of research behind every field."
+        path="/"
+      />
+
       <Hero
         variant={HERO_VARIANTS.includes(heroVariant) ? heroVariant : 'mockup'}
         eyebrow="Seeds for life"

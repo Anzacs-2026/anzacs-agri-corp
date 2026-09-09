@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Package, FileText, Mail, Quote, LogOut, Menu, X, type LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { authService, useAuth } from '@/features/auth'
+import Seo from '@/components/Seo'
 
 interface LinkItem {
   to: string
@@ -44,7 +45,7 @@ const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
 const subNavLinkClassName = ({ isActive }: { isActive: boolean }) =>
   cn(
     'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
-    isActive ? 'bg-leaf/20 text-forest' : 'text-forest/60 hover:bg-forest/5 hover:text-forest',
+    isActive ? 'bg-leaf/20 text-forest' : 'text-forest/70 hover:bg-forest/5 hover:text-forest',
   )
 
 const flatItems = navItems.flatMap((item) => (isGroup(item) ? item.children : [item]))
@@ -76,7 +77,7 @@ const AdminLayout = () => {
     <>
       <div className="px-4 py-6">
         <img src="/crops/logo.png" alt="ANZ Agricrop" className="h-8" />
-        <p className="mt-1 text-xs uppercase tracking-wide text-forest/50">Admin</p>
+        <p className="mt-1 text-xs uppercase tracking-wide text-forest/70">Admin</p>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 px-3">
@@ -119,11 +120,13 @@ const AdminLayout = () => {
 
   return (
     <div className="flex min-h-screen bg-cream">
+      <Seo title="Admin" description="ANZ Agricrop admin dashboard." path={location.pathname} noindex />
+
       <aside className="hidden w-64 flex-col border-r border-forest/10 bg-white md:flex">{sidebarContent}</aside>
 
       {mobileOpen && (
         <div className="fixed inset-0 z-40 flex md:hidden">
-          <div className="absolute inset-0 bg-forest/40" onClick={() => setMobileOpen(false)} />
+          <div className="absolute inset-0 bg-forest/40" aria-hidden="true" onClick={() => setMobileOpen(false)} />
           <aside className="relative z-50 flex w-64 flex-col bg-white shadow-xl">
             <button
               type="button"
@@ -151,11 +154,13 @@ const AdminLayout = () => {
             </button>
             <h1 className="text-lg font-semibold text-forest">{currentPage?.label ?? 'Admin'}</h1>
           </div>
-          <span className="text-sm text-forest/60">{user?.email}</span>
+          <span className="text-sm text-forest/70">{user?.email}</span>
         </header>
 
         <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
-          <Outlet />
+          <Suspense fallback={<p className="text-forest/70">Loading…</p>}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>

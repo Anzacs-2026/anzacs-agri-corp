@@ -8,6 +8,7 @@ const config: Config = {
   setupFilesAfterEnv: ['<rootDir>/tests/unit/setup.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^vite-react-ssg$': '<rootDir>/tests/unit/mocks/vite-react-ssg.tsx',
     '\\.(css|less|scss)$': 'identity-obj-proxy',
   },
   transform: {
