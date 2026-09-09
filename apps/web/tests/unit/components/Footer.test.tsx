@@ -9,12 +9,12 @@ jest.mock('@/hooks/useSiteSettings', () => ({
 const mockUseSiteSettings = useSiteSettings as jest.Mock
 
 describe('Footer', () => {
-  it('renders the tagline', () => {
+  it('renders the wordmark', () => {
     mockUseSiteSettings.mockReturnValue({ data: undefined, isLoading: true })
 
     render(<Footer />)
 
-    expect(screen.getByText(/seeds for life/i)).toBeInTheDocument()
+    expect(screen.getByText('ANZ Agricrop')).toBeInTheDocument()
   })
 
   it('renders contact info once site_settings loads', () => {

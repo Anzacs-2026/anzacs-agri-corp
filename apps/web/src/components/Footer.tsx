@@ -10,8 +10,6 @@ const Footer = () => {
           <img src="/anz_logos/badge.webp" alt="" className="h-10 w-10" />
           ANZ Agricrop
         </div>
-        <p>Seeds for life.</p>
-
         {data?.contact_phone && (
           <a href={`tel:${data.contact_phone}`} className="hover:text-cream">
             Phone: {data.contact_phone}
