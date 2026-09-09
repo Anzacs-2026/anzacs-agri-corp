@@ -15,9 +15,9 @@ const Home = () => {
   const { data: testimonials } = useShownTestimonials()
   const featured = products?.slice(0, 3) ?? []
 
-  const heroVariant = getSectionText(sections, 'hero_variant', 'minimal:subtle-background')
+  const heroVariant = getSectionText(sections, 'hero_variant', 'split:50-50')
   const heroImagePath = getSectionText(sections, 'hero_image', '')
-  const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/minimal-curved-crop-rows.webp'
+  const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/split-hero-seedling.webp'
   const categoryCount = new Set(products?.map((p) => p.category)).size
 
   const heroStats = [

@@ -9,7 +9,7 @@ const Products = () => {
 
   const heroVariant = getSectionText(sections, 'hero_variant', 'mockup:screenshot')
   const heroImagePath = getSectionText(sections, 'hero_image', '')
-  const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/hero-product-seed-pouch.webp'
+  const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/minimal-sorghum-field.webp'
 
   return (
     <>

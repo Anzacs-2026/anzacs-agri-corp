@@ -18,7 +18,7 @@ const AdminLogin = () => {
       <Seo title="Admin Sign In" description="ANZ Agricrop admin sign in." path="/admin/login" noindex />
 
       <div className="w-full max-w-sm rounded-xl bg-cream p-8 shadow-xl">
-        <img src="/crops/logo.png" alt="ANZ Agricrop" className="mx-auto h-10" />
+        <img src="/anz_logos/badge.webp" alt="ANZ Agricrop" className="mx-auto h-16" />
         <p className="mb-6 mt-2 text-center text-sm text-forest/70">Admin sign in</p>
         <LoginForm />
       </div>

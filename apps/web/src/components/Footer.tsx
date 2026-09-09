@@ -26,6 +26,9 @@ const Footer = () => {
           </a>
         )}
         {data?.contact_address && <p>{data.contact_address}</p>}
+        <p className="mt-2 border-t border-cream/10 pt-3 text-xs text-cream/60">
+          © {new Date().getFullYear()} ANZ Agricrop. All rights reserved.
+        </p>
       </div>
     </footer>
   )

@@ -65,17 +65,19 @@ const HeroText = ({
       {subtitle}
     </p>
     {showCta && (ctaLabel || ctaLabel2) && (
-      <div className={cn('mt-8 flex flex-wrap items-center gap-5', align === 'center' && 'justify-center')}>
+      <div className={cn('mt-8 flex flex-wrap items-center gap-4', align === 'center' && 'justify-center')}>
         {ctaLabel && ctaTo && (
           <Link to={ctaTo}>
-            <Button variant="outline" size="default" className="border-gold text-cream hover:bg-gold/20">
+            <Button size="default" className="bg-gold text-forest hover:opacity-90">
               {ctaLabel}
             </Button>
           </Link>
         )}
         {ctaLabel2 && ctaTo2 && (
-          <Link to={ctaTo2} className="text-sm font-medium text-cream underline underline-offset-4 hover:text-lime">
-            {ctaLabel2}
+          <Link to={ctaTo2}>
+            <Button variant="outline" size="default" className="border-cream/60 text-cream hover:bg-cream/10">
+              {ctaLabel2}
+            </Button>
           </Link>
         )}
       </div>
@@ -83,17 +85,18 @@ const HeroText = ({
   </div>
 )
 
-const SPLIT_GRID_COLS: Record<string, string> = {
-  '50-50': 'md:grid-cols-2',
-  '60-40': 'md:grid-cols-[3fr_2fr]',
-  '40-60': 'md:grid-cols-[2fr_3fr]',
-  asymmetric: 'md:grid-cols-2',
-  'text-image': 'md:grid-cols-2',
-  'text-stats': 'md:grid-cols-2',
-}
-
-const SplitVisual = ({ subtype, imageUrl, stats }: { subtype: string; imageUrl?: string | null; stats?: HeroProps['stats'] }) => {
-  if (subtype === 'text-stats' && stats && stats.length > 0) {
+const NoPhotoVisual = ({
+  category,
+  subtype,
+  products,
+  stats,
+}: {
+  category: 'split' | 'mockup'
+  subtype: string
+  products?: HeroProps['products']
+  stats?: HeroProps['stats']
+}) => {
+  if (category === 'split' && subtype === 'text-stats' && stats && stats.length > 0) {
     return (
       <div className="grid grid-cols-2 gap-4">
         {stats.map((stat) => (
@@ -106,53 +109,10 @@ const SplitVisual = ({ subtype, imageUrl, stats }: { subtype: string; imageUrl?:
     )
   }
 
-  return (
-    <div className={cn('flex justify-center', subtype === 'asymmetric' && 'md:-translate-y-4 md:rotate-2')}>
-      {imageUrl ? (
-        <img src={imageUrl} alt="" className="aspect-square w-full max-w-sm rounded-xl object-cover shadow-lg" />
-      ) : (
-        <img src="/anz_logos/badge.webp" alt="" className="h-56 w-56" />
-      )}
-    </div>
-  )
-}
+  const mockupProducts = category === 'mockup' ? (products?.slice(0, 2) ?? []) : []
 
-const ProductVisual = ({
-  subtype,
-  imageUrl,
-  products,
-}: {
-  subtype: string
-  imageUrl?: string | null
-  products?: HeroProps['products']
-}) => {
-  if (subtype === 'screenshot') {
+  if (mockupProducts.length > 0) {
     return (
-      <div className="flex justify-center">
-        <img
-          src={imageUrl ?? '/anz_logos/badge.webp'}
-          alt=""
-          className={cn(
-            'w-full max-w-sm rounded-xl object-cover shadow-lg',
-            imageUrl ? 'aspect-square' : 'h-56 w-56 max-w-none',
-          )}
-        />
-      </div>
-    )
-  }
-
-  const mockupProducts = products?.slice(0, 2) ?? []
-
-  if (mockupProducts.length === 0) {
-    return (
-      <div className="flex justify-center">
-        <img src="/anz_logos/badge.webp" alt="" className="h-56 w-56" />
-      </div>
-    )
-  }
-
-  return (
-    <div className="flex justify-center">
       <div className="relative w-full max-w-xs">
         {mockupProducts.map((product, index) => (
           <div
@@ -169,8 +129,10 @@ const ProductVisual = ({
           </div>
         ))}
       </div>
-    </div>
-  )
+    )
+  }
+
+  return <img src="/anz_logos/badge.webp" alt="" className="h-56 w-56" />
 }
 
 const Hero = ({
@@ -189,15 +151,22 @@ const Hero = ({
   const parsed = parseHeroVariant(variant)
   const subtype = FALLBACK_SUBTYPE[parsed.subtype] ?? parsed.subtype
 
-  if (parsed.category === 'minimal') {
-    const isWhitespace = subtype === 'whitespace'
-    const hasBackgroundPhoto = Boolean(imageUrl)
+  // A real photo always renders as a full-bleed banner (image behind the
+  // text, not a side-by-side card) — the one exception is Split's
+  // "Text + Stats" sub-type, which shows data, not a photo, regardless.
+  const isBannerable = !(parsed.category === 'split' && subtype === 'text-stats')
+  const hasBackgroundPhoto = Boolean(imageUrl) && isBannerable
+
+  if (parsed.category === 'minimal' || hasBackgroundPhoto) {
+    const isWhitespace = parsed.category === 'minimal' && subtype === 'whitespace'
+    const align = parsed.category === 'minimal' ? 'center' : 'left'
 
     return (
       <section
         className={cn(
           'relative overflow-hidden px-4 text-cream',
-          !hasBackgroundPhoto && (subtype === 'subtle-background' ? 'bg-gradient-to-br from-forest via-forest to-leaf/30' : 'bg-forest'),
+          !hasBackgroundPhoto &&
+            (subtype === 'subtle-background' ? 'bg-gradient-to-br from-forest via-forest to-leaf/30' : 'bg-forest'),
           isWhitespace ? 'py-32 sm:py-40' : 'py-24',
         )}
       >
@@ -208,7 +177,12 @@ const Hero = ({
           </>
         )}
 
-        <div className={cn('relative mx-auto', subtype === 'editorial' ? 'max-w-4xl' : 'max-w-3xl')}>
+        <div
+          className={cn(
+            'relative mx-auto',
+            align === 'center' ? (subtype === 'editorial' ? 'max-w-4xl' : 'max-w-3xl') : 'max-w-2xl',
+          )}
+        >
           <HeroText
             eyebrow={isWhitespace ? undefined : eyebrow}
             title={title}
@@ -217,8 +191,8 @@ const Hero = ({
             ctaTo={ctaTo}
             ctaLabel2={ctaLabel2}
             ctaTo2={ctaTo2}
-            align="center"
-            showCta={subtype !== 'text-only' && subtype !== 'cta-focused'}
+            align={align}
+            showCta={subtype !== 'text-only'}
             eyebrowClassName={subtype === 'editorial' ? 'tracking-[0.35em]' : undefined}
             titleClassName={cn(
               subtype === 'typography-led' && 'text-5xl sm:text-6xl md:text-7xl',
@@ -229,30 +203,15 @@ const Hero = ({
           {subtype === 'small-visual' && !hasBackgroundPhoto && (
             <img src="/anz_logos/badge.webp" alt="" className="mx-auto mt-6 h-16 w-16" />
           )}
-          {subtype === 'cta-focused' && (ctaLabel || ctaLabel2) && (
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-5">
-              {ctaLabel && ctaTo && (
-                <Link to={ctaTo}>
-                  <Button size="default" className="bg-gold px-8 py-3 text-forest hover:opacity-90">
-                    {ctaLabel}
-                  </Button>
-                </Link>
-              )}
-              {ctaLabel2 && ctaTo2 && (
-                <Link to={ctaTo2} className="text-sm font-medium text-cream underline underline-offset-4 hover:text-lime">
-                  {ctaLabel2}
-                </Link>
-              )}
-            </div>
-          )}
         </div>
       </section>
     )
   }
 
+  // No photo: split (text-stats) or mockup (floating product cards / badge fallback)
   return (
     <section className="bg-forest px-4 py-20 text-cream">
-      <div className={cn('mx-auto grid max-w-5xl grid-cols-1 items-center gap-10', SPLIT_GRID_COLS[subtype] ?? 'md:grid-cols-2')}>
+      <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-10 md:grid-cols-2">
         <HeroText
           eyebrow={eyebrow}
           title={title}
@@ -263,12 +222,9 @@ const Hero = ({
           ctaTo2={ctaTo2}
           align="left"
         />
-
-        {parsed.category === 'split' ? (
-          <SplitVisual subtype={subtype} imageUrl={imageUrl} stats={stats} />
-        ) : (
-          <ProductVisual subtype={subtype} imageUrl={imageUrl} products={products} />
-        )}
+        <div className="flex justify-center">
+          <NoPhotoVisual category={parsed.category === 'split' ? 'split' : 'mockup'} subtype={subtype} products={products} stats={stats} />
+        </div>
       </div>
     </section>
   )

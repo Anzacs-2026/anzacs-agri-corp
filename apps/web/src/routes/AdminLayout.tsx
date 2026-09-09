@@ -28,7 +28,7 @@ const navItems: (LinkItem | GroupItem)[] = [
       { to: '/admin/pages/home', label: 'Home' },
       { to: '/admin/pages/about', label: 'About' },
       { to: '/admin/pages/contact', label: 'Contact' },
-      { to: '/admin/pages/products', label: 'Products Page' },
+      { to: '/admin/pages/products', label: 'Products' },
     ],
   },
   { to: '/admin/enquiries', label: 'Enquiries', icon: Mail },
@@ -77,7 +77,7 @@ const AdminLayout = () => {
   const sidebarContent = (
     <>
       <div className="px-4 py-6">
-        <img src="/crops/logo.png" alt="ANZ Agricrop" className="h-8" />
+        <img src="/anz_logos/badge.webp" alt="ANZ Agricrop" className="h-12" />
         <p className="mt-1 text-xs uppercase tracking-wide text-forest/70">Admin</p>
       </div>
 
