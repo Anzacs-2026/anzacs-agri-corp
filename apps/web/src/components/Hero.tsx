@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { CheckCircle2 } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Sprout } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { isHeroStyle } from '@/features/pages'
@@ -37,7 +37,12 @@ const HeroSlideLayer = ({ slide, align, parallax }: { slide: HeroSlide; align: '
         ))}
       {hasPhoto && <div className="absolute inset-0 bg-forest/70" />}
 
-      <div className={cn('relative mx-auto w-full', align === 'center' ? 'max-w-3xl text-center' : 'max-w-2xl text-left')}>
+      <div
+        className={cn(
+          'animate-in fade-in slide-in-from-bottom-6 relative mx-auto w-full duration-700',
+          align === 'center' ? 'max-w-3xl text-center' : 'max-w-2xl text-left',
+        )}
+      >
         {slide.eyebrow && (
           <span className="inline-block rounded-full bg-lime/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-lime">
             {slide.eyebrow}
@@ -57,6 +62,7 @@ const HeroSlideLayer = ({ slide, align, parallax }: { slide: HeroSlide; align: '
             {slide.ctaLabel && slide.ctaTo && (
               <Link to={slide.ctaTo}>
                 <Button size="default" className="bg-gold text-forest hover:opacity-90">
+                  <Sprout size={16} className="mr-1.5" aria-hidden />
                   {slide.ctaLabel}
                 </Button>
               </Link>
@@ -64,6 +70,7 @@ const HeroSlideLayer = ({ slide, align, parallax }: { slide: HeroSlide; align: '
             {slide.ctaLabel2 && slide.ctaTo2 && (
               <Link to={slide.ctaTo2}>
                 <Button variant="outline" size="default" className="border-cream/60 text-cream hover:bg-cream/10">
+                  <ArrowRight size={16} className="mr-1.5" aria-hidden />
                   {slide.ctaLabel2}
                 </Button>
               </Link>
@@ -108,17 +115,24 @@ const Hero = ({ variant, slides, parallax }: HeroProps) => {
                     type="button"
                     onClick={() => setIndex(i)}
                     aria-current={i === index}
-                    className="flex items-center gap-3 text-left"
+                    className="group flex items-center gap-3 text-left"
                   >
                     <span
                       className={cn(
-                        'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-sm font-medium transition-colors',
-                        i === index ? 'border-cream bg-cream text-forest' : 'border-cream/50 text-cream',
+                        'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-sm font-medium transition-all duration-200',
+                        i === index
+                          ? 'border-cream bg-cream text-forest'
+                          : 'border-cream/50 text-cream group-hover:scale-110 group-hover:border-cream',
                       )}
                     >
                       {i + 1}
                     </span>
-                    <span className={cn('text-sm font-medium transition-colors', i === index ? 'text-cream' : 'text-cream/70')}>
+                    <span
+                      className={cn(
+                        'text-sm font-medium transition-colors',
+                        i === index ? 'text-cream' : 'text-cream/70 group-hover:text-cream',
+                      )}
+                    >
                       {slide.title}
                     </span>
                   </button>

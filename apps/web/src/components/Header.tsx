@@ -14,7 +14,7 @@ const navItems = [
 
 const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
   cn(
-    'inline-flex items-center gap-1.5 text-sm font-medium text-cream/80 transition-colors hover:text-cream',
+    'group inline-flex items-center gap-1.5 text-sm font-medium text-cream/80 transition-colors hover:text-cream',
     isActive && 'text-cream underline decoration-gold decoration-2 underline-offset-4',
   )
 
@@ -38,21 +38,25 @@ const Header = () => {
       )}
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4">
-        <NavLink to="/" className="flex items-center gap-2 font-serif text-xl tracking-tight" end>
-          <img src="/anz_logos/badge.webp" alt="ANZ Agricrop" className="h-14 w-14" />
+        <NavLink to="/" className="group flex items-center gap-2 font-serif text-xl tracking-tight" end>
+          <img
+            src="/anz_logos/badge.webp"
+            alt="ANZ Agricrop"
+            className="h-14 w-14 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105"
+          />
           ANZ Agricrop
         </NavLink>
 
         <nav className="hidden flex-wrap items-center gap-6 md:flex">
           {navItems.map(({ to, label, end, icon: Icon }) => (
             <NavLink key={to} to={to} end={end} className={navLinkClassName}>
-              <Icon size={18} aria-hidden />
+              <Icon size={18} aria-hidden className="transition-transform duration-200 group-hover:scale-110" />
               {label}
             </NavLink>
           ))}
           <NavLink
             to="/admin/login"
-            className="inline-flex items-center gap-1.5 rounded-md border border-cream/30 px-3 py-1.5 text-sm font-medium text-cream/80 transition-colors hover:border-cream/60 hover:text-cream"
+            className="inline-flex items-center gap-1.5 rounded-md border border-cream/30 px-3 py-1.5 text-sm font-medium text-cream/80 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold hover:bg-cream/5 hover:text-cream hover:shadow-md"
           >
             <LogIn size={18} aria-hidden />
             Admin
@@ -61,7 +65,7 @@ const Header = () => {
 
         <button
           type="button"
-          className="text-cream md:hidden"
+          className="rounded-md p-1.5 text-cream transition-colors duration-200 hover:bg-cream/10 md:hidden"
           onClick={() => setMobileOpen((v) => !v)}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         >

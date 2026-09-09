@@ -2,6 +2,7 @@ import { usePageContent, getSectionText, parseHeroSlides, parseHeroTags } from '
 import { ProductGrid } from '@/features/products'
 import { photoService } from '@/features/photos/services/photoService'
 import Hero, { type HeroSlide } from '@/components/Hero'
+import Reveal from '@/components/Reveal'
 import Seo from '@/components/Seo'
 
 const Products = () => {
@@ -55,7 +56,9 @@ const Products = () => {
       <Hero variant={heroVariant} slides={slides} parallax={heroParallax} />
 
       <div id="product-grid" className="scroll-mt-24">
-        <ProductGrid />
+        <Reveal variant="up">
+          <ProductGrid />
+        </Reveal>
       </div>
     </>
   )

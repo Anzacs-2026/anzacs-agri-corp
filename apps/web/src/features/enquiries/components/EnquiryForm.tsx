@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -104,6 +105,7 @@ const EnquiryForm = () => {
       )}
 
       <Button type="submit" disabled={submitting}>
+        <Send size={16} className="mr-1.5" aria-hidden />
         {submitting ? 'Sending…' : 'Send enquiry'}
       </Button>
     </form>

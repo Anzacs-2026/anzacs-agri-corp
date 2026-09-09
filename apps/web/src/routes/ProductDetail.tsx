@@ -1,6 +1,9 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { MessageCircle } from 'lucide-react'
 import { useProduct, useRelatedProducts, ProductCard } from '@/features/products'
 import { photoService } from '@/features/photos/services/photoService'
+import { Button } from '@/components/ui/button'
+import Reveal from '@/components/Reveal'
 import Seo from '@/components/Seo'
 
 const ProductDetail = () => {
@@ -28,11 +31,13 @@ const ProductDetail = () => {
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start">
         {imageUrl && (
-          <img
-            src={imageUrl}
-            alt={product.name}
-            className="aspect-square w-full rounded-2xl object-cover shadow-md md:aspect-[4/3]"
-          />
+          <div className="group animate-in fade-in zoom-in-95 aspect-square w-full overflow-hidden rounded-2xl shadow-md duration-700 hover:animate-wave md:aspect-[4/3]">
+            <img
+              src={imageUrl}
+              alt={product.name}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+          </div>
         )}
 
         <div>
@@ -63,28 +68,35 @@ const ProductDetail = () => {
           )}
 
           {product.short_description && <p className="mt-4 leading-relaxed text-forest/80">{product.short_description}</p>}
+
+          <Link to="/contact" className="mt-6 inline-block">
+            <Button size="default">
+              <MessageCircle size={16} className="mr-1.5" aria-hidden />
+              Enquire About This Product
+            </Button>
+          </Link>
         </div>
       </div>
 
       {descriptionParagraphs.length > 0 && (
-        <div className="mt-10 space-y-4">
+        <Reveal variant="fade" className="mt-10 space-y-4">
           {descriptionParagraphs.map((paragraph, i) => (
             <p key={i} className="whitespace-pre-line leading-relaxed text-forest/80">
               {paragraph}
             </p>
           ))}
-        </div>
+        </Reveal>
       )}
 
       {related && related.length > 0 && (
-        <div className="mt-16">
+        <Reveal variant="up" className="mt-16">
           <h2 className="mb-4 font-serif text-xl text-forest">Related products</h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
             {related.map((r) => (
               <ProductCard key={r.id} product={r} />
             ))}
           </div>
-        </div>
+        </Reveal>
       )}
     </div>
   )

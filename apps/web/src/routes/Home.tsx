@@ -8,9 +8,11 @@ import Hero, { type HeroSlide } from '@/components/Hero'
 import Carousel from '@/components/Carousel'
 import Section from '@/components/Section'
 import StatsCounter from '@/components/StatsCounter'
+import Reveal from '@/components/Reveal'
 import Seo from '@/components/Seo'
+import { Button } from '@/components/ui/button'
 import { parsePairs, parseBullets } from '@/lib/parseSectionText'
-import { Leaf, ShieldCheck, TrendingUp, Users } from 'lucide-react'
+import { LayoutGrid, Leaf, ShieldCheck, TrendingUp, Users } from 'lucide-react'
 
 const FEATURE_ICONS = [Leaf, ShieldCheck, TrendingUp, Users]
 
@@ -101,65 +103,83 @@ const Home = () => {
 
       <Hero variant={heroVariant} slides={slides} parallax={heroParallax} />
 
-      {statsEnabled && <StatsCounter style={statsStyle} title={statsTitle} stats={stats} />}
+      {statsEnabled && (
+        <Reveal variant="scale">
+          <StatsCounter style={statsStyle} title={statsTitle} stats={stats} />
+        </Reveal>
+      )}
 
-      <Section>
-        <p className="mx-auto max-w-2xl text-center text-lg text-forest/80">
-          {getSectionText(
-            sections,
-            'intro',
-            'An integrated agricultural enterprise with a strong foundation in plant genetics and seed production — delivering 100% pure, high-yield hybrid and open-pollinated varieties to growers nationwide and beyond.',
-          )}
-        </p>
-      </Section>
+      <Reveal variant="fade">
+        <Section>
+          <p className="mx-auto max-w-2xl text-center text-lg text-forest/80">
+            {getSectionText(
+              sections,
+              'intro',
+              'An integrated agricultural enterprise with a strong foundation in plant genetics and seed production — delivering 100% pure, high-yield hybrid and open-pollinated varieties to growers nationwide and beyond.',
+            )}
+          </p>
+        </Section>
+      </Reveal>
 
       {featuresEnabled && features.length > 0 && (
-        <Section background="cream">
-          <h2 className="mb-6 text-center font-serif text-2xl text-forest">{featuresTitle}</h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map(({ label, value }, i) => {
-              const Icon = FEATURE_ICONS[i % FEATURE_ICONS.length]
-              return (
-                <div key={label || value} className="rounded-xl border border-forest/10 bg-white p-5 text-center shadow-sm">
-                  <Icon className="mx-auto h-8 w-8 text-leaf" />
-                  {label && <div className="mt-3 font-medium text-forest">{label}</div>}
-                  <div className="mt-1 text-sm text-forest/70">{value}</div>
-                </div>
-              )
-            })}
-          </div>
-        </Section>
+        <Reveal variant="up">
+          <Section background="cream">
+            <h2 className="mb-6 text-center font-serif text-2xl text-forest">{featuresTitle}</h2>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {features.map(({ label, value }, i) => {
+                const Icon = FEATURE_ICONS[i % FEATURE_ICONS.length]
+                return (
+                  <div
+                    key={label || value}
+                    className="group rounded-xl border border-forest/10 bg-white p-5 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-leaf/40 hover:shadow-lg"
+                  >
+                    <Icon className="mx-auto h-8 w-8 text-leaf group-hover:animate-bounce" />
+                    {label && <div className="mt-3 font-medium text-forest">{label}</div>}
+                    <div className="mt-1 text-sm text-forest/70">{value}</div>
+                  </div>
+                )
+              })}
+            </div>
+          </Section>
+        </Reveal>
       )}
 
       {featured.length > 0 && (
-        <Section background="cream">
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-serif text-2xl text-forest">Featured products</h2>
-            <Link to="/products" className="text-sm font-medium text-forest underline underline-offset-4">
-              View all
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {featured.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </Section>
+        <Reveal variant="left">
+          <Section background="cream">
+            <div className="mb-6 flex items-center justify-between">
+              <h2 className="font-serif text-2xl text-forest">Featured products</h2>
+              <Link to="/products">
+                <Button variant="outline" size="sm">
+                  <LayoutGrid size={16} className="mr-1.5" aria-hidden />
+                  View all
+                </Button>
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+              {featured.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </Section>
+        </Reveal>
       )}
 
       {settings?.testimonials_enabled && testimonials && testimonials.length > 0 && (
-        <Section>
-          <h2 className="mb-6 text-center font-serif text-2xl text-forest">What growers say</h2>
-          <Carousel
-            items={testimonials}
-            getKey={(t) => t.id}
-            ariaLabel="Customer testimonials"
-            intervalMs={6000}
-            dotTone="dark"
-            className="mx-auto h-72 max-w-xl sm:h-64"
-            renderItem={(testimonial) => <TestimonialCard testimonial={testimonial} />}
-          />
-        </Section>
+        <Reveal variant="right">
+          <Section>
+            <h2 className="mb-6 text-center font-serif text-2xl text-forest">What growers say</h2>
+            <Carousel
+              items={testimonials}
+              getKey={(t) => t.id}
+              ariaLabel="Customer testimonials"
+              intervalMs={6000}
+              dotTone="dark"
+              className="mx-auto h-72 max-w-xl sm:h-64"
+              renderItem={(testimonial) => <TestimonialCard testimonial={testimonial} />}
+            />
+          </Section>
+        </Reveal>
       )}
     </>
   )
