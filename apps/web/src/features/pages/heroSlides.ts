@@ -9,6 +9,7 @@ export const emptyHeroSlide = (): HeroSlideContent => ({
   ctaTo: '',
   ctaLabel2: '',
   ctaTo2: '',
+  tags: '',
 })
 
 const str = (value: unknown): string => (typeof value === 'string' ? value : '')
@@ -24,8 +25,15 @@ const coerceSlide = (raw: unknown): HeroSlideContent => {
     ctaTo: str(r.ctaTo),
     ctaLabel2: str(r.ctaLabel2),
     ctaTo2: str(r.ctaTo2),
+    tags: str(r.tags),
   }
 }
+
+export const parseHeroTags = (tags: string): string[] =>
+  tags
+    .split(',')
+    .map((t) => t.trim())
+    .filter(Boolean)
 
 export const parseHeroSlides = (text: string): HeroSlideContent[] => {
   if (!text) return []

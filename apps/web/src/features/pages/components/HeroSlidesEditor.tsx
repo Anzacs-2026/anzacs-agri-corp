@@ -93,16 +93,15 @@ const HeroSlidesEditor = ({ page, value, onSave, saving }: HeroSlidesEditorProps
                 }}
               />
 
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                <Label>
-                  Eyebrow
-                  <Input value={slide.eyebrow} onChange={(e) => updateSlide(i, { eyebrow: e.target.value })} />
-                </Label>
-                <Label>
-                  Title
-                  <Input value={slide.title} onChange={(e) => updateSlide(i, { title: e.target.value })} />
-                </Label>
-              </div>
+              <Label>
+                Eyebrow
+                <Input value={slide.eyebrow} onChange={(e) => updateSlide(i, { eyebrow: e.target.value })} />
+              </Label>
+              <Label className="mt-2">
+                Title
+                <span className="text-xs font-normal text-forest/70">Put the accent line on its own line to color it.</span>
+                <Textarea rows={2} value={slide.title} onChange={(e) => updateSlide(i, { title: e.target.value })} />
+              </Label>
               <Label className="mt-2">
                 Subtitle
                 <Textarea rows={2} value={slide.subtitle} onChange={(e) => updateSlide(i, { subtitle: e.target.value })} />
@@ -125,6 +124,10 @@ const HeroSlidesEditor = ({ page, value, onSave, saving }: HeroSlidesEditorProps
                   <Input value={slide.ctaTo2} onChange={(e) => updateSlide(i, { ctaTo2: e.target.value })} />
                 </Label>
               </div>
+              <Label className="mt-2">
+                Tags (comma-separated, up to 3 shown)
+                <Input value={slide.tags} onChange={(e) => updateSlide(i, { tags: e.target.value })} />
+              </Label>
             </div>
           )
         })}

@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react'
+import { render, screen, act, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Hero, { type HeroSlide } from '@/components/Hero'
 import { HERO_STYLES } from '@/features/pages/types'
@@ -64,26 +64,38 @@ describe('Hero', () => {
     expect(container.querySelector('.bg-fixed')).not.toBeInTheDocument()
   })
 
-  it('renders dot navigation with multiple slides and advances on autoplay', () => {
+  it('renders numbered, labeled navigation with multiple slides and advances on autoplay', () => {
     jest.useFakeTimers()
     renderHero('banner-left', [
       baseSlide({ title: 'Slide One' }),
       baseSlide({ title: 'Slide Two' }),
     ])
 
-    expect(screen.getAllByRole('button', { name: /go to slide/i })).toHaveLength(2)
-    expect(screen.getByRole('button', { name: 'Go to slide 1' })).toHaveAttribute('aria-current', 'true')
+    expect(screen.getByText('1')).toBeInTheDocument()
+    expect(screen.getByText('2')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '1 Slide One' })).toHaveAttribute('aria-current', 'true')
 
     act(() => {
       jest.advanceTimersByTime(5500)
     })
 
-    expect(screen.getByRole('button', { name: 'Go to slide 2' })).toHaveAttribute('aria-current', 'true')
+    expect(screen.getByRole('button', { name: '2 Slide Two' })).toHaveAttribute('aria-current', 'true')
     jest.useRealTimers()
   })
 
-  it('shows no dots for a single slide', () => {
+  it('jumps slides when a numbered nav item is clicked', () => {
+    renderHero('banner-left', [
+      baseSlide({ title: 'Slide One' }),
+      baseSlide({ title: 'Slide Two' }),
+    ])
+
+    fireEvent.click(screen.getByRole('button', { name: '2 Slide Two' }))
+
+    expect(screen.getByRole('button', { name: '2 Slide Two' })).toHaveAttribute('aria-current', 'true')
+  })
+
+  it('shows no navigation bar for a single slide', () => {
     renderHero('banner-left', [baseSlide()])
-    expect(screen.queryByRole('button', { name: /go to slide/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^1 /i })).not.toBeInTheDocument()
   })
 })

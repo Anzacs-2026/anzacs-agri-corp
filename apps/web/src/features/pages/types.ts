@@ -23,18 +23,20 @@ const HERO_KEYS = [
   'hero_slides',
 ]
 
+const STATS_KEYS = ['stats_enabled', 'stats_style', 'stats_title', 'stats']
+
 export const SECTION_KEYS: Record<PageName, string[]> = {
-  home: [
+  home: [...HERO_KEYS, 'intro', 'features_enabled', 'features_title', 'features', ...STATS_KEYS],
+  about: [
     ...HERO_KEYS,
-    'intro',
-    'features_enabled',
-    'features_title',
-    'features',
-    'stats_enabled',
-    'stats_title',
-    'stats',
+    ...STATS_KEYS,
+    'who_we_are',
+    'core_capabilities',
+    'market_position',
+    'philosophy',
+    'why_anz',
+    'future_direction',
   ],
-  about: [...HERO_KEYS, 'who_we_are', 'core_capabilities', 'market_position', 'philosophy', 'why_anz', 'future_direction'],
   contact: ['intro'],
   products: [...HERO_KEYS],
 }
@@ -51,6 +53,9 @@ export interface HeroSlideContent {
   ctaTo: string
   ctaLabel2: string
   ctaTo2: string
+  // Comma-separated, up to 3 shown — matches the free-text convention used
+  // for product traits elsewhere in the admin.
+  tags: string
 }
 
 // Hero has two layouts: same full-bleed banner photo behind the text,
@@ -64,3 +69,15 @@ export const HERO_STYLE_LABELS: Record<HeroStyle, string> = {
 }
 
 export const isHeroStyle = (value: string): value is HeroStyle => (HERO_STYLES as readonly string[]).includes(value)
+
+// Stats Counter can float as a card overlapping the Hero's bottom edge, or
+// render as its own plain full-width section below it.
+export const STATS_STYLES = ['overlap', 'section'] as const
+export type StatsStyle = (typeof STATS_STYLES)[number]
+
+export const STATS_STYLE_LABELS: Record<StatsStyle, string> = {
+  overlap: 'Overlap Hero',
+  section: 'Separate Section',
+}
+
+export const isStatsStyle = (value: string): value is StatsStyle => (STATS_STYLES as readonly string[]).includes(value)

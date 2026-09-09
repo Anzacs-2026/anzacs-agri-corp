@@ -28,7 +28,7 @@ describe('HeroSlidesEditor', () => {
     const initial = [{ ...emptyHeroSlide(), title: 'Original' }]
     render(<HeroSlidesEditor page="home" value={stringifyHeroSlides(initial)} onSave={onSave} saving={false} />)
 
-    const titleInput = screen.getByLabelText('Title')
+    const titleInput = screen.getByLabelText(/^Title/)
     await user.clear(titleInput)
     await user.type(titleInput, 'Updated Title')
     await user.click(screen.getByRole('button', { name: 'Save Slides' }))

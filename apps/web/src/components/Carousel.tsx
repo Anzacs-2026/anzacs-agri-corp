@@ -2,6 +2,12 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { useCarousel } from '@/hooks/useCarousel'
 
+interface CarouselNavContext<T> {
+  items: T[]
+  index: number
+  setIndex: (i: number) => void
+}
+
 interface CarouselProps<T> {
   items: T[]
   renderItem: (item: T, index: number, isActive: boolean) => ReactNode
@@ -12,6 +18,9 @@ interface CarouselProps<T> {
   dotsClassName?: string
   showDots?: boolean
   dotTone?: 'light' | 'dark'
+  // Overrides the default dot row entirely with custom navigation markup
+  // (e.g. numbered, labeled tabs) — receives live index/setIndex.
+  renderNav?: (ctx: CarouselNavContext<T>) => ReactNode
 }
 
 // Absolutely-positioned slides collapse the wrapper's height — the caller
@@ -26,13 +35,14 @@ const Carousel = <T,>({
   dotsClassName,
   showDots = true,
   dotTone = 'light',
+  renderNav,
 }: CarouselProps<T>) => {
   const { index, setIndex, pause, resume } = useCarousel({ length: items.length, intervalMs })
 
   if (items.length === 0) return null
 
   if (items.length === 1) {
-    return <div className={className}>{renderItem(items[0], 0, true)}</div>
+    return <div className={cn('relative', className)}>{renderItem(items[0], 0, true)}</div>
   }
 
   return (
@@ -56,7 +66,9 @@ const Carousel = <T,>({
         </div>
       ))}
 
-      {showDots && (
+      {renderNav
+        ? renderNav({ items, index, setIndex })
+        : showDots && (
         <div className={cn('absolute inset-x-0 bottom-4 z-10 flex justify-center gap-2', dotsClassName)}>
           {items.map((item, i) => (
             <button
