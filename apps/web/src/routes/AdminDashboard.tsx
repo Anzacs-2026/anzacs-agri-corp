@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Package, FileText, Image, Mail } from 'lucide-react'
+import { Package, FileText, Mail, Quote } from 'lucide-react'
 import { useAdminProducts } from '@/features/products'
 import { useAdminEnquiries } from '@/features/enquiries'
 
@@ -15,9 +15,9 @@ const AdminDashboard = () => {
 
   const quickLinks = [
     { label: 'Manage products', to: '/admin/products', icon: Package },
-    { label: 'Edit page content', to: '/admin/pages', icon: FileText },
-    { label: 'Photo library', to: '/admin/photos', icon: Image },
+    { label: 'Edit page content', to: '/admin/pages/home', icon: FileText },
     { label: 'View enquiries', to: '/admin/enquiries', icon: Mail },
+    { label: 'Manage testimonials', to: '/admin/testimonials', icon: Quote },
   ]
 
   return (

@@ -44,8 +44,10 @@ describe('AdminLayout', () => {
 
     expect(screen.getByRole('link', { name: /dashboard/i })).toHaveAttribute('href', '/admin')
     expect(screen.getByRole('link', { name: /products/i })).toHaveAttribute('href', '/admin/products')
-    expect(screen.getByRole('link', { name: /pages/i })).toHaveAttribute('href', '/admin/pages')
-    expect(screen.getByRole('link', { name: /photos/i })).toHaveAttribute('href', '/admin/photos')
+    expect(screen.getByText('Pages')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/admin/pages/home')
+    expect(screen.getByRole('link', { name: 'About' })).toHaveAttribute('href', '/admin/pages/about')
+    expect(screen.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', '/admin/pages/contact')
     expect(screen.getByRole('link', { name: /enquiries/i })).toHaveAttribute('href', '/admin/enquiries')
   })
 

@@ -1,22 +1,53 @@
 import { useState } from 'react'
 import { Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Package, FileText, Image, Mail, LogOut, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Package, FileText, Mail, Quote, LogOut, Menu, X, type LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { authService, useAuth } from '@/features/auth'
 
-const navItems = [
+interface LinkItem {
+  to: string
+  label: string
+  icon: LucideIcon
+  end?: boolean
+}
+
+interface GroupItem {
+  label: string
+  icon: LucideIcon
+  children: { to: string; label: string }[]
+}
+
+const navItems: (LinkItem | GroupItem)[] = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/admin/products', label: 'Products', icon: Package },
-  { to: '/admin/pages', label: 'Pages', icon: FileText },
-  { to: '/admin/photos', label: 'Photos', icon: Image },
+  {
+    label: 'Pages',
+    icon: FileText,
+    children: [
+      { to: '/admin/pages/home', label: 'Home' },
+      { to: '/admin/pages/about', label: 'About' },
+      { to: '/admin/pages/contact', label: 'Contact' },
+    ],
+  },
   { to: '/admin/enquiries', label: 'Enquiries', icon: Mail },
+  { to: '/admin/testimonials', label: 'Testimonials', icon: Quote },
 ]
+
+const isGroup = (item: LinkItem | GroupItem): item is GroupItem => 'children' in item
 
 const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
   cn(
     'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
     isActive ? 'bg-leaf/20 text-forest' : 'text-forest/70 hover:bg-forest/5 hover:text-forest',
   )
+
+const subNavLinkClassName = ({ isActive }: { isActive: boolean }) =>
+  cn(
+    'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
+    isActive ? 'bg-leaf/20 text-forest' : 'text-forest/60 hover:bg-forest/5 hover:text-forest',
+  )
+
+const flatItems = navItems.flatMap((item) => (isGroup(item) ? item.children : [item]))
 
 const AdminLayout = () => {
   const { session, user, loading } = useAuth()
@@ -32,8 +63,8 @@ const AdminLayout = () => {
     return <Navigate to="/admin/login" replace />
   }
 
-  const currentPage = navItems.find((item) =>
-    item.end ? location.pathname === item.to : location.pathname.startsWith(item.to),
+  const currentPage = flatItems.find((item) =>
+    'end' in item && item.end ? location.pathname === item.to : location.pathname.startsWith(item.to),
   )
 
   const handleSignOut = async () => {
@@ -49,12 +80,28 @@ const AdminLayout = () => {
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 px-3">
-        {navItems.map(({ to, label, icon: Icon, end }) => (
-          <NavLink key={to} to={to} end={end} className={navLinkClassName} onClick={() => setMobileOpen(false)}>
-            <Icon size={18} />
-            {label}
-          </NavLink>
-        ))}
+        {navItems.map((item) =>
+          isGroup(item) ? (
+            <div key={item.label} className="mb-1">
+              <div className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-forest/70">
+                <item.icon size={18} />
+                {item.label}
+              </div>
+              <div className="ml-9 flex flex-col gap-0.5">
+                {item.children.map((child) => (
+                  <NavLink key={child.to} to={child.to} className={subNavLinkClassName} onClick={() => setMobileOpen(false)}>
+                    {child.label}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <NavLink key={item.to} to={item.to} end={item.end} className={navLinkClassName} onClick={() => setMobileOpen(false)}>
+              <item.icon size={18} />
+              {item.label}
+            </NavLink>
+          ),
+        )}
       </nav>
 
       <div className="border-t border-forest/10 px-3 py-4">

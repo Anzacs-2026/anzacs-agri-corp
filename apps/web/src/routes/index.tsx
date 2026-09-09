@@ -12,8 +12,8 @@ import AdminDashboard from './AdminDashboard'
 import AdminProducts from './AdminProducts'
 import AdminProductForm from './AdminProductForm'
 import AdminPages from './AdminPages'
-import AdminPhotos from './AdminPhotos'
 import AdminEnquiries from './AdminEnquiries'
+import AdminTestimonials from './AdminTestimonials'
 import NotFound from './NotFound'
 
 export const routes: RouteRecord[] = [
@@ -41,9 +41,9 @@ export const routes: RouteRecord[] = [
           { path: 'products', Component: AdminProducts, entry: 'src/routes/AdminProducts.tsx' },
           { path: 'products/new', Component: AdminProductForm, entry: 'src/routes/AdminProductForm.tsx' },
           { path: 'products/:id/edit', Component: AdminProductForm, entry: 'src/routes/AdminProductForm.tsx' },
-          { path: 'pages', Component: AdminPages, entry: 'src/routes/AdminPages.tsx' },
-          { path: 'photos', Component: AdminPhotos, entry: 'src/routes/AdminPhotos.tsx' },
+          { path: 'pages/:page', Component: AdminPages, entry: 'src/routes/AdminPages.tsx' },
           { path: 'enquiries', Component: AdminEnquiries, entry: 'src/routes/AdminEnquiries.tsx' },
+          { path: 'testimonials', Component: AdminTestimonials, entry: 'src/routes/AdminTestimonials.tsx' },
         ],
       },
     ],
