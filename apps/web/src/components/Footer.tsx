@@ -4,8 +4,12 @@ const Footer = () => {
   const { data } = useSiteSettings()
 
   return (
-    <footer className="bg-forest px-4 py-6 text-cream/80">
-      <div className="mx-auto flex max-w-5xl flex-col gap-2 text-sm">
+    <footer className="bg-forest px-4 py-8 text-cream/80">
+      <div className="mx-auto flex max-w-5xl flex-col gap-3 text-sm">
+        <div className="flex items-center gap-2 font-serif text-cream">
+          <img src="/favicon.png" alt="" className="h-6 w-6" />
+          ANZ Agricrop
+        </div>
         <p>Seeds for life.</p>
 
         {data?.contact_phone && (

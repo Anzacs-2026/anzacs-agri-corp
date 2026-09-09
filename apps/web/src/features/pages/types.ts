@@ -12,6 +12,6 @@ export interface PageContent {
 
 export const SECTION_KEYS: Record<PageName, string[]> = {
   home: ['hero_title', 'hero_subtitle', 'intro'],
-  about: ['body'],
+  about: ['who_we_are', 'core_capabilities', 'market_position', 'philosophy', 'why_anz', 'future_direction'],
   contact: ['intro'],
 }

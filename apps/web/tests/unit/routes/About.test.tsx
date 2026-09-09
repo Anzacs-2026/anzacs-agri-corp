@@ -14,15 +14,22 @@ jest.mock('@/features/pages', () => ({
 const mockUsePageContent = usePageContent as jest.Mock
 
 describe('About', () => {
-  it('renders placeholder copy when no page_content exists yet', () => {
+  it('renders the default company profile copy when no page_content exists yet', () => {
     mockUsePageContent.mockReturnValue({ data: [] })
     render(<About />)
-    expect(screen.getByText(/Phase 4 wires page_content/)).toBeInTheDocument()
+
+    expect(screen.getByText(/integrated agricultural enterprise/i)).toBeInTheDocument()
+    expect(screen.getByText('Who We Are')).toBeInTheDocument()
+    expect(screen.getByText('Core Capabilities')).toBeInTheDocument()
+    expect(screen.getByText('Why ANZ')).toBeInTheDocument()
   })
 
-  it('renders real content once page_content is set', () => {
-    mockUsePageContent.mockReturnValue({ data: [{ section_key: 'body', content: { text: 'Our story since 1998.' } }] })
+  it('renders real content once page_content overrides a section', () => {
+    mockUsePageContent.mockReturnValue({
+      data: [{ section_key: 'who_we_are', content: { text: 'Our custom story goes here.' } }],
+    })
     render(<About />)
-    expect(screen.getByText('Our story since 1998.')).toBeInTheDocument()
+
+    expect(screen.getByText('Our custom story goes here.')).toBeInTheDocument()
   })
 })

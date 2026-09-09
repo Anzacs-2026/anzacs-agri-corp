@@ -2,7 +2,13 @@ import { forwardRef, type HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
 export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
-  return <div ref={ref} className={cn('rounded-lg bg-cream shadow-sm', className)} {...props} />
+  return (
+    <div
+      ref={ref}
+      className={cn('rounded-xl border border-forest/10 bg-white shadow-sm transition-all duration-200', className)}
+      {...props}
+    />
+  )
 })
 Card.displayName = 'Card'
 
