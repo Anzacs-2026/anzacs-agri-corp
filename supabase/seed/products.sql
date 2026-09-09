@@ -1,6 +1,9 @@
 -- ANZ Agricrop product catalog seed. Run in the Supabase SQL Editor
--- against the live project. Safe to re-run: skips any slug that already
--- exists. Add more products by appending rows before the closing
+-- against the live project. Safe to re-run: updates the seed-controlled
+-- columns (category, short_description, description, specs, traits) for
+-- any slug that already exists, so editing this file and re-running it
+-- pushes the change live (does not touch primary_photo_id — photos stay
+-- attached). Add more products by appending rows before the closing
 -- `on conflict` clause.
 --
 -- Photos aren't handled here — attach each product's photo afterward via
@@ -32,4 +35,9 @@ values
   ('Cauliflower', 'cauliflower', 'Brassicas', '', '', '{}'::jsonb, ARRAY['Open Pollinated']::text[], true),
   ('Peas NZ', 'peas-nz', 'Other Vegetables & Herbs', '', '', '{}'::jsonb, ARRAY['Open Pollinated']::text[], true),
   ('Basil Green', 'basil-green', 'Other Vegetables & Herbs', '', '', '{}'::jsonb, ARRAY['Open Pollinated']::text[], true)
-on conflict (slug) do nothing;
+on conflict (slug) do update set
+  category = excluded.category,
+  short_description = excluded.short_description,
+  description = excluded.description,
+  specs = excluded.specs,
+  traits = excluded.traits;
