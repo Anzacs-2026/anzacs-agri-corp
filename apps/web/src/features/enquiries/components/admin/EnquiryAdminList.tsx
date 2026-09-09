@@ -40,6 +40,20 @@ const EnquiryAdminList = () => {
     setPendingDeleteId(null)
   }
 
+  const statusSelect = (enquiry: Enquiry) => (
+    <select
+      value={enquiry.status}
+      onChange={(e) => updateStatus.mutate({ id: enquiry.id, status: e.target.value as EnquiryStatus })}
+      className="rounded border border-forest/20 bg-cream px-2 py-1"
+    >
+      {STATUSES.map((status) => (
+        <option key={status} value={status}>
+          {status}
+        </option>
+      ))}
+    </select>
+  )
+
   return (
     <div className="mx-auto max-w-5xl">
       <AdminPageHeader
@@ -57,60 +71,77 @@ const EnquiryAdminList = () => {
         }
       />
 
-      <div className="overflow-hidden rounded-xl border border-forest/10 bg-white shadow-sm">
+      {/* Table — lg and up */}
+      <div className="hidden overflow-hidden rounded-xl border border-forest/10 bg-white shadow-sm lg:block">
         <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="border-b border-forest/10 bg-forest/5">
-            <th className="px-4 py-3 font-medium text-forest/70">Name</th>
-            <th className="px-4 py-3 font-medium text-forest/70">Contact</th>
-            <th className="px-4 py-3 font-medium text-forest/70">Subject</th>
-            <th className="px-4 py-3 font-medium text-forest/70">Message</th>
-            <th className="px-4 py-3 font-medium text-forest/70">Status</th>
-            <th className="px-4 py-3 font-medium text-forest/70">Received</th>
-            <th className="px-4 py-3 font-medium text-forest/70">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {enquiries?.map((enquiry) => (
-            <tr key={enquiry.id} className="border-b border-forest/5 align-top last:border-0">
-              <td className="px-4 py-3">{enquiry.name}</td>
-              <td className="px-4 py-3">
-                <div>{enquiry.email}</div>
-                <div className="text-forest/70">{enquiry.phone}</div>
-              </td>
-              <td className="px-4 py-3">{enquiry.subject}</td>
-              <td className="max-w-xs truncate px-4 py-3" title={enquiry.message}>
-                {enquiry.message}
-              </td>
-              <td className="px-4 py-3">
-                <select
-                  value={enquiry.status}
-                  onChange={(e) =>
-                    updateStatus.mutate({ id: enquiry.id, status: e.target.value as EnquiryStatus })
-                  }
-                  className="rounded border border-forest/20 bg-cream px-2 py-1"
-                >
-                  {STATUSES.map((status) => (
-                    <option key={status} value={status}>
-                      {status}
-                    </option>
-                  ))}
-                </select>
-              </td>
-              <td className="px-4 py-3">{new Date(enquiry.created_at).toLocaleDateString()}</td>
-              <td className="px-4 py-3">
-                <button
-                  type="button"
-                  onClick={() => setPendingDeleteId(enquiry.id)}
-                  className="text-sm font-medium text-red-700 hover:underline"
-                >
-                  Delete
-                </button>
-              </td>
+          <thead>
+            <tr className="border-b border-forest/10 bg-forest/5">
+              <th className="px-4 py-3 font-medium text-forest/70">Name</th>
+              <th className="px-4 py-3 font-medium text-forest/70">Contact</th>
+              <th className="px-4 py-3 font-medium text-forest/70">Subject</th>
+              <th className="px-4 py-3 font-medium text-forest/70">Message</th>
+              <th className="px-4 py-3 font-medium text-forest/70">Status</th>
+              <th className="px-4 py-3 font-medium text-forest/70">Received</th>
+              <th className="px-4 py-3 font-medium text-forest/70">Actions</th>
             </tr>
-          ))}
-        </tbody>
+          </thead>
+          <tbody>
+            {enquiries?.map((enquiry) => (
+              <tr key={enquiry.id} className="border-b border-forest/5 align-top last:border-0">
+                <td className="px-4 py-3">{enquiry.name}</td>
+                <td className="px-4 py-3">
+                  <div>{enquiry.email}</div>
+                  <div className="text-forest/70">{enquiry.phone}</div>
+                </td>
+                <td className="px-4 py-3">{enquiry.subject}</td>
+                <td className="max-w-xs truncate px-4 py-3" title={enquiry.message}>
+                  {enquiry.message}
+                </td>
+                <td className="px-4 py-3">{statusSelect(enquiry)}</td>
+                <td className="px-4 py-3">{new Date(enquiry.created_at).toLocaleDateString()}</td>
+                <td className="px-4 py-3">
+                  <button
+                    type="button"
+                    onClick={() => setPendingDeleteId(enquiry.id)}
+                    className="text-sm font-medium text-red-700 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
+      </div>
+
+      {/* Cards — below lg, no horizontal scroll */}
+      <div className="flex flex-col gap-3 lg:hidden">
+        {enquiries?.map((enquiry) => (
+          <div key={enquiry.id} className="rounded-xl border border-forest/10 bg-white p-4 shadow-sm">
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <div className="font-medium text-forest">{enquiry.name}</div>
+                <div className="text-xs text-forest/60">{new Date(enquiry.created_at).toLocaleDateString()}</div>
+              </div>
+              {statusSelect(enquiry)}
+            </div>
+            <div className="mt-2 text-sm text-forest/80">
+              <div>{enquiry.email}</div>
+              <div>{enquiry.phone}</div>
+            </div>
+            <div className="mt-2 text-sm font-medium text-forest">{enquiry.subject}</div>
+            <p className="mt-1 whitespace-pre-line text-sm text-forest/70">{enquiry.message}</p>
+            <div className="mt-3 border-t border-forest/10 pt-3">
+              <button
+                type="button"
+                onClick={() => setPendingDeleteId(enquiry.id)}
+                className="text-sm font-medium text-red-700 hover:underline"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
 
       <ConfirmDialog
