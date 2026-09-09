@@ -76,17 +76,19 @@ done, in progress, or deferred.
 
 ## Phase 7 — Polish (Low-Medium effort)
 
-- [ ] Responsive pass (mobile/tablet/desktop)
-- [ ] Accessibility hygiene
-- [ ] Per-page SEO + Open Graph metadata
-- [ ] Route-based code splitting
-- [ ] Query key normalization
-- [ ] Bundle analysis
-- [ ] Real favicon set (client sign-off required — see ARCHITECTURE.md)
+- [x] Responsive pass (mobile/tablet/desktop) — manual check at 375/768/1280px across Home, Products (grid+list), and admin login found no layout defects; added `Mobile Chrome`/`Tablet` Playwright projects (`playwright.config.ts`) so the existing e2e specs now run at 3 breakpoints, not just desktop
+- [x] Accessibility hygiene — fixed a real WCAG 2.4.7 bug (`Input`/`Textarea`/two raw `<select>`s removed focus outline with no visible replacement, now have a focus ring), added the `jsx-a11y` oxlint plugin and fixed every finding (mobile-drawer backdrop, unlabeled visibility checkbox, `role="status"`→`<output>`, login autocomplete attributes), and bumped muted text opacity (`/50`/`/60` → `/70`) that measured under 4.5:1 contrast on cream/white backgrounds
+- [x] Per-page SEO + Open Graph metadata — new `Seo` component (`src/components/Seo.tsx`) wraps `vite-react-ssg`'s `Head` (react-helmet-async), used on every route with real per-page title/description/OG/canonical, `noindex` on admin routes; verified the actual prerendered HTML gets unique tags per page with no duplicate `<title>`
+- [x] Route-based code splitting — the entire `/admin/*` subtree is now `React.lazy`-loaded; public bundle dropped from ~565 KB to 69 KB (gzip 21 KB), admin code (~330 KB incl. icons/query client) only loads for authenticated admin users
+- [x] Query key normalization — `usePageContent` used `['page_content', page]` (DB table name) while every other feature used its module name (`['products', ...]`, `['testimonials', ...]`); renamed to `['pages', page]` for a consistent `[feature, ...qualifiers]` / `['admin', feature, ...qualifiers]` convention app-wide
+- [x] Bundle analysis — added `rollup-plugin-visualizer` behind `npm run analyze` (`ANALYZE=true`, never runs in normal builds), confirms clean post-split composition, no accidental dupes
+- [x] Real favicon set — generated from the real logo (no more client sign-off blocker, see `docs/ARCHITECTURE.md`): `favicon-16x16.png`/`favicon-32x32.png` (leaf mark), `apple-touch-icon.png` + `icon-192.png`/`icon-512.png` (circular badge) + `site.webmanifest`; no `.ico` (unnecessary for evergreen browsers)
+
+**Phase 7 complete: 2026-09-09.**
 
 ## Phase 8 — Handoff
 
-- [ ] Repo committed locally, owner walkthrough recorded
-- [ ] GitHub push on explicit approval
-- [ ] Netlify deploy on explicit approval
-- [ ] No DNS changes at any point (until cutover)
+- [x] Repo committed locally — all Phase 7 work committed; owner walkthrough recording is on you (script available on request)
+- [ ] GitHub push on explicit approval — held per your instruction to ask before any push (auto-deploy consumes Netlify credits)
+- [ ] Netlify deploy on explicit approval — same gate as the push above (auto-deploys from `main`); separately confirm `BREVO_API_KEY`/`SUPABASE_SERVICE_ROLE_KEY`/`VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` are actually set in the Netlify dashboard (`BREVO_API_KEY` was still marked deferred as of Phase 0)
+- [x] No DNS changes at any point (until cutover) — none made; `Seo`'s `SITE_URL` constant needs updating at actual domain cutover
