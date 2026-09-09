@@ -10,5 +10,14 @@
   to = "/index.html"
   status = 200
 
+# Admin routes are lazy-loaded and never prerendered (AdminLayout redirects
+# to /admin/login before rendering during SSG). Without this, a direct hit
+# or refresh on /admin/* has no matching static file, Netlify's plain 404
+# HTML comes back, and the client router chokes trying to parse it as JSON.
+[[redirects]]
+  from = "/admin/*"
+  to = "/index.html"
+  status = 200
+
 [functions]
   node_bundler = "esbuild"
