@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="bg-forest px-4 py-8 text-cream/80">
       <div className="mx-auto flex max-w-5xl flex-col gap-3 text-sm">
         <div className="flex items-center gap-2 font-serif text-cream">
-          <img src="/favicon.png" alt="" className="h-6 w-6" />
+          <img src="/anz_logos/badge.webp" alt="" className="h-10 w-10" />
           ANZ Agricrop
         </div>
         <p>Seeds for life.</p>
