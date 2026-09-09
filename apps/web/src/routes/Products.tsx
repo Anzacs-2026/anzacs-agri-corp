@@ -7,7 +7,7 @@ import Seo from '@/components/Seo'
 const Products = () => {
   const { data: sections } = usePageContent('products')
 
-  const heroVariant = getSectionText(sections, 'hero_variant', 'mockup:screenshot')
+  const heroVariant = getSectionText(sections, 'hero_variant', 'banner-left')
   const heroImagePath = getSectionText(sections, 'hero_image', '')
   const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/minimal-sorghum-field.webp'
 

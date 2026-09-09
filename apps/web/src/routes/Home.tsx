@@ -15,17 +15,9 @@ const Home = () => {
   const { data: testimonials } = useShownTestimonials()
   const featured = products?.slice(0, 3) ?? []
 
-  const heroVariant = getSectionText(sections, 'hero_variant', 'split:50-50')
+  const heroVariant = getSectionText(sections, 'hero_variant', 'banner-left')
   const heroImagePath = getSectionText(sections, 'hero_image', '')
   const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/split-hero-seedling.webp'
-  const categoryCount = new Set(products?.map((p) => p.category)).size
-
-  const heroStats = [
-    { label: 'Varieties', value: `${products?.length ?? 24}+` },
-    { label: 'Categories', value: String(categoryCount || 4) },
-    { label: 'Est.', value: '2009' },
-    { label: 'Purity', value: '100%' },
-  ]
 
   return (
     <>
@@ -49,8 +41,6 @@ const Home = () => {
         ctaLabel2={getSectionText(sections, 'hero_cta_label2', 'Our Products')}
         ctaTo2={getSectionText(sections, 'hero_cta_link2', '/products')}
         imageUrl={heroImageUrl}
-        products={featured}
-        stats={heroStats}
       />
 
       <Section>

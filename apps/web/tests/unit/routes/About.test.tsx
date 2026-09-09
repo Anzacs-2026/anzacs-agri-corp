@@ -6,7 +6,7 @@ import { usePageContent } from '@/features/pages'
 jest.mock('@/features/pages', () => {
   const actual = jest.requireActual('@/features/pages/types')
   return {
-    parseHeroVariant: actual.parseHeroVariant,
+    isHeroStyle: actual.isHeroStyle,
     usePageContent: jest.fn(),
     getSectionText: (
       sections: { section_key: string; content: { text: string } }[] | undefined,

@@ -43,7 +43,7 @@ const parseBullets = (text: string) =>
 const About = () => {
   const { data: sections } = usePageContent('about')
   const text = (key: string) => getSectionText(sections, key, DEFAULTS[key] ?? '')
-  const heroVariant = getSectionText(sections, 'hero_variant', 'split:50-50')
+  const heroVariant = getSectionText(sections, 'hero_variant', 'banner-left')
   const heroImagePath = getSectionText(sections, 'hero_image', '')
   const heroImageUrl = heroImagePath ? photoService.getPublicUrl(heroImagePath) : '/hero_banner_images/split-hero-maize-field.webp'
 

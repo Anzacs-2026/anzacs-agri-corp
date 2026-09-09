@@ -28,68 +28,14 @@ export const SECTION_KEYS: Record<PageName, string[]> = {
   products: [...HERO_KEYS],
 }
 
-export const HERO_CATEGORIES = ['split', 'mockup', 'minimal'] as const
-export type HeroCategory = (typeof HERO_CATEGORIES)[number]
+// Hero has two layouts: same full-bleed banner photo behind the text,
+// differing only in text alignment.
+export const HERO_STYLES = ['banner-left', 'banner-center'] as const
+export type HeroStyle = (typeof HERO_STYLES)[number]
 
-export const HERO_SUBTYPES: Record<HeroCategory, string[]> = {
-  split: ['50-50', '60-40', '40-60', 'asymmetric', 'text-image', 'text-illustration', 'text-video', 'text-stats'],
-  mockup: ['floating-ui', 'screenshot', 'desktop', 'mobile', 'desktop-mobile', 'dashboard', 'browser', '3d'],
-  minimal: [
-    'centered',
-    'typography-led',
-    'cta-focused',
-    'text-only',
-    'subtle-background',
-    'small-visual',
-    'editorial',
-    'whitespace',
-  ],
+export const HERO_STYLE_LABELS: Record<HeroStyle, string> = {
+  'banner-left': 'Banner (left-aligned)',
+  'banner-center': 'Minimal (centered)',
 }
 
-export const HERO_CATEGORY_LABELS: Record<HeroCategory, string> = {
-  split: 'Split Hero',
-  mockup: 'Product Hero',
-  minimal: 'Minimal Hero',
-}
-
-export const HERO_SUBTYPE_LABELS: Record<string, string> = {
-  '50-50': '50/50 Split',
-  '60-40': '60/40 Split',
-  '40-60': '40/60 Split',
-  asymmetric: 'Asymmetric Split',
-  'text-image': 'Text + Image',
-  'text-illustration': 'Text + Illustration',
-  'text-video': 'Text + Video',
-  'text-stats': 'Text + Stats',
-  'floating-ui': 'Floating UI',
-  screenshot: 'Product Screenshot',
-  desktop: 'Desktop Mockup',
-  mobile: 'Mobile Mockup',
-  'desktop-mobile': 'Desktop + Mobile',
-  dashboard: 'Dashboard Mockup',
-  browser: 'Browser Mockup',
-  '3d': '3D Product Mockup',
-  centered: 'Centered Minimal',
-  'typography-led': 'Typography-led',
-  'cta-focused': 'CTA-focused',
-  'text-only': 'Text-only',
-  'subtle-background': 'Text + Subtle Background',
-  'small-visual': 'Text + Small Visual',
-  editorial: 'Editorial Minimal',
-  whitespace: 'Whitespace Hero',
-}
-
-export interface HeroVariant {
-  category: HeroCategory
-  subtype: string
-}
-
-export const parseHeroVariant = (value: string): HeroVariant => {
-  const [category, subtype] = value.split(':')
-  if ((HERO_CATEGORIES as readonly string[]).includes(category)) {
-    const validCategory = category as HeroCategory
-    const subtypes = HERO_SUBTYPES[validCategory]
-    return { category: validCategory, subtype: subtypes.includes(subtype) ? subtype : subtypes[0] }
-  }
-  return { category: 'minimal', subtype: 'centered' }
-}
+export const isHeroStyle = (value: string): value is HeroStyle => (HERO_STYLES as readonly string[]).includes(value)

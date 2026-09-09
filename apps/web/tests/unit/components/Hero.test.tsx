@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Hero from '@/components/Hero'
-import { HERO_CATEGORIES, HERO_SUBTYPES } from '@/features/pages/types'
+import { HERO_STYLES } from '@/features/pages/types'
 
 jest.mock('@/features/photos/services/photoService', () => ({
   photoService: { getPublicUrl: jest.fn(() => 'https://example.com/photo.jpg') },
@@ -9,16 +9,7 @@ jest.mock('@/features/photos/services/photoService', () => ({
 
 jest.mock('@/features/pages', () => jest.requireActual('@/features/pages/types'))
 
-const product = {
-  id: '1',
-  name: 'Bottle Gourd F1 Julia',
-  slug: 'bottle-gourd-f1-julia',
-  category: 'Gourds & Melons',
-  short_description: 'Tender flesh, high yielding.',
-  primary_photo: null,
-}
-
-const renderHero = (variant: string) =>
+const renderHero = (variant: string, imageUrl?: string | null) =>
   render(
     <MemoryRouter>
       <Hero
@@ -28,33 +19,29 @@ const renderHero = (variant: string) =>
         subtitle="Trusted hybrid seeds."
         ctaLabel="Explore products"
         ctaTo="/products"
-        products={[product]}
-        stats={[{ label: 'Varieties', value: '24+' }]}
+        imageUrl={imageUrl}
       />
     </MemoryRouter>,
   )
 
 describe('Hero', () => {
-  it.each(HERO_CATEGORIES.flatMap((category) => HERO_SUBTYPES[category].map((subtype) => [category, subtype])))(
-    'renders %s:%s without crashing',
-    (category, subtype) => {
-      renderHero(`${category}:${subtype}`)
-      expect(screen.getByRole('heading', { name: 'ANZ Agri Crop Sciences' })).toBeInTheDocument()
-    },
-  )
-
-  it('falls back gracefully for a garbage/legacy variant value', () => {
-    renderHero('mockup')
+  it.each(HERO_STYLES)('renders %s without crashing', (style) => {
+    renderHero(style)
     expect(screen.getByRole('heading', { name: 'ANZ Agri Crop Sciences' })).toBeInTheDocument()
   })
 
-  it('hides the CTA for the text-only minimal sub-type', () => {
-    renderHero('minimal:text-only')
-    expect(screen.queryByRole('link', { name: 'Explore products' })).not.toBeInTheDocument()
+  it('falls back gracefully for a garbage/legacy variant value', () => {
+    renderHero('mockup:floating-ui')
+    expect(screen.getByRole('heading', { name: 'ANZ Agri Crop Sciences' })).toBeInTheDocument()
   })
 
-  it('shows the CTA for the centered minimal sub-type', () => {
-    renderHero('minimal:centered')
+  it('shows the CTA when a label and link are given', () => {
+    renderHero('banner-left')
     expect(screen.getByRole('link', { name: 'Explore products' })).toBeInTheDocument()
+  })
+
+  it('renders the background photo when an imageUrl is given', () => {
+    const { container } = renderHero('banner-center', 'https://example.com/hero.jpg')
+    expect(container.querySelector('img')).toHaveAttribute('src', 'https://example.com/hero.jpg')
   })
 })

@@ -7,11 +7,9 @@ import { usePageContent, useUpsertPageContent } from '@/features/pages'
 jest.mock('@/features/pages', () => {
   const actual = jest.requireActual('@/features/pages/types')
   return {
-    HERO_CATEGORIES: actual.HERO_CATEGORIES,
-    HERO_SUBTYPES: actual.HERO_SUBTYPES,
-    HERO_CATEGORY_LABELS: actual.HERO_CATEGORY_LABELS,
-    HERO_SUBTYPE_LABELS: actual.HERO_SUBTYPE_LABELS,
-    parseHeroVariant: actual.parseHeroVariant,
+    HERO_STYLES: actual.HERO_STYLES,
+    HERO_STYLE_LABELS: actual.HERO_STYLE_LABELS,
+    isHeroStyle: actual.isHeroStyle,
     usePageContent: jest.fn(),
     useUpsertPageContent: jest.fn(),
     SECTION_KEYS: {
@@ -73,25 +71,13 @@ describe('AdminPages', () => {
     expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_title', content: { text: 'New headline' } })
   })
 
-  it('saves the compound category:subtype immediately when a hero category is picked', async () => {
+  it('saves the hero style immediately when a layout is picked', async () => {
     const user = userEvent.setup()
     renderAt('home')
 
-    await user.click(screen.getByRole('radio', { name: 'Product Hero' }))
+    await user.click(screen.getByRole('radio', { name: 'Minimal (centered)' }))
 
-    expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_variant', content: { text: 'mockup:floating-ui' } })
-  })
-
-  it('saves the compound category:subtype immediately when a hero sub-type is picked', async () => {
-    mockUsePageContent.mockReturnValue({
-      data: [{ section_key: 'hero_variant', content: { text: 'split:50-50' } }],
-    })
-    const user = userEvent.setup()
-    renderAt('home')
-
-    await user.click(screen.getByRole('radio', { name: '60/40 Split' }))
-
-    expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_variant', content: { text: 'split:60-40' } })
+    expect(mutate).toHaveBeenCalledWith({ sectionKey: 'hero_variant', content: { text: 'banner-center' } })
   })
 
   it('renders a different page section set based on the route', () => {
