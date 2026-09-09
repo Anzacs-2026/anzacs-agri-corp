@@ -5,13 +5,20 @@
 @tailwind utilities;
 
 @layer base {
+  /* Reveal's left/right variants translateX full-width sections before they're
+     scrolled into view — transforms count toward scrollable overflow in
+     modern browsers, so without this a hidden section can add a transient
+     horizontal scrollbar. <html>, not <body>, is the actual root scroller,
+     so overflow-x must be clipped here to take effect. */
   html {
     color-scheme: light;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-cream text-forest font-sans antialiased;
     font-size: 16px;
+    overflow-x: hidden;
   }
 
   h1,

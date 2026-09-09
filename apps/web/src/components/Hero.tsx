@@ -28,7 +28,7 @@ const HeroSlideLayer = ({ slide, align, parallax }: { slide: HeroSlide; align: '
   const hasParallax = hasPhoto && parallax
 
   return (
-    <div className={cn('absolute inset-0 flex items-center overflow-hidden px-4 pb-28 pt-28 sm:py-24', !hasPhoto && 'bg-forest')}>
+    <div className={cn('absolute inset-0 flex items-center overflow-hidden px-4 pb-40 pt-28 sm:py-24', !hasPhoto && 'bg-forest')}>
       {hasPhoto &&
         (hasParallax ? (
           <div className="absolute inset-0 bg-fixed bg-cover bg-center" style={{ backgroundImage: `url(${slide.imageUrl})` }} />
@@ -103,7 +103,7 @@ const Hero = ({ variant, slides, parallax }: HeroProps) => {
       items={slides}
       ariaLabel="Hero banner"
       intervalMs={5500}
-      className="min-h-[640px] sm:min-h-[580px]"
+      className="min-h-[720px] sm:min-h-[580px]"
       renderItem={(slide) => <HeroSlideLayer slide={slide} align={align} parallax={parallax} />}
       renderNav={
         slides.length > 1
