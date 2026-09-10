@@ -1,6 +1,6 @@
 import { Suspense, useState } from 'react'
 import { Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Package, FileText, Mail, Quote, ScrollText, LogOut, Menu, X, type LucideIcon } from 'lucide-react'
+import { LayoutDashboard, Package, FileText, Mail, Quote, ScrollText, Settings, LogOut, Menu, X, type LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { authService, useAuth } from '@/features/auth'
 import Seo from '@/components/Seo'
@@ -38,6 +38,7 @@ const navItems: (LinkItem | GroupItem | DividerItem)[] = [
   },
   { to: '/admin/enquiries', label: 'Enquiries', icon: Mail },
   { to: '/admin/testimonials', label: 'Testimonials', icon: Quote },
+  { to: '/admin/settings', label: 'Settings', icon: Settings },
   { divider: true, label: 'System' },
   { to: '/admin/logs', label: 'Logs', icon: ScrollText },
 ]

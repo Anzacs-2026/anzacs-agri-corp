@@ -1,4 +1,5 @@
 import { usePageContent, getSectionText, parseHeroSlides, parseHeroTags, isStatsStyle } from '@/features/pages'
+import { renderRichText } from '@/lib/richText'
 import { humanizeKey } from '@/lib/humanize'
 import { parsePairs, parseBullets } from '@/lib/parseSectionText'
 import { photoService } from '@/features/photos/services/photoService'
@@ -90,7 +91,7 @@ const About = () => {
       <Reveal variant="fade">
         <Section>
           <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('who_we_are')}</h2>
-          <p className="max-w-3xl leading-relaxed text-forest/80">{text('who_we_are')}</p>
+          <div className="max-w-3xl space-y-3 leading-relaxed text-forest/80">{renderRichText(text('who_we_are'))}</div>
         </Section>
       </Reveal>
 
@@ -114,14 +115,14 @@ const About = () => {
       <Reveal variant="left">
         <Section>
           <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('market_position')}</h2>
-          <p className="max-w-3xl leading-relaxed text-forest/80">{text('market_position')}</p>
+          <div className="max-w-3xl space-y-3 leading-relaxed text-forest/80">{renderRichText(text('market_position'))}</div>
         </Section>
       </Reveal>
 
       <Reveal variant="scale">
         <Section background="forest">
           <h2 className="mb-3 font-serif text-2xl text-cream">Philosophy: Seeds as Food</h2>
-          <p className="max-w-3xl leading-relaxed text-cream/80">{text('philosophy')}</p>
+          <div className="max-w-3xl space-y-3 leading-relaxed text-cream/80">{renderRichText(text('philosophy'))}</div>
         </Section>
       </Reveal>
 
@@ -142,7 +143,7 @@ const About = () => {
       <Reveal variant="up">
         <Section background="cream">
           <h2 className="mb-3 font-serif text-2xl text-forest">{humanizeKey('future_direction')}</h2>
-          <p className="max-w-3xl leading-relaxed text-forest/80">{text('future_direction')}</p>
+          <div className="max-w-3xl space-y-3 leading-relaxed text-forest/80">{renderRichText(text('future_direction'))}</div>
         </Section>
       </Reveal>
     </>

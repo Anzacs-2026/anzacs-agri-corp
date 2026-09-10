@@ -21,6 +21,7 @@ const AdminPages = lazy(() => import('./AdminPages'))
 const AdminEnquiries = lazy(() => import('./AdminEnquiries'))
 const AdminTestimonials = lazy(() => import('./AdminTestimonials'))
 const AdminLogs = lazy(() => import('./AdminLogs'))
+const AdminSettings = lazy(() => import('./AdminSettings'))
 
 export const routes: RouteRecord[] = [
   {
@@ -50,6 +51,7 @@ export const routes: RouteRecord[] = [
           { path: 'pages/:page', Component: AdminPages, entry: 'src/routes/AdminPages.tsx' },
           { path: 'enquiries', Component: AdminEnquiries, entry: 'src/routes/AdminEnquiries.tsx' },
           { path: 'testimonials', Component: AdminTestimonials, entry: 'src/routes/AdminTestimonials.tsx' },
+          { path: 'settings', Component: AdminSettings, entry: 'src/routes/AdminSettings.tsx' },
           { path: 'logs', Component: AdminLogs, entry: 'src/routes/AdminLogs.tsx' },
         ],
       },

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { usePageContent, getSectionText, parseHeroSlides, parseHeroTags, isStatsStyle } from '@/features/pages'
+import { renderRichText } from '@/lib/richText'
 import { useProducts, ProductCard } from '@/features/products'
 import { useShownTestimonials, TestimonialCard } from '@/features/testimonials'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
@@ -111,13 +112,15 @@ const Home = () => {
 
       <Reveal variant="fade">
         <Section>
-          <p className="mx-auto max-w-2xl text-center text-lg text-forest/80">
-            {getSectionText(
-              sections,
-              'intro',
-              'An integrated agricultural enterprise with a strong foundation in plant genetics and seed production — delivering 100% pure, high-yield hybrid and open-pollinated varieties to growers nationwide and beyond.',
+          <div className="mx-auto max-w-2xl space-y-3 text-center text-lg text-forest/80">
+            {renderRichText(
+              getSectionText(
+                sections,
+                'intro',
+                'An integrated agricultural enterprise with a strong foundation in plant genetics and seed production — delivering 100% pure, high-yield hybrid and open-pollinated varieties to growers nationwide and beyond.',
+              ),
             )}
-          </p>
+          </div>
         </Section>
       </Reveal>
 

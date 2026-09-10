@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import ConfirmDialog from '@/components/ui/confirm-dialog'
 import AdminPageHeader from '@/components/admin/AdminPageHeader'
@@ -63,7 +64,6 @@ const ProductAdminList = () => {
               <th className="px-4 py-3 font-medium text-forest/70">ID</th>
               <th className="px-4 py-3 font-medium text-forest/70">Name</th>
               <th className="px-4 py-3 font-medium text-forest/70">Category</th>
-              <th className="px-4 py-3 font-medium text-forest/70">Visible</th>
               <th className="px-4 py-3 font-medium text-forest/70">Actions</th>
             </tr>
           </thead>
@@ -73,18 +73,27 @@ const ProductAdminList = () => {
                 <td className="px-4 py-3 text-forest/70">{index + 1}</td>
                 <td className="px-4 py-3">{product.name}</td>
                 <td className="px-4 py-3">{product.category}</td>
-                <td className="px-4 py-3">{visibleToggle(product)}</td>
-                <td className="flex gap-3 px-4 py-3">
-                  <Link to={`/admin/products/${product.id}/edit`} className="text-sm font-medium text-forest hover:underline">
-                    Edit
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => setPendingDeleteId(product.id)}
-                    className="text-sm font-medium text-red-700 hover:underline"
-                  >
-                    Delete
-                  </button>
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    {visibleToggle(product)}
+                    <Link
+                      to={`/admin/products/${product.id}/edit`}
+                      aria-label={`Edit ${product.name}`}
+                      title="Edit"
+                      className="text-forest hover:text-leaf"
+                    >
+                      <Pencil size={16} />
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setPendingDeleteId(product.id)}
+                      aria-label={`Delete ${product.name}`}
+                      title="Delete"
+                      className="text-red-700 hover:text-red-800"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -96,26 +105,31 @@ const ProductAdminList = () => {
       <div className="flex flex-col gap-3 md:hidden">
         {products?.map((product) => (
           <div key={product.id} className="rounded-xl border border-forest/10 bg-white p-4 shadow-sm">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="font-medium text-forest">{product.name}</div>
-                <div className="text-xs text-forest/60">{product.category}</div>
-              </div>
+            <div>
+              <div className="font-medium text-forest">{product.name}</div>
+              <div className="text-xs text-forest/60">{product.category}</div>
+            </div>
+            <div className="mt-3 flex items-center gap-4 border-t border-forest/10 pt-3">
               <label className="flex items-center gap-1.5 text-xs text-forest/70">
                 Visible
                 {visibleToggle(product)}
               </label>
-            </div>
-            <div className="mt-3 flex gap-4 border-t border-forest/10 pt-3">
-              <Link to={`/admin/products/${product.id}/edit`} className="text-sm font-medium text-forest hover:underline">
-                Edit
+              <Link
+                to={`/admin/products/${product.id}/edit`}
+                aria-label={`Edit ${product.name}`}
+                title="Edit"
+                className="text-forest hover:text-leaf"
+              >
+                <Pencil size={16} />
               </Link>
               <button
                 type="button"
                 onClick={() => setPendingDeleteId(product.id)}
-                className="text-sm font-medium text-red-700 hover:underline"
+                aria-label={`Delete ${product.name}`}
+                title="Delete"
+                className="text-red-700 hover:text-red-800"
               >
-                Delete
+                <Trash2 size={16} />
               </button>
             </div>
           </div>
