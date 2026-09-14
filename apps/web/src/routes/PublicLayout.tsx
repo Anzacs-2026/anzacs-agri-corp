@@ -12,6 +12,7 @@ const PublicLayout = () => {
   // Client-side nav doesn't trigger the browser's native #hash scroll —
   // do it ourselves so in-page CTAs (e.g. Hero "View Our Products") work.
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     if (!location.hash) return
     const el = document.getElementById(location.hash.slice(1))
     el?.scrollIntoView({ behavior: 'smooth', block: 'start' })

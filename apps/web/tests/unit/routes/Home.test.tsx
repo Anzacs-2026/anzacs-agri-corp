@@ -89,7 +89,7 @@ describe('Home', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.queryByText('What growers say')).not.toBeInTheDocument()
+    expect(screen.queryByText('What customer say about us')).not.toBeInTheDocument()
   })
 
   it('shows testimonials section when the switch is on and testimonials exist', () => {
@@ -103,7 +103,8 @@ describe('Home', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('What growers say')).toBeInTheDocument()
+    expect(screen.getByText('What customer say about us')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Testimonials' })).toBeInTheDocument()
   })
 
   it('shows features and stats sections by default', () => {

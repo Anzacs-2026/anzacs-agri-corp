@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import type { ReactNode } from 'react'
 import { usePageContent, getSectionText, parseHeroSlides, parseHeroTags, isStatsStyle } from '@/features/pages'
 import { renderRichText } from '@/lib/richText'
 import { useProducts, ProductCard } from '@/features/products'
@@ -13,7 +14,8 @@ import Reveal from '@/components/Reveal'
 import Seo from '@/components/Seo'
 import { Button } from '@/components/ui/button'
 import { parsePairs, parseBullets } from '@/lib/parseSectionText'
-import { LayoutGrid, Leaf, ShieldCheck, TrendingUp, Users } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { ArrowRight, LayoutGrid, Leaf, ShieldCheck, TrendingUp, Users } from 'lucide-react'
 
 const FEATURE_ICONS = [Leaf, ShieldCheck, TrendingUp, Users]
 
@@ -21,6 +23,77 @@ const DEFAULT_FEATURES =
   'Certified Genetics – Every seed batch is lab-tested for purity and germination before it leaves our facility.\nNationwide Reach – Trusted by farmers, distributors, and agro-retailers across the country.\nResearch-Backed – Over a decade of plant genetics and breeding R&D behind every variety.\nDedicated Support – Agronomy guidance from planting through harvest.'
 
 const DEFAULT_STATS = '24+ : Years of Experience\n500+ : Farmer Partners\n50+ : Seed Varieties\n100% : Purity Certified'
+
+const HOME_FEATURE_SLIDES: {
+  image: string
+  eyebrow: string
+  title: string
+  body: string
+  contentSide: 'left' | 'right'
+}[] = [
+  {
+    image: '/hero_banner_images/split-hero-seedling.webp',
+    eyebrow: 'What are we doing at ANZ Agri',
+    title: 'Growing a stronger agricultural future',
+    body: 'Agriculture is the backbone of every economy. We create practical, science-backed seed solutions that help growers improve production and build more resilient farms.',
+    contentSide: 'left',
+  },
+  {
+    image: '/hero_banner_images/split-hero-maize-field.webp',
+    eyebrow: 'Our core services',
+    title: 'Our Core Services',
+    body: 'From quality genetics to agronomy guidance, we work alongside farmers and partners to make every growing season more productive.',
+    contentSide: 'right',
+  },
+  {
+    image: '/hero_banner_images/minimal-sorghum-field.webp',
+    eyebrow: 'Field-tested performance',
+    title: 'Seeds built for every season',
+    body: 'Our hybrid and open-pollinated varieties are selected for dependable performance across diverse soils, climates, and growing conditions.',
+    contentSide: 'left',
+  },
+  {
+    image: '/hero_banner_images/hero-product-seed-pouch.webp',
+    eyebrow: 'Farmer-first support',
+    title: 'From our fields to yours',
+    body: 'We pair quality seed with practical guidance, dependable supply, and a growing network of partners who care about better harvests.',
+    contentSide: 'right',
+  },
+]
+
+const HeadingRule = ({
+  children,
+  align = 'center',
+  tone = 'forest',
+}: {
+  children: ReactNode
+  align?: 'left' | 'center' | 'right'
+  tone?: 'forest' | 'cream'
+}) =>
+  align === 'center' ? (
+    <div className="flex items-center justify-center gap-3">
+      <img src="/seed-divider.svg" alt="" className="h-3 w-16 shrink-0" />
+      <h2 className="text-center font-serif text-2xl text-forest">{children}</h2>
+      <img src="/seed-divider.svg" alt="" className="h-3 w-16 shrink-0" />
+    </div>
+  ) : (
+    <div className={cn('flex w-full flex-col gap-2', align === 'right' && 'items-end')}>
+      <h2
+        className={cn(
+          'font-serif text-3xl leading-tight sm:text-4xl',
+          tone === 'cream' ? 'text-cream' : 'text-forest',
+          align === 'right' && 'text-right',
+        )}
+      >
+        {children}
+      </h2>
+      <img
+        src="/seed-divider.svg"
+        alt=""
+        className={cn('h-3 w-16', align === 'right' && 'self-end')}
+      />
+    </div>
+  )
 
 const Home = () => {
   const { data: sections } = usePageContent('home')
@@ -124,10 +197,56 @@ const Home = () => {
         </Section>
       </Reveal>
 
+      <Reveal variant="up">
+        <Section background="forest" className="overflow-hidden">
+          <Carousel
+            items={HOME_FEATURE_SLIDES}
+            ariaLabel="What we do at ANZ Agri"
+            intervalMs={4500}
+            dotTone="light"
+            dotsClassName="bottom-3"
+            className="mx-auto h-[30rem] max-w-5xl sm:h-96"
+            renderItem={(slide) => (
+              <div className="grid h-full grid-cols-1 items-center gap-6 px-5 py-8 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] sm:px-12 sm:py-10">
+                <div
+                  className={cn(
+                    'order-1 text-center sm:text-left',
+                    slide.contentSide === 'right' ? 'sm:order-2 sm:text-right' : 'sm:order-1',
+                  )}
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lime">{slide.eyebrow}</p>
+                  <div className="mt-3">
+                    <HeadingRule align={slide.contentSide} tone="cream">
+                      {slide.title}
+                    </HeadingRule>
+                  </div>
+                  <p className={cn('mt-4 max-w-xl text-sm leading-6 text-cream/75 sm:text-base', slide.contentSide === 'right' && 'sm:ml-auto')}>
+                    {slide.body}
+                  </p>
+                  <Link to="/about" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-lime hover:text-cream">
+                    Learn more <ArrowRight size={16} aria-hidden />
+                  </Link>
+                </div>
+                <div
+                  className={cn(
+                    'order-2 flex h-36 items-center justify-center sm:h-full',
+                    slide.contentSide === 'right' ? 'sm:order-1' : 'sm:order-2',
+                  )}
+                >
+                  <img src={slide.image} alt="" className="h-full w-full rounded-lg object-cover shadow-xl sm:max-h-64" />
+                </div>
+              </div>
+            )}
+          />
+        </Section>
+      </Reveal>
+
       {featuresEnabled && features.length > 0 && (
         <Reveal variant="up">
           <Section background="cream">
-            <h2 className="mb-6 text-center font-serif text-2xl text-forest">{featuresTitle}</h2>
+            <div className="mb-6">
+              <HeadingRule>{featuresTitle}</HeadingRule>
+            </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {features.map(({ label, value }, i) => {
                 const Icon = FEATURE_ICONS[i % FEATURE_ICONS.length]
@@ -151,7 +270,7 @@ const Home = () => {
         <Reveal variant="left">
           <Section background="cream">
             <div className="mb-6 flex items-center justify-between">
-              <h2 className="font-serif text-2xl text-forest">Featured products</h2>
+              <HeadingRule align="left">Featured products</HeadingRule>
               <Link to="/products">
                 <Button variant="outline" size="sm">
                   <LayoutGrid size={16} className="mr-1.5" aria-hidden />
@@ -171,7 +290,10 @@ const Home = () => {
       {settings?.testimonials_enabled && testimonials && testimonials.length > 0 && (
         <Reveal variant="right">
           <Section>
-            <h2 className="mb-6 text-center font-serif text-2xl text-forest">What growers say</h2>
+            <p className="text-center text-sm font-semibold uppercase tracking-[0.2em] text-leaf">What customer say about us</p>
+            <div className="mb-6 mt-2">
+              <HeadingRule>Testimonials</HeadingRule>
+            </div>
             <Carousel
               items={testimonials}
               getKey={(t) => t.id}

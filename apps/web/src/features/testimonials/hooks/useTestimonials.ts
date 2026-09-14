@@ -24,7 +24,10 @@ export const useCreateTestimonial = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (input: TestimonialInput & { photo_url?: string | null }) => testimonialService.createTestimonial(input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin', 'testimonials'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'testimonials'] })
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] })
+    },
   })
 }
 
@@ -32,7 +35,10 @@ export const useUpdateTestimonial = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: ({ id, input }: { id: string; input: TestimonialInput }) => testimonialService.updateTestimonial(id, input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin', 'testimonials'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'testimonials'] })
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] })
+    },
   })
 }
 
@@ -40,7 +46,10 @@ export const useToggleTestimonialShown = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: ({ id, current }: { id: string; current: boolean }) => testimonialService.toggleShown(id, current),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin', 'testimonials'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'testimonials'] })
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] })
+    },
   })
 }
 

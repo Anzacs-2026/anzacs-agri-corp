@@ -28,7 +28,12 @@ const HeroSlideLayer = ({ slide, align, parallax }: { slide: HeroSlide; align: '
   const hasParallax = hasPhoto && parallax
 
   return (
-    <div className={cn('absolute inset-0 flex items-center overflow-hidden px-4 pb-40 pt-28 sm:py-24', !hasPhoto && 'bg-forest')}>
+    <div
+      className={cn(
+        'absolute inset-0 flex items-start overflow-y-auto px-4 pb-48 pt-28 sm:items-center sm:overflow-hidden sm:py-24',
+        !hasPhoto && 'bg-forest',
+      )}
+    >
       {hasPhoto &&
         (hasParallax ? (
           <div className="absolute inset-0 bg-fixed bg-cover bg-center" style={{ backgroundImage: `url(${slide.imageUrl})` }} />

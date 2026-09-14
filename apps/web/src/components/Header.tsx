@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import { Home, Package, Info, Mail, LogIn, Menu, X } from 'lucide-react'
+import { Home, Package, Info, Mail, Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { routeHasHero } from '@/lib/heroRoutes'
 import { useScrollPosition } from '@/hooks/useScrollPosition'
@@ -54,13 +54,6 @@ const Header = () => {
               {label}
             </NavLink>
           ))}
-          <NavLink
-            to="/admin/login"
-            className="inline-flex items-center gap-1.5 rounded-md border border-cream/30 px-3 py-1.5 text-sm font-medium text-cream/80 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold hover:bg-cream/5 hover:text-cream hover:shadow-md"
-          >
-            <LogIn size={18} aria-hidden />
-            Admin
-          </NavLink>
         </nav>
 
         <button
@@ -81,14 +74,6 @@ const Header = () => {
               {label}
             </NavLink>
           ))}
-          <NavLink
-            to="/admin/login"
-            className="flex items-center gap-3 rounded-md border border-cream/30 px-3 py-2 text-sm font-medium text-cream/80"
-            onClick={() => setMobileOpen(false)}
-          >
-            <LogIn size={18} aria-hidden />
-            Admin
-          </NavLink>
         </div>
       )}
     </header>

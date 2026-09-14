@@ -64,7 +64,7 @@ const TestimonialAdminList = () => {
       <label className="mb-6 flex items-center gap-2 rounded-xl border border-forest/10 bg-white p-4 text-sm font-medium text-forest shadow-sm">
         <input
           type="checkbox"
-          checked={settings?.testimonials_enabled ?? false}
+          checked={settings?.testimonials_enabled ?? true}
           onChange={(e) => toggleEnabled.mutate(e.target.checked)}
         />
         Show testimonials on the public site
@@ -81,11 +81,17 @@ const TestimonialAdminList = () => {
 
       <div className="flex flex-col gap-3">
         {testimonials?.map((testimonial) => (
-          <div key={testimonial.id} className="flex flex-col gap-3 rounded-xl border border-forest/10 bg-white p-4 shadow-sm sm:flex-row sm:items-start">
-            {testimonial.photo_url && (
-              <img src={testimonial.photo_url} alt="" className="h-12 w-12 rounded-full object-cover" />
-            )}
-            <div className="flex-1 space-y-2">
+          <div key={testimonial.id} className="grid gap-4 rounded-xl border border-forest/10 bg-white p-4 shadow-sm sm:grid-cols-[3.5rem_minmax(0,1fr)_7rem] sm:items-start">
+            <div className="flex justify-center sm:pt-1">
+              {testimonial.photo_url ? (
+                <img src={testimonial.photo_url} alt="" className="h-12 w-12 rounded-full border-2 border-lime object-cover" />
+              ) : (
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-forest/10 text-sm font-semibold text-forest/60" aria-hidden="true">
+                  {testimonial.customer_name.charAt(0)}
+                </div>
+              )}
+            </div>
+            <div className="min-w-0 space-y-3">
               <Input
                 defaultValue={testimonial.customer_name}
                 onBlur={(e) =>
@@ -95,14 +101,14 @@ const TestimonialAdminList = () => {
               />
               <Textarea
                 defaultValue={testimonial.quote}
-                rows={2}
+                rows={3}
                 onBlur={(e) =>
                   e.target.value !== testimonial.quote &&
                   updateTestimonial.mutate({ id: testimonial.id, input: { customer_name: testimonial.customer_name, quote: e.target.value } })
                 }
               />
             </div>
-            <div className="flex flex-col items-start gap-2 sm:items-end">
+            <div className="flex items-center justify-between gap-3 sm:flex-col sm:items-end sm:justify-start">
               <label className="flex items-center gap-2 text-sm text-forest">
                 <input
                   type="checkbox"
