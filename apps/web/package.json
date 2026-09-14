@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite-react-ssg build",
+    "dev": "node init && vite",
+    "build": "node init && tsc -b && vite-react-ssg build",
     "analyze": "cross-env ANALYZE=true npm run build",
     "lint": "oxlint",
     "preview": "vite preview",

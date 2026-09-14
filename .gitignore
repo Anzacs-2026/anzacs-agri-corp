@@ -1,8 +1,6 @@
 node_modules/
 dist/
 .vite-react-ssg-temp/
-.env
-.env.local
 *.local
 .DS_Store
 Thumbs.db
@@ -11,3 +9,4 @@ playwright-report/
 test-results/
 .playwright-mcp/
 .netlify/
+config.bat
