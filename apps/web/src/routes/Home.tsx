@@ -71,28 +71,17 @@ const HeadingRule = ({
   tone?: 'forest' | 'cream'
 }) =>
   align === 'center' ? (
-    <div className="flex items-center justify-center gap-3">
-      <img src="/seed-divider.svg" alt="" className="h-3 w-16 shrink-0" />
-      <h2 className="text-center font-serif text-2xl text-forest">{children}</h2>
-      <img src="/seed-divider.svg" alt="" className="h-3 w-16 shrink-0" />
-    </div>
+    <h2 className="text-center font-serif text-2xl text-forest">{children}</h2>
   ) : (
-    <div className={cn('flex w-full flex-col gap-2', align === 'right' && 'items-end')}>
-      <h2
-        className={cn(
-          'font-serif text-3xl leading-tight sm:text-4xl',
-          tone === 'cream' ? 'text-cream' : 'text-forest',
-          align === 'right' && 'text-right',
-        )}
-      >
-        {children}
-      </h2>
-      <img
-        src="/seed-divider.svg"
-        alt=""
-        className={cn('h-3 w-16', align === 'right' && 'self-end')}
-      />
-    </div>
+    <h2
+      className={cn(
+        'min-w-0 flex-1 font-serif text-3xl leading-tight sm:text-4xl',
+        tone === 'cream' ? 'text-cream' : 'text-forest',
+        align === 'right' && 'text-right',
+      )}
+    >
+      {children}
+    </h2>
   )
 
 const Home = () => {
@@ -269,10 +258,12 @@ const Home = () => {
       {featured.length > 0 && (
         <Reveal variant="left">
           <Section background="cream">
-            <div className="mb-6 flex items-center justify-between">
-              <HeadingRule align="left">Featured products</HeadingRule>
-              <Link to="/products">
-                <Button variant="outline" size="sm">
+            <div className="mb-6 flex items-center justify-between gap-4">
+              <HeadingRule align="left">
+                Featured products
+              </HeadingRule>
+              <Link to="/products" className="shrink-0">
+                <Button variant="outline" size="sm" className="whitespace-nowrap">
                   <LayoutGrid size={16} className="mr-1.5" aria-hidden />
                   View all
                 </Button>
